@@ -21,11 +21,11 @@ const App = () => {
             window.location.href = `/?endPoint=${endPoint}&maskedId=${maskedId}`;
         }}>
             <label>
-                End Point: <input type="text" name="endPoint" id="endPoint_input" placeholder="https://magento24.pwa-commerce.com/pb/graphql/"/>
+                End Point: <input type="text" name="endPoint" id="endPoint_input" defaultValue="https://magento24.pwa-commerce.com/pb/graphql/" />
             </label>
             <br/>
             <label>
-                Masked Id: <input type="text" name="maskedId" id="maskedId_input" />
+                Masked Id: <input type="text" name="maskedId" id="maskedId_input" defaultValue="1s68K1JI7pPX5ECMqNGU41617782977" />
             </label>
             <br/>
             <input type="submit" value="Go!" />
