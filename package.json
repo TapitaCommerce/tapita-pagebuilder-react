@@ -49,5 +49,9 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "react-html-parser": "^2.0.2",
+    "react-responsive-carousel": "^3.2.18"
+  }
 }

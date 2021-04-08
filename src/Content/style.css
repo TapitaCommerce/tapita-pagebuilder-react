@@ -1,0 +1,21 @@
+.spb-item {
+  background-color: white;
+  /*
+    padding: 5px;
+    */
+  overflow: auto;
+  transition: transform 0.3s ease;
+  position: relative;
+  flex-shrink: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top left;
+}
+.spb-item-root {
+  align-items: center;
+  padding: 0px;
+}
+
+.spb-item .slide {
+  background-color: white;
+}
