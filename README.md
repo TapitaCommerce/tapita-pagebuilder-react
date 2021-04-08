@@ -15,15 +15,25 @@ npm install --save simi-pagebuilder-react
 ```jsx
 import React, { Component } from 'react'
 
-import MyComponent from 'simi-pagebuilder-react'
+import { PageBuilderComponent } from 'simi-pagebuilder-react'
 import 'simi-pagebuilder-react/dist/index.css'
 
 class Example extends Component {
   render() {
-    return <MyComponent endPoint={endPoint} maskedId={maskedId} />
+    return <PageBuilderComponent endPoint={endPoint} maskedId={maskedId} />
   }
 }
 ```
+
+## Develop
+
+```bash
+git clone https://github.com/Simicart/simi-pagebuilder-react
+cd simi-pagebuilder-react
+yarn start
+```
+
+Then go to example directory, run another yarn start command
 
 ## License
 
