@@ -30,10 +30,11 @@ class Example extends Component {
 ```bash
 git clone https://github.com/Simicart/simi-pagebuilder-react
 cd simi-pagebuilder-react
+yarn install && cd example && yarn install && cd ..
 yarn start
 ```
 
-Then go to example directory, run another yarn start command
+Then go to example directory, run another `yarn start` command.
 
 ## License
 
