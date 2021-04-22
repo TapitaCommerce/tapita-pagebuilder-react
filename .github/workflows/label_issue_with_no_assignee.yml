@@ -5,6 +5,7 @@ on:
 
 jobs:
   check_and_label:
+    name: Add and remove "help wanted" label
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v3

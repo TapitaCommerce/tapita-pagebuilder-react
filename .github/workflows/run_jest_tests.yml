@@ -27,6 +27,7 @@ on:
 
 jobs:
   run_jest_tests_job:
+    name: Run jest test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

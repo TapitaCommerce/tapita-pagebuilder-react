@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { sendRequest } from './Network/GraphQl'
-import Content from './Content'
+import React, { useEffect, useState } from 'react';
+import { sendRequest } from './Network/GraphQl';
+import Content from './Content';
 
 const GET_ITEM_QUERY = `
     query getPbItem($pageMaskedId: String) {
@@ -33,20 +33,26 @@ const GET_ITEM_QUERY = `
 `;
 
 export const PageBuilderComponent = ({ endPoint, maskedId }) => {
-    const [data, setData] = useState(false);
-    if (!data) {
-        sendRequest(
-            endPoint,
-            result => {
-                setData(result);
-            },
-            GET_ITEM_QUERY,
-            { pageMaskedId: maskedId },
-            "getPbItem"
-        )
-    }
-    if (data && data.data && data.data.spb_item && data.data.spb_item.items && data.data.spb_page) {
-        return <Content data={data.data} />
-    }
-    return '';
-}
+	const [data, setData] = useState(false);
+	if (!data) {
+		sendRequest(
+			endPoint,
+			(result) => {
+				setData(result);
+			},
+			GET_ITEM_QUERY,
+			{ pageMaskedId: maskedId },
+			'getPbItem',
+		);
+	}
+	if (
+		data &&
+		data.data &&
+		data.data.spb_item &&
+		data.data.spb_item.items &&
+		data.data.spb_page
+	) {
+		return <Content data={data.data} />;
+	}
+	return '';
+};
