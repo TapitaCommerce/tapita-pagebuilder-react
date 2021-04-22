@@ -1,0 +1,34 @@
+# move card from "todo" to "in progress" if it has assignee(s)
+on:
+  issues:
+    types: [ assigned ]
+
+jobs:
+  check_and_label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const issue = context.payload.issue;
+            const issue_url = issue.url;
+            const todo_column_id = 13835098;
+            const doing_column_id = 13835099;
+
+            // fetch all cards in todo
+            const todo_cards = await github.projects.listCards({
+              column_id: todo_column_id
+            })
+
+            //then filter by content_url
+            const card_matching_issue = todo_cards.find(card => card['content_url'] === issue_url);
+
+            // if match, move it to doing column
+            if (card_matching_issue){
+              const card_id = card_matching_issue.id;
+              github.projects.moveCard({
+                card_id: card_id,
+                position: 'top',
+              });
+            }
