@@ -1,36 +1,36 @@
 # move card from "in progress" to "todo" if it has no assignee
 on:
-  issues:
-    types: [ unassigned ]
+    issues:
+        types: [ unassigned ]
 
 jobs:
-  check_and_label:
-    name: Move card to todo on unassignment
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/github-script@v3
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const issue = context.payload.issue;
-            const issue_url = issue.url;
-            const todo_column_id = 13835098;
-            const doing_column_id = 13835099;
+    check_and_label:
+        name: Move card to todo on unassignment
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/github-script@v3
+                with:
+                    github-token: ${{secrets.GITHUB_TOKEN}}
+                    script: |
+                        const issue = context.payload.issue;
+                        const issue_url = issue.url;
+                        const todo_column_id = 13835098;
+                        const doing_column_id = 13835099;
 
-            // fetch all cards in doing
-            const todo_cards = await github.projects.listCards({
-              column_id: doing_column_id
-            })
+                        // fetch all cards in doing
+                        const todo_cards = await github.projects.listCards({
+                          column_id: doing_column_id
+                        })
 
-            //then filter by content_url
-            const card_matching_issue = todo_cards.find(card => card['content_url'] === issue_url);
+                        //then filter by content_url
+                        const card_matching_issue = todo_cards.find(card => card['content_url'] === issue_url);
 
-            // if match, move it to todo column
-            if (card_matching_issue){
-              const card_id = card_matching_issue.id;
-              github.projects.moveCard({
-                card_id: card_id,
-                position: 'top',
-                column_id: todo_column_id
-              });
-            }
+                        // if match, move it to todo column
+                        if (card_matching_issue){
+                          const card_id = card_matching_issue.id;
+                          github.projects.moveCard({
+                            card_id: card_id,
+                            position: 'top',
+                            column_id: todo_column_id
+                          });
+                        }
