@@ -3,13 +3,14 @@ import { PageBuilderComponent } from 'simi-pagebuilder-react'
 import 'simi-pagebuilder-react/dist/index.css'
 
 const get = (name) => {
-    if (name === (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(window.location.search))
-        return decodeURIComponent(name[1]);
+    let exist = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(window.location.search);
+    if (exist)
+        return decodeURIComponent(exist[1]);
 }
 
 const App = () => {
-    let endPoint = get('endPoint')
-    let maskedId = get('maskedId')
+    let endPoint = get('endPoint');
+    let maskedId = get('maskedId');
     if (endPoint && maskedId) {
         return <PageBuilderComponent endPoint={endPoint} maskedId={maskedId} />
     }
@@ -25,7 +26,7 @@ const App = () => {
             </label>
             <br/>
             <label>
-                Masked Id: <input type="text" name="maskedId" id="maskedId_input" defaultValue="1s68K1JI7pPX5ECMqNGU41617782977" />
+                Masked Id: <input type="text" name="maskedId" id="maskedId_input" defaultValue="14BhhVlVCBPHJTQEtkaLSa1621573067" />
             </label>
             <br/>
             <input type="submit" value="Go!" />

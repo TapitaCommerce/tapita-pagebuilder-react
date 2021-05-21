@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { sendRequest } from './Network/GraphQl'
-import Content from './Content'
+import React, { useEffect, useState } from 'react';
+import { sendRequest } from './Network/GraphQl';
+import Content from './Content';
 
 const PREVIEW_ITEM_QUERY = `
     query getPbItem($pageMaskedId: String) {
@@ -49,30 +49,32 @@ const GET_ITEM_QUERY = `
     }
 `;
 
-export const PageBuilderComponent = props => {
-    const { endPoint, maskedId, toPreview } = props;
-    const [data, setData] = useState(false);
-    if (!data) {
-        sendRequest(
-            endPoint,
-            result => {
-                setData(result);
-            },
-            toPreview ? PREVIEW_ITEM_QUERY : GET_ITEM_QUERY,
-            { pageMaskedId: maskedId },
-            "getPbItem"
-        )
-    }
-    console.log(data)
-    if (
-        data && data.data && data.data.spb_page &&
-        (
-            (data.data.spb_item && data.data.spb_item.items) ||
-            (data.data.spb_page && data.data.spb_page.items && data.data.spb_page.items[0] &&
-                data.data.spb_page.items[0].publish_items)
-        )
-    ) {
-        return <Content data={data.data} />
-    }
-    return '';
-}
+export const PageBuilderComponent = (props) => {
+	const { endPoint, maskedId, toPreview } = props;
+	const [data, setData] = useState(false);
+	if (!data) {
+		sendRequest(
+			endPoint,
+			(result) => {
+				setData(result);
+			},
+			toPreview ? PREVIEW_ITEM_QUERY : GET_ITEM_QUERY,
+			{ pageMaskedId: maskedId },
+			'getPbItem',
+		);
+	}
+	console.log(data);
+	if (
+		data &&
+		data.data &&
+		data.data.spb_page &&
+		((data.data.spb_item && data.data.spb_item.items) ||
+			(data.data.spb_page &&
+				data.data.spb_page.items &&
+				data.data.spb_page.items[0] &&
+				data.data.spb_page.items[0].publish_items))
+	) {
+		return <Content data={data.data} />;
+	}
+	return '';
+};
