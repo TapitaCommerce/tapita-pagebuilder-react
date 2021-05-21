@@ -63,7 +63,7 @@ export const PageBuilderComponent = (props) => {
 			'getPbItem',
 		);
 	}
-	console.log(data);
+    
 	if (
 		data &&
 		data.data &&

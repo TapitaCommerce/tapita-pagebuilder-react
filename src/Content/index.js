@@ -5,25 +5,34 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import classes from './style.css';
 import { randomString, listToTree } from '../Helper/Data';
 
-const $ = window.$;
+const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 
 const PbContent = (props) => {
 	const {
 		data: { spb_item, spb_page },
 	} = props;
+
 	/*
     Render Item
     */
 	const renderItem = (item, children) => {
 		const styles = prepareStyle(item);
+        const itemProps = {
+            key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
+            style: styles, 
+            className: `${classes['spb-item']} ${
+                item.root ? classes['spb-item-root'] : ''
+            } ${item.class_name} ${classes['type_' + item.type]}`
+        }
+        if (item.dataParsed && item.dataParsed.scrollTo) {
+            itemProps.onClick = e => {
+                var elmnt = document.getElementsByClassName(item.dataParsed.scrollTo);
+                if (elmnt && elmnt.length)
+                    elmnt[0].scrollIntoView(); 
+            }
+        }
 		return (
-			<div
-				key={`${randomString(5)}${item.root ? 'root' : item.entity_id}`}
-				className={`${classes['spb-item']} ${
-					item.root ? classes['spb-item-root'] : ''
-				} ${item.class_name} ${classes['type_' + item.type]}`}
-				style={styles}
-			>
+			<div {...itemProps} >
 				{renderInnerContent(item, children)}
 			</div>
 		);
@@ -57,11 +66,9 @@ const PbContent = (props) => {
 			flexWrap: 'wrap',
 		};
 		let style = defaultStyles;
-		if (item && item.styles) {
-			if (typeof item.styles === 'string')
-				item.styles = JSON.parse(item.styles);
+		if (item && item.stylesParsed) {
 			try {
-				const itemStyle = item.styles;
+				const itemStyle = item.stylesParsed;
 				if (itemStyle.widthPercent) {
 					itemStyle.width = parseInt(itemStyle.widthPercent, 10) + '%';
 					delete itemStyle.widthPercent;
@@ -76,17 +83,22 @@ const PbContent = (props) => {
 					else itemStyle.height = parseInt(itemStyle.heightPixel, 10) + 'px';
 					delete itemStyle.heightPixel;
 				}
-
 				style = { ...style, ...itemStyle };
-			} catch (err) {
-				console.log(err);
-			}
+			} catch (err) {}
+
+			// add device styles
+			const deviceFilterKey =
+				vw >= 1280 ? 'l_' : vw >= 1024 ? 't_' : 'm_';
+			Object.keys(style).forEach((key) => {
+				if (key.includes(deviceFilterKey)) {
+					const styleKey = key.replace(deviceFilterKey, '');
+					style[styleKey] = style[key];
+				}
+			});
 		}
 		if (item && item.type !== 'image' && item.type !== 'category') {
-			if (item.data) {
-				let itemData = false;
-				if (typeof item.data === 'string') itemData = JSON.parse(item.data);
-				else itemData = item.data;
+			if (item.dataParsed) {
+				const itemData = item.dataParsed;
 				if (itemData && itemData.image) {
 					style.backgroundImage = `url("${itemData.image}")`;
 				}
@@ -116,12 +128,6 @@ const PbContent = (props) => {
 		return renderItem({ root: true }, children);
 	};
 
-	const updateCustomCss = (css) => {
-		if (!window.document.getElementById('pbpreviewcustomcss'))
-			$('head').append(
-				`<style type="text/css" id="pbpreviewcustomcss">${css}</style>`,
-			);
-	};
 	const rootItem = {
 		id: 'root',
 	};
@@ -133,8 +139,6 @@ const PbContent = (props) => {
 	}
 	newTree = listToTree(newTree);
 	rootItem.children = newTree;
-
-	if (spb_page && spb_page.custom_css) updateCustomCss(spb_page.custom_css);
 
 	return renderItems(rootItem);
 };

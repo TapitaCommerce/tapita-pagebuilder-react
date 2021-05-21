@@ -7,13 +7,11 @@ class Innercontent extends React.Component {
 		const item = this.props.item;
 		if (!item || !item.entity_id) return '';
 		let data = {};
-		if (item.data && typeof item.data === 'string') {
-			try {
-				data = JSON.parse(item.data);
-			} catch (err) {}
-		} else if (item.data && typeof item.data === 'object') {
-			data = item.data;
-		}
+        if (item.data && typeof item.data === 'object') {
+            data = item.data;
+        } else if (item.dataParsed) {
+            data = item.dataParsed;
+        }
 		if (item.type === 'button') {
 			return item.name ? item.name : 'Button Label';
 		} else if (item.type === 'text') {
