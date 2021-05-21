@@ -18,11 +18,11 @@ const PbContent = props => {
     Render Item
     */
     const renderItem = (item, children) => {
-        let styles = prepareStyle(item)
+        let styles = prepareStyle(item);
         return (
             <div
                 key={`${randomString(5)}${item.root ? 'root' : item.entity_id}`}
-                className={`${classes['spb-item']} ${item.root ? classes['spb-item-root'] : ''} ${item.class_name}`}
+                className={`${classes['spb-item']} ${item.root ? classes['spb-item-root'] : ''} ${item.class_name} ${classes['type_' + item.type]}`}
                 style={styles}
             >
                 {renderInnerContent(item, children)}
@@ -129,7 +129,12 @@ const PbContent = props => {
     let rootItem = {
         id: 'root'
     }
-    let newTree = JSON.parse(JSON.stringify(spb_item.items));
+    let newTree;
+    if (spb_item) {
+        newTree = JSON.parse(JSON.stringify(spb_item.items));
+    } else {
+        newTree = JSON.parse(spb_page.items[0].publish_items);
+    }
     newTree = listToTree(newTree);
     rootItem.children = newTree;
 

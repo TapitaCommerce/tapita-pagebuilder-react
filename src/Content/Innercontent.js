@@ -16,9 +16,9 @@ class Innercontent extends React.Component {
             data = item.data
         }
         if (item.type === 'button') {
-            return item.name
+            return item.name ? item.name : 'Button Label';
         } else if (item.type === 'text') {
-            return item.name
+            return item.name ? item.name : 'Your Text Go Here';
         } else if (item.type === 'image') {
             if (data.image)
                 return <img src={data.image} alt="pb img item" style={{ width: '100%' }} />
@@ -30,6 +30,7 @@ class Innercontent extends React.Component {
                 </React.Fragment>
             )
         } else if (item.type === 'product_scroll') {
+            return '';
             let products = []
             for (let i = 0; i < 12; i++) {
                 products.push(
@@ -55,6 +56,7 @@ class Innercontent extends React.Component {
                 </div>
             )
         } else if (item.type === 'product_grid') {
+            return '';
             let products = []
             for (let i = 0; i < 6; i++) {
                 products.push(

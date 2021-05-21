@@ -19,3 +19,12 @@
 .spb-item .slide {
   background-color: white;
 }
+
+.spb-item.type_button {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.spb-item.type_button:hover {
+  opacity: 0.8;
+}
