@@ -3,7 +3,7 @@ import { PageBuilderComponent } from 'simi-pagebuilder-react'
 import 'simi-pagebuilder-react/dist/index.css'
 
 const get = (name) => {
-    if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(window.location.search))
+    if (name === (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(window.location.search))
         return decodeURIComponent(name[1]);
 }
 

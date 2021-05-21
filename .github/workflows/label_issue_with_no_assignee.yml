@@ -1,0 +1,38 @@
+# add "help wanted" label for no-assignee issue and remove if have
+on:
+    issues:
+        types: [ opened, assigned, unassigned ]
+
+jobs:
+    check_and_label:
+        name: Add and remove "help wanted" label
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/github-script@v3
+                with:
+                    github-token: ${{secrets.GITHUB_TOKEN}}
+                    script: |
+                        const assignees = context.payload.issue.assignees;
+                        const current_label = context.payload.issue.labels;
+                        const todo_label_mark = 'confirmed';
+                        const help_wanted_label_mark = 'help wanted';
+
+                        // add help label if no assignee yet
+                        if (assignees.length === 0 && !!current_label && current_label.includes(todo_label_mark)){
+                          github.issues.addLabels({
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            issue_number: context.payload.issue.number,
+                            labels: [help_wanted_label_mark]
+                        })
+                        }
+
+                        // remove if have assignee(s)
+                        if (assignees.length > 0 && !!current_label && current_label.includes(help_wanted_label_mark)){
+                          github.issues.removeLabel({
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            issue_number: context.payload.issue.number,
+                            name: help_wanted_label_mark
+                        })
+                        }
