@@ -60,8 +60,8 @@ const GET_ITEM_QUERY = `
     }
 `;
 
-export const PageBuilderComponent = (props) => {
-    const { endPoint, maskedId, toPreview } = props;
+export const PageBuilderComponent = props => {
+    const { endPoint, maskedId, toPreview, ProductList, ProductGrid } = props;
     const [data, setData] = useState(false);
     if (!data) {
         sendRequest(
@@ -106,6 +106,7 @@ export const PageBuilderComponent = (props) => {
                                 background-size: cover;
                                 background-repeat: no-repeat;
                                 background-position: top left;
+                                padding: 15px;
                             }
                             .spb-item-root {
                                 align-items: center;
@@ -140,7 +141,7 @@ export const PageBuilderComponent = (props) => {
                     {spgData.desc ? <meta name="description" content={spgData.desc} /> : ''}
                     {spgData.keywords ? <meta name="keywords" content={spgData.keywords} /> : ''}
                 </Helmet>
-                <Content data={data.data} />
+                <Content data={data.data} ProductList={ProductList} ProductGrid={ProductGrid} />
             </React.Fragment >
         );
     }
