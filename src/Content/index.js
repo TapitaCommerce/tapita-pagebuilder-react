@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Innercontent from './Innercontent';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import classes from './style.css';
 import { randomString, listToTree } from '../Helper/Data';
 
 const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
@@ -20,9 +19,8 @@ const PbContent = (props) => {
         const itemProps = {
             key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
             style: styles, 
-            className: `${classes['spb-item']} ${
-                item.root ? classes['spb-item-root'] : ''
-            } ${item.class_name} ${classes['type_' + item.type]}`
+            className: `spb-item ${item.root ? 'spb-item-root' : ''
+            } ${item.class_name} ${'type_' + item.type}`
         }
         if (item.dataParsed && item.dataParsed.scrollTo) {
             itemProps.onClick = e => {
