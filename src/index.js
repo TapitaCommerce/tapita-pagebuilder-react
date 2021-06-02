@@ -60,6 +60,21 @@ const GET_ITEM_QUERY = `
     }
 `;
 
+const GET_PB_PAGES_QUERY = `
+    query getPagesByToken($integrationToken: String) {
+        spb_page(integrationToken: $integrationToken) {
+            total_count
+            items {
+                status
+                masked_id
+                name
+                url_path
+                priority
+            }
+        }		
+    }
+`;
+
 export const PageBuilderComponent = props => {
     const { endPoint, maskedId, toPreview, ProductList, ProductGrid } = props;
     const [data, setData] = useState(false);
@@ -125,6 +140,10 @@ export const PageBuilderComponent = props => {
                             .spb-item.type_button:hover {
                                 opacity: 0.8;
                             }
+
+                            .spb-item.type_image {
+                                padding: 0;
+                            }
                         `
                     }]}
                 />
@@ -147,3 +166,52 @@ export const PageBuilderComponent = props => {
     }
     return '';
 };
+
+export const usePbFinder = props => {
+    const { endPoint, integrationToken } = props;
+    const [pbData, setPbData] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [pathToFind, setPathFoFind] = useState(false);
+    let pageMaskedId;
+
+    const findPage = (pathName) => {
+        setPathFoFind(pathName);
+        if (window.smPbPagesByToken) {
+            setPbData(window.smPbPagesByToken);
+        } else {
+            if (!loading) {
+                setLoading(true);
+                sendRequest(
+                    endPoint,
+                    (result) => {
+                        setLoading(false);
+                        if (result && result.data && result.data.spb_page)
+                            window.smPbPagesByToken = result;
+                        setPbData(result);
+                    },
+                    GET_PB_PAGES_QUERY,
+                    { integrationToken },
+                    'getPbPage',
+                );
+            }
+        }
+    }
+
+    if (pbData && pbData.data && pbData.data.spb_page && pathToFind) {
+        const { spb_page } = pbData.data;
+        pageMaskedId = 'notfound';
+        if (spb_page.items && spb_page.items.length) {
+            const pbPages = JSON.parse(JSON.stringify(spb_page.items));
+            pbPages.sort((el1, el2) => parseInt(el2.priority) - parseInt(el1.priority));
+            const pageToFind = pbPages.find(item => item.url_path === pathToFind);
+            if (pageToFind && pageToFind.masked_id)
+                pageMaskedId = pageToFind.masked_id;
+        }
+    }
+
+    return {
+        loading,
+        pageMaskedId,
+        findPage
+    };
+}
