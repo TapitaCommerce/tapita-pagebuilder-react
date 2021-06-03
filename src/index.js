@@ -225,6 +225,7 @@ export const usePbFinder = props => {
     return {
         loading,
         pageMaskedId,
-        findPage
+        findPage,
+        pathToFind
     };
 }
