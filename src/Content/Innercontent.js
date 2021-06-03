@@ -48,6 +48,8 @@ const Innercontent = props => {
             return '';
     } else if (item.type === 'paragraph') {
         if (data.paragraphContent) return HtmlParser(data.paragraphContent);
+    } else if (item.type === 'custom_html') {
+        if (data.htmlContent) return HtmlParser(data.htmlContent);
     }
     return '';
 };

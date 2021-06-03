@@ -3,6 +3,8 @@ import { sendRequest } from './Network/GraphQl';
 import Content from './Content';
 import { Helmet } from 'react-helmet';
 
+let runCustomJSOnce = false;
+
 const PREVIEW_ITEM_QUERY = `
     query getPbItem($pageMaskedId: String) {
         spb_page(pageMaskedId: $pageMaskedId) {
@@ -89,7 +91,7 @@ export const PageBuilderComponent = props => {
             'getPbItem',
         );
     }
-
+    let spgData;
     if (
         data &&
         data.data &&
@@ -104,9 +106,20 @@ export const PageBuilderComponent = props => {
                 data.data.spb_page.items[0].publish_items)
         )
     ) {
-        const spgData = data.data.spb_page.items[0];
-        if (!spgData || !spgData.status)
-            return ''
+        spgData = data.data.spb_page.items[0];
+    }
+    useEffect(() => {
+        if (spgData && spgData.status && spgData.custom_js && !runCustomJSOnce) {
+            try {
+                runCustomJSOnce = true;
+                eval(spgData.custom_js);
+            } catch (err) {
+
+            }
+        }
+    }, [spgData]);
+    
+    if (spgData && spgData.status) {
         return (
             <React.Fragment>
                 <Helmet
@@ -151,7 +164,7 @@ export const PageBuilderComponent = props => {
                     (spgData && spgData.custom_css) ?
                         <Helmet
                             style={[{
-                                "cssText": custom_css
+                                "cssText": spgData.custom_css
                             }]}
                         /> : ''
                 }
