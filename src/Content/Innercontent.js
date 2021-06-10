@@ -5,6 +5,8 @@ import HtmlParser from 'react-html-parser';
 class Innercontent extends React.Component {
 	render = () => {
 		const item = this.props.item;
+		const deviceFilterKey = this.props.deviceFilterKey;
+
 		if (!item || !item.entity_id) return '';
 		let data = {};
 		if (item.data && typeof item.data === 'object') {

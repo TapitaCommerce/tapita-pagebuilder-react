@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { sendRequest } from './Network/GraphQl';
 import Content from './Content';
 import { Helmet } from 'react-helmet';
@@ -76,25 +76,30 @@ export const PageBuilderComponent = (props) => {
 	}
 
 	if (
-		data &&
-		data.data &&
-		data.data.spb_page &&
-		// live
-        	(data.data.spb_item && data.data.spb_item.items && data.data.spb_page && data.data.spb_page.items[0]) ||
-			// preview
-			(data.data.spb_page &&
-				data.data.spb_page.items &&
-				data.data.spb_page.items[0] &&
-				data.data.spb_page.items[0].publish_items))
+		(data &&
+			data.data &&
+			data.data.spb_page &&
+			// live
+			data.data.spb_item &&
+			data.data.spb_item.items &&
+			data.data.spb_page &&
+			data.data.spb_page.items[0]) ||
+		// preview
+		(data &&
+			data.data &&
+			data.data.spb_page &&
+			data.data.spb_page.items &&
+			data.data.spb_page.items[0] &&
+			data.data.spb_page.items[0].publish_items)
 	) {
 		const spgData = data.data.spb_page.items[0];
-		if (!spgData || !spgData.status)
-			return '';
+		if (!spgData || !spgData.status) return '';
 		return (
 			<React.Fragment>
 				<Helmet
-					style={[{
-						"cssText": `
+					style={[
+						{
+							cssText: `
                             .spb-item {
                                 background-color: white;
                                 overflow: auto;
@@ -123,23 +128,35 @@ export const PageBuilderComponent = (props) => {
                                 opacity: 0.8;
                             }
                         `,
-					}]}
+						},
+					]}
 				/>
-				{
-					(spgData && spgData.custom_css) ?
+				{spgData && spgData.custom_css ? (
 					<Helmet
-							style={[{
-								"cssText": spgData.custom_css
-							}]}
-						/> : ''
-				}
+						style={[
+							{
+								cssText: spgData.custom_css,
+							},
+						]}
+					/>
+				) : (
+					''
+				)}
 				<Helmet>
 					{spgData.title ? <title>{spgData.title}</title> : ''}
-					{spgData.desc ? <meta name="description" content={spgData.desc} /> : ''}
-					{spgData.keywords ? <meta name="keywords" content={spgData.keywords} /> : ''}
+					{spgData.desc ? (
+						<meta name='description' content={spgData.desc} />
+					) : (
+						''
+					)}
+					{spgData.keywords ? (
+						<meta name='keywords' content={spgData.keywords} />
+					) : (
+						''
+					)}
 				</Helmet>
 				<Content data={data.data} />
-			</React.Fragment >
+			</React.Fragment>
 		);
 	}
 	return '';

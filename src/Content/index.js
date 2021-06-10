@@ -1,39 +1,41 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Innercontent from './Innercontent';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { randomString, listToTree } from '../Helper/Data';
+import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
 
-const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+const vw = Math.max(
+	document.documentElement.clientWidth || 0,
+	window.innerWidth || 0,
+);
 
 const PbContent = (props) => {
 	const {
 		data: { spb_item, spb_page },
 	} = props;
 
+	const deviceFilterKey = useDeviceWidthPrefix();
+
 	/*
     Render Item
     */
 	const renderItem = (item, children) => {
 		const styles = prepareStyle(item);
-        const itemProps = {
-            key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
-            style: styles, 
-            className: `spb-item ${item.root ? 'spb-item-root' : ''
-            } ${item.class_name} ${'type_' + item.type}`
-        }
-        if (item.dataParsed && item.dataParsed.scrollTo) {
-            itemProps.onClick = e => {
-                var elmnt = document.getElementsByClassName(item.dataParsed.scrollTo);
-                if (elmnt && elmnt.length)
-                    elmnt[0].scrollIntoView(); 
-            }
-        }
-		return (
-			<div {...itemProps} >
-				{renderInnerContent(item, children)}
-			</div>
-		);
+		const itemProps = {
+			key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
+			style: styles,
+			className: `spb-item ${item.root ? 'spb-item-root' : ''} ${
+				item.class_name
+			} ${'type_' + item.type}`,
+		};
+		if (item.dataParsed && item.dataParsed.scrollTo) {
+			itemProps.onClick = (e) => {
+				var elmnt = document.getElementsByClassName(item.dataParsed.scrollTo);
+				if (elmnt && elmnt.length) elmnt[0].scrollIntoView();
+			};
+		}
+		return <div {...itemProps}>{renderInnerContent(item, children)}</div>;
 	};
 
 	const renderInnerContent = (item, children) => {
@@ -51,7 +53,7 @@ const PbContent = (props) => {
 		}
 		return (
 			<React.Fragment>
-				<Innercontent item={item} />
+				<Innercontent item={item} deviceFilterKey={deviceFilterKey} />
 				{children.length ? children : ''}
 			</React.Fragment>
 		);
@@ -85,8 +87,7 @@ const PbContent = (props) => {
 			} catch (err) {}
 
 			// add device styles
-			const deviceFilterKey =
-				vw >= 1280 ? 'l_' : vw >= 1024 ? 't_' : 'm_';
+			const deviceFilterKey = vw >= 1280 ? 'l_' : vw >= 1024 ? 't_' : 'm_';
 			Object.keys(style).forEach((key) => {
 				if (key.includes(deviceFilterKey)) {
 					const styleKey = key.replace(deviceFilterKey, '');
