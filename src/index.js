@@ -131,7 +131,7 @@ export const PageBuilderComponent = (props) => {
                     (spgData && spgData.custom_css) ?
                         <Helmet
                             style={[{
-                                "cssText": custom_css
+                                "cssText": spgData.custom_css
                             }]}
                         /> : ''
                 }

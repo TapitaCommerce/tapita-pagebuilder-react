@@ -11,7 +11,7 @@ const App = () => {
     let endPoint = get('endPoint');
     let maskedId = get('maskedId');
     if (endPoint && maskedId) {
-        return <PageBuilderComponent endPoint={endPoint} maskedId={maskedId} />
+        return <PageBuilderComponent endPoint={endPoint} maskedId={maskedId} toPreview={true} />
     }
     return (
         <form onSubmit={e => {
