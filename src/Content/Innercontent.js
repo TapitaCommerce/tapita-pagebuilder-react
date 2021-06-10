@@ -3,11 +3,11 @@ import product_item_mockup from './images/product_item_mockup.png';
 import HtmlParser from 'react-html-parser';
 import { HtmlVideo } from './HTMLVideo/HTMLVideo';
 import { YoutubeVideo } from './YoutubeVideo/YoutubeVideo';
+import { LikeShareGeneric } from './LikeAndShare/LikeShare/LikeShareGeneric';
 
 class Innercontent extends React.Component {
 	render = () => {
 		const item = this.props.item;
-		const deviceFilterKey = this.props.deviceFilterKey;
 
 		if (!item || !item.entity_id) return '';
 		let data = {};
@@ -16,14 +16,6 @@ class Innercontent extends React.Component {
 		} else if (item.dataParsed) {
 			data = item.dataParsed;
 		}
-
-		// prior specific width attribute
-		Object.keys(data).forEach((key) => {
-			if (key.includes(deviceFilterKey)) {
-				const styleKey = key.replace(deviceFilterKey, '');
-				data[styleKey] = data[key];
-			}
-		});
 
 		if (item.type === 'button') {
 			return item.name ? item.name : 'Button Label';
@@ -170,8 +162,7 @@ class Innercontent extends React.Component {
 				);
 			}
 		} else if (item.type === 'share_button') {
-			return 'nothing yet';
-			// return <LikeShareGeneric item={item} />;
+			return <LikeShareGeneric item={item} />;
 		} else if (item.type === 'custom_html') {
 			if (data.htmlContent) return HtmlParser(data.htmlContent);
 		}

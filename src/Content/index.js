@@ -15,8 +15,6 @@ const PbContent = (props) => {
 		data: { spb_item, spb_page },
 	} = props;
 
-	const deviceFilterKey = useDeviceWidthPrefix();
-
 	/*
     Render Item
     */
@@ -53,7 +51,7 @@ const PbContent = (props) => {
 		}
 		return (
 			<React.Fragment>
-				<Innercontent item={item} deviceFilterKey={deviceFilterKey} />
+				<Innercontent item={item} />
 				{children.length ? children : ''}
 			</React.Fragment>
 		);
