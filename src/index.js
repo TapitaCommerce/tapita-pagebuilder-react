@@ -61,42 +61,40 @@ const GET_ITEM_QUERY = `
 `;
 
 export const PageBuilderComponent = (props) => {
-    const { endPoint, maskedId, toPreview } = props;
-    const [data, setData] = useState(false);
-    if (!data) {
-        sendRequest(
-            endPoint,
-            (result) => {
-                setData(result);
-            },
-            toPreview ? PREVIEW_ITEM_QUERY : GET_ITEM_QUERY,
-            { pageMaskedId: maskedId },
-            'getPbItem',
-        );
-    }
+	const { endPoint, maskedId, toPreview } = props;
+	const [data, setData] = useState(false);
+	if (!data) {
+		sendRequest(
+			endPoint,
+			(result) => {
+				setData(result);
+			},
+			toPreview ? PREVIEW_ITEM_QUERY : GET_ITEM_QUERY,
+			{ pageMaskedId: maskedId },
+			'getPbItem',
+		);
+	}
 
-    if (
-        data &&
-        data.data &&
-        data.data.spb_page &&
-        (
-            //live
-            (data.data.spb_item && data.data.spb_item.items && data.data.spb_page && data.data.spb_page.items[0]) ||
-            //preview
-            (data.data.spb_page &&
-                data.data.spb_page.items &&
-                data.data.spb_page.items[0] &&
-                data.data.spb_page.items[0].publish_items)
-        )
-    ) {
-        const spgData = data.data.spb_page.items[0];
-        if (!spgData || !spgData.status)
-            return ''
-        return (
-            <React.Fragment>
-                <Helmet
-                    style={[{
-                        "cssText": `
+	if (
+		data &&
+		data.data &&
+		data.data.spb_page &&
+		// live
+        	(data.data.spb_item && data.data.spb_item.items && data.data.spb_page && data.data.spb_page.items[0]) ||
+			// preview
+			(data.data.spb_page &&
+				data.data.spb_page.items &&
+				data.data.spb_page.items[0] &&
+				data.data.spb_page.items[0].publish_items))
+	) {
+		const spgData = data.data.spb_page.items[0];
+		if (!spgData || !spgData.status)
+			return '';
+		return (
+			<React.Fragment>
+				<Helmet
+					style={[{
+						"cssText": `
                             .spb-item {
                                 background-color: white;
                                 overflow: auto;
@@ -124,25 +122,25 @@ export const PageBuilderComponent = (props) => {
                             .spb-item.type_button:hover {
                                 opacity: 0.8;
                             }
-                        `
-                    }]}
-                />
-                {
-                    (spgData && spgData.custom_css) ?
-                        <Helmet
-                            style={[{
-                                "cssText": spgData.custom_css
-                            }]}
-                        /> : ''
-                }
-                <Helmet>
-                    {spgData.title ? <title>{spgData.title}</title> : ''}
-                    {spgData.desc ? <meta name="description" content={spgData.desc} /> : ''}
-                    {spgData.keywords ? <meta name="keywords" content={spgData.keywords} /> : ''}
-                </Helmet>
-                <Content data={data.data} />
-            </React.Fragment >
-        );
-    }
-    return '';
+                        `,
+					}]}
+				/>
+				{
+					(spgData && spgData.custom_css) ?
+					<Helmet
+							style={[{
+								"cssText": spgData.custom_css
+							}]}
+						/> : ''
+				}
+				<Helmet>
+					{spgData.title ? <title>{spgData.title}</title> : ''}
+					{spgData.desc ? <meta name="description" content={spgData.desc} /> : ''}
+					{spgData.keywords ? <meta name="keywords" content={spgData.keywords} /> : ''}
+				</Helmet>
+				<Content data={data.data} />
+			</React.Fragment >
+		);
+	}
+	return '';
 };

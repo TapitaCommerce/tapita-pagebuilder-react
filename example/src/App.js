@@ -21,7 +21,7 @@ const App = () => {
             window.location.href = `/?endPoint=${endPoint}&maskedId=${maskedId}`;
         }}>
             <label>
-                End Point: <input type="text" name="endPoint" id="endPoint_input" defaultValue="https://magento24.pwa-commerce.com/pb/graphql/" />
+                End Point: <input type="text" name="endPoint" id="endPoint_input" defaultValue="https://tapita.io/pb/graphql" />
             </label>
             <br/>
             <label>
