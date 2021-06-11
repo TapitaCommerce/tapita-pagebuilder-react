@@ -16,7 +16,6 @@ npm install --save simi-pagebuilder-react
 import React, { Component } from 'react'
 
 import { PageBuilderComponent } from 'simi-pagebuilder-react'
-import 'simi-pagebuilder-react/dist/index.css'
 
 class Example extends Component {
   render() {
@@ -35,6 +34,18 @@ yarn start
 ```
 
 Then go to example directory, run another `yarn start` command.
+
+## Props
+
+endPoint - String
+
+maskedId - String
+
+toPreview - Boolean
+
+ProductList - ReactComponent - which would receive item data as props
+
+ProductGrid - ReactComponent - which would receive item data as props
 
 ## License
 
