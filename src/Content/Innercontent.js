@@ -24,15 +24,17 @@ class Innercontent extends React.Component {
 		} else if (item.type === 'image') {
 			if (data.image)
 				return (
-					<img
-						src={data.image}
-						alt={(data.alt !== undefined ? data.alt : 'pb img item') || ''}
-						title={(data.title !== undefined ? data.title : '') || ''}
-						style={{
-							width: data.width || '100%',
-							height: data.height || 'auto',
-						}}
-					/>
+					<React.Fragment>
+						<img
+							src={data.image}
+							alt={(data.alt !== undefined ? data.alt : 'pb img item') || ''}
+							title={(data.title !== undefined ? data.title : '') || ''}
+							style={{
+								width: data.width || '100%',
+								height: data.height || 'auto',
+							}}
+						/>
+					</React.Fragment>
 				);
 		} else if (item.type === 'category') {
 			return (
