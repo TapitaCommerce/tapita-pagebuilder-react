@@ -5,19 +5,14 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { randomString, listToTree } from '../Helper/Data';
 import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
 
-const vw = Math.max(
-	document.documentElement.clientWidth || 0,
-	window.innerWidth || 0,
-);
-
 const PbContent = (props) => {
 	const {
 		data: { spb_item, spb_page },
+		ProductList,
+		ProductGrid,
 	} = props;
+	const deviceFilterKey = useDeviceWidthPrefix();
 
-	/*
-    Render Item
-    */
 	const renderItem = (item, children) => {
 		const styles = prepareStyle(item);
 		const itemProps = {
@@ -51,7 +46,11 @@ const PbContent = (props) => {
 		}
 		return (
 			<React.Fragment>
-				<Innercontent item={item} />
+				<Innercontent
+					item={item}
+					ProductList={ProductList}
+					ProductGrid={ProductGrid}
+				/>
 				{children.length ? children : ''}
 			</React.Fragment>
 		);
@@ -85,7 +84,6 @@ const PbContent = (props) => {
 			} catch (err) {}
 
 			// add device styles
-			const deviceFilterKey = vw >= 1280 ? 'l_' : vw >= 1024 ? 't_' : 'm_';
 			Object.keys(style).forEach((key) => {
 				if (key.includes(deviceFilterKey)) {
 					const styleKey = key.replace(deviceFilterKey, '');

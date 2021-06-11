@@ -1,26 +1,20 @@
-import { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 
-function getWindowDimensions() {
-	const { innerWidth: width, innerHeight: height } = window;
-	return {
-		width,
-		height,
-	};
-}
-
-export const useWindowSize = (props) => {
-	const [windowDimensions, setWindowDimensions] = useState(
-		getWindowDimensions(),
-	);
-
-	useEffect(() => {
-		function handleResize() {
-			setWindowDimensions(getWindowDimensions());
+export const useWindowSize = () => {
+	const [size, setSize] = useState([0, 0]);
+	useLayoutEffect(() => {
+		function updateSize() {
+			setSize([
+				Math.max(
+					document.documentElement.clientWidth || 0,
+					window.innerWidth || 0,
+				),
+				window.innerHeight,
+			]);
 		}
-
-		window.addEventListener('resize', handleResize);
-		return () => window.removeEventListener('resize', handleResize);
+		window.addEventListener('resize', updateSize);
+		updateSize();
+		return () => window.removeEventListener('resize', updateSize);
 	}, []);
-
-	return windowDimensions;
+	return size;
 };
