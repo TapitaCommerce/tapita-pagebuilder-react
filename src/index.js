@@ -19,6 +19,8 @@ const PREVIEW_ITEM_QUERY = `
                 keywords
                 title
                 desc
+                is_rtl
+                storeview_visibility
             }
         }
         spb_item(pageMaskedId: $pageMaskedId) {
@@ -57,32 +59,38 @@ const GET_ITEM_QUERY = `
                 title
                 desc
                 publish_items
+                is_rtl
+                storeview_visibility
             }
         }
     }
 `;
 
-const GET_PB_PAGES_QUERY = `
-    query getPagesByToken($integrationToken: String) {
-        spb_page(integrationToken: $integrationToken) {
-            total_count
-            items {
-                url_path
-                priority
-                entity_id
-                name
-                status
-                masked_id
-                custom_css
-                custom_js
-                keywords
-                title
-                desc
-                publish_items
+const getPbPageQuery = getPageItems => {
+    return `
+        query getPagesByToken($integrationToken: String) {
+            spb_page(integrationToken: $integrationToken) {
+                total_count
+                items {
+                    url_path
+                    priority
+                    entity_id
+                    name
+                    status
+                    masked_id
+                    custom_css
+                    custom_js
+                    keywords
+                    title
+                    desc
+                    is_rtl
+                    storeview_visibility
+                    ${getPageItems ? 'publish_items' : ''}
+                }
             }
         }
-    }
-`;
+    `;
+}
 
 export const PageBuilderComponent = (props) => {
 	const { endPoint, maskedId, pageData, toPreview, ProductList, ProductGrid } =
@@ -157,7 +165,7 @@ export const PageBuilderComponent = (props) => {
                                 padding: 0px;
                             }
 
-                            .spb-item .slide {
+                            .spb-item .type_slider {
                                 background-color: white;
                             }
 
@@ -213,7 +221,7 @@ export const PageBuilderComponent = (props) => {
 };
 
 export const usePbFinder = (props) => {
-	const { endPoint, integrationToken } = props;
+	const { endPoint, integrationToken, storeCode, getPageItems } = props;
 	const [pbData, setPbData] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [pathToFind, setPathFoFind] = useState(false);
@@ -235,7 +243,7 @@ export const usePbFinder = (props) => {
 							window.smPbPagesByToken = result;
 						setPbData(result);
 					},
-					GET_PB_PAGES_QUERY,
+					getPbPageQuery(getPageItems),
 					{ integrationToken },
 					'getPbPage',
 				);
@@ -251,7 +259,15 @@ export const usePbFinder = (props) => {
 			pbPages.sort(
 				(el1, el2) => parseInt(el2.priority) - parseInt(el1.priority),
 			);
-			const pageToFind = pbPages.find((item) => item.url_path === pathToFind);
+			const pageToFind = pbPages.find((item) => {
+                if (storeCode && item.storeview_visibility) {
+                    const storeViews = item.storeview_visibility.trim().split(',');
+                    if (!storeViews.includes(storeCode))
+                        return false;
+                }
+                return(item.url_path === pathToFind)
+            });
+            console.log(pageToFind)
 			if (pageToFind && pageToFind.masked_id) {
 				pageData = pageToFind;
 				pageMaskedId = pageToFind.masked_id;
