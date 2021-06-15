@@ -67,26 +67,40 @@ const GET_PB_PAGES_QUERY = `
         spb_page(integrationToken: $integrationToken) {
             total_count
             items {
-                status
-                masked_id
-                name
                 url_path
                 priority
+                entity_id
+                name
+                status
+                masked_id
+                custom_css
+                custom_js
+                keywords
+                title
+                desc
+                publish_items
             }
         }
     }
 `;
 
 export const PageBuilderComponent = (props) => {
-	const { endPoint, maskedId, toPreview, ProductList, ProductGrid } = props;
-	const [data, setData] = useState(false);
+	const { endPoint, maskedId, pageData, toPreview, ProductList, ProductGrid } =
+		props;
+	const [data, setData] = useState(
+		pageData && pageData.publish_items
+			? { data: { spb_page: { items: [pageData] } } }
+			: false,
+	);
 	if (!data) {
 		sendRequest(
 			endPoint,
 			(result) => {
 				setData(result);
 			},
-			toPreview ? PREVIEW_ITEM_QUERY : GET_ITEM_QUERY,
+			toPreview && (!pageData || !pageData.publish_items)
+				? PREVIEW_ITEM_QUERY
+				: GET_ITEM_QUERY,
 			{ pageMaskedId: maskedId },
 			'getPbItem',
 		);
@@ -204,6 +218,7 @@ export const usePbFinder = (props) => {
 	const [loading, setLoading] = useState(false);
 	const [pathToFind, setPathFoFind] = useState(false);
 	let pageMaskedId;
+	let pageData;
 
 	const findPage = (pathName) => {
 		setPathFoFind(pathName);
@@ -237,8 +252,10 @@ export const usePbFinder = (props) => {
 				(el1, el2) => parseInt(el2.priority) - parseInt(el1.priority),
 			);
 			const pageToFind = pbPages.find((item) => item.url_path === pathToFind);
-			if (pageToFind && pageToFind.masked_id)
+			if (pageToFind && pageToFind.masked_id) {
+				pageData = pageToFind;
 				pageMaskedId = pageToFind.masked_id;
+			}
 		}
 	}
 
@@ -247,5 +264,6 @@ export const usePbFinder = (props) => {
 		pageMaskedId,
 		findPage,
 		pathToFind,
+		pageData,
 	};
 };

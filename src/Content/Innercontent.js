@@ -7,7 +7,6 @@ import { LikeShareGeneric } from './LikeAndShare/LikeShare/LikeShareGeneric';
 
 const Innercontent = (props) => {
 	const { item, ProductList, ProductGrid } = props;
-
 	if (!item || !item.entity_id) return '';
 	let data = {};
 	if (item.data && typeof item.data === 'object') {
