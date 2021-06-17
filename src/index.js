@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { sendRequest } from './Network/GraphQl';
 import Content from './Content';
 import { Helmet } from 'react-helmet';
+
+let runCustomJSOnce = false;
 
 const PREVIEW_ITEM_QUERY = `
     query getPbItem($pageMaskedId: String) {
@@ -17,6 +19,8 @@ const PREVIEW_ITEM_QUERY = `
                 keywords
                 title
                 desc
+                is_rtl
+                storeview_visibility
             }
         }
         spb_item(pageMaskedId: $pageMaskedId) {
@@ -55,26 +59,61 @@ const GET_ITEM_QUERY = `
                 title
                 desc
                 publish_items
+                is_rtl
+                storeview_visibility
             }
         }
     }
 `;
 
+const getPbPageQuery = getPageItems => {
+    return `
+        query getPagesByToken($integrationToken: String) {
+            spb_page(integrationToken: $integrationToken) {
+                total_count
+                items {
+                    url_path
+                    priority
+                    entity_id
+                    name
+                    status
+                    masked_id
+                    custom_css
+                    custom_js
+                    keywords
+                    title
+                    desc
+                    is_rtl
+                    storeview_visibility
+                    ${getPageItems ? 'publish_items' : ''}
+                }
+            }
+        }
+    `;
+}
+
 export const PageBuilderComponent = (props) => {
-	const { endPoint, maskedId, toPreview } = props;
-	const [data, setData] = useState(false);
+	const { endPoint, maskedId, pageData, toPreview, ProductList, ProductGrid } =
+		props;
+	const [data, setData] = useState(
+		pageData && pageData.publish_items
+			? { data: { spb_page: { items: [pageData] } } }
+			: false,
+	);
 	if (!data) {
 		sendRequest(
 			endPoint,
 			(result) => {
 				setData(result);
 			},
-			toPreview ? PREVIEW_ITEM_QUERY : GET_ITEM_QUERY,
+			toPreview && (!pageData || !pageData.publish_items)
+				? PREVIEW_ITEM_QUERY
+				: GET_ITEM_QUERY,
 			{ pageMaskedId: maskedId },
 			'getPbItem',
 		);
 	}
-
+	let spgData;
 	if (
 		(data &&
 			data.data &&
@@ -92,8 +131,18 @@ export const PageBuilderComponent = (props) => {
 			data.data.spb_page.items[0] &&
 			data.data.spb_page.items[0].publish_items)
 	) {
-		const spgData = data.data.spb_page.items[0];
-		if (!spgData || !spgData.status) return '';
+		spgData = data.data.spb_page.items[0];
+	}
+	useEffect(() => {
+		if (spgData && spgData.status && spgData.custom_js && !runCustomJSOnce) {
+			try {
+				runCustomJSOnce = true;
+				eval(spgData.custom_js);
+			} catch (err) {}
+		}
+	}, [spgData]);
+
+	if (spgData && spgData.status) {
 		return (
 			<React.Fragment>
 				<Helmet
@@ -109,13 +158,14 @@ export const PageBuilderComponent = (props) => {
                                 background-size: cover;
                                 background-repeat: no-repeat;
                                 background-position: top left;
+                                padding: 15px;
                             }
                             .spb-item-root {
                                 align-items: center;
                                 padding: 0px;
                             }
 
-                            .spb-item .slide {
+                            .spb-item .type_slider {
                                 background-color: white;
                             }
 
@@ -126,6 +176,10 @@ export const PageBuilderComponent = (props) => {
 
                             .spb-item.type_button:hover {
                                 opacity: 0.8;
+                            }
+
+                            .spb-item.type_image {
+                                padding: 0;
                             }
                         `,
 						},
@@ -155,9 +209,77 @@ export const PageBuilderComponent = (props) => {
 						''
 					)}
 				</Helmet>
-				<Content data={data.data} />
+				<Content
+					data={data.data}
+					ProductList={ProductList}
+					ProductGrid={ProductGrid}
+				/>
 			</React.Fragment>
 		);
 	}
 	return '';
+};
+
+export const usePbFinder = (props) => {
+	const { endPoint, integrationToken, storeCode, getPageItems } = props;
+	const [pbData, setPbData] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [pathToFind, setPathFoFind] = useState(false);
+	let pageMaskedId;
+	let pageData;
+
+	const findPage = (pathName) => {
+		setPathFoFind(pathName);
+		if (window.smPbPagesByToken) {
+			setPbData(window.smPbPagesByToken);
+		} else {
+			if (!loading) {
+				setLoading(true);
+				sendRequest(
+					endPoint,
+					(result) => {
+						setLoading(false);
+						if (result && result.data && result.data.spb_page)
+							window.smPbPagesByToken = result;
+						setPbData(result);
+					},
+					getPbPageQuery(getPageItems),
+					{ integrationToken },
+					'getPbPage',
+				);
+			}
+		}
+	};
+
+	if (pbData && pbData.data && pbData.data.spb_page && pathToFind) {
+		const { spb_page } = pbData.data;
+		pageMaskedId = 'notfound';
+		if (spb_page.items && spb_page.items.length) {
+			const pbPages = JSON.parse(JSON.stringify(spb_page.items));
+			pbPages.sort(
+				(el1, el2) => parseInt(el2.priority) - parseInt(el1.priority),
+			);
+			const pageToFind = pbPages.find((item) => {
+                if (storeCode && item.storeview_visibility) {
+                    const storeViews = item.storeview_visibility.trim().split(',');
+                    if (!storeViews.includes(storeCode))
+                        return false;
+                }
+                return(item.url_path === pathToFind)
+            });
+            console.log(pageToFind)
+			if (pageToFind && pageToFind.masked_id) {
+				pageData = pageToFind;
+				pageMaskedId = pageToFind.masked_id;
+			}
+		}
+	}
+
+	return {
+		loading,
+		pageMaskedId,
+		findPage,
+		pathToFind,
+		pageData,
+	};
 };

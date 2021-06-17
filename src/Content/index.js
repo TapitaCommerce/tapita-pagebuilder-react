@@ -4,19 +4,17 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { randomString, listToTree } from '../Helper/Data';
 
-const vw = Math.max(
-	document.documentElement.clientWidth || 0,
-	window.innerWidth || 0,
-);
-
 const PbContent = (props) => {
 	const {
 		data: { spb_item, spb_page },
+		ProductList,
+		ProductGrid,
 	} = props;
+	const deviceFilterKey = useDeviceWidthPrefix();
+	const pageData =
+		spb_page && spb_page.items && spb_page.items[0] ? spb_page.items[0] : false;
+    const isRtl = pageData && pageData.is_rtl;
 
-	/*
-    Render Item
-    */
 	const renderItem = (item, children) => {
 		const styles = prepareStyle(item);
 		const itemProps = {
@@ -36,21 +34,31 @@ const PbContent = (props) => {
 	};
 
 	const renderInnerContent = (item, children) => {
+        const dataParsed = item.dataParsed ?item.dataParsed : {};
 		if (item.type === 'slider') {
 			const slideSettings = {
-				autoPlay: true,
-				showArrows: true,
+				autoPlay: (parseInt(dataParsed.sliderAutoSlide) === 1) ? true : false,
+				showArrows: (parseInt(dataParsed.showSliderNavBtn) === 0) ? false : true,
 				showThumbs: false,
-				showIndicators: !!(children.length && children.length !== 1),
+				showIndicators: (parseInt(dataParsed.showSliderIndicator) === 0) ? false : !!(children.length && children.length !== 1),
 				showStatus: false,
-				infiniteLoop: true,
+				infiniteLoop: (parseInt(dataParsed.sliderInfiniteLoop) === 0) ? false : true,
 				lazyLoad: true,
+                transitionTime: !parseInt(dataParsed.sliderTransitionTime) ? dataParsed.sliderTransitionTime : 350
 			};
-			return <Carousel {...slideSettings}>{children}</Carousel>;
+            if (isRtl) {
+                slideSettings.selectedItem = children.length - 1;
+                slideSettings.autoPlay = false;
+            }
+			return <Carousel {...slideSettings}>{isRtl ? children.reverse() : children}</Carousel>;
 		}
 		return (
 			<React.Fragment>
-				<Innercontent item={item} />
+				<Innercontent
+					item={item}
+					ProductList={ProductList}
+					ProductGrid={ProductGrid}
+				/>
 				{children.length ? children : ''}
 			</React.Fragment>
 		);
@@ -61,6 +69,7 @@ const PbContent = (props) => {
 			display: 'flex',
 			flexDirection: 'column',
 			flexWrap: 'wrap',
+            direction: isRtl ? 'rtl' : 'ltr'
 		};
 		let style = defaultStyles;
 		if (item && item.stylesParsed) {
@@ -84,7 +93,6 @@ const PbContent = (props) => {
 			} catch (err) {}
 
 			// add device styles
-			const deviceFilterKey = vw >= 1280 ? 'l_' : vw >= 1024 ? 't_' : 'm_';
 			Object.keys(style).forEach((key) => {
 				if (key.includes(deviceFilterKey)) {
 					const styleKey = key.replace(deviceFilterKey, '');
@@ -100,6 +108,9 @@ const PbContent = (props) => {
 				}
 			}
 		}
+        if (item && item.type === 'slider') {
+            style.direction = 'ltr';
+        }
 		return style;
 	};
 
@@ -135,8 +146,14 @@ const PbContent = (props) => {
 	}
 	newTree = listToTree(newTree);
 	rootItem.children = newTree;
-
-	return renderItems(rootItem);
+	return (
+		<div
+			className='smpb-container'
+			style={{ direction: isRtl ? 'rtl' : 'ltr' }}
+		>
+			{renderItems(rootItem)}
+		</div>
+	);
 };
 
 export default PbContent;
