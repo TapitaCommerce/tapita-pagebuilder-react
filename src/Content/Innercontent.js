@@ -1,44 +1,9 @@
 import React from 'react';
-import product_item_mockup from './images/product_item_mockup.png';
 import HtmlParser from 'react-html-parser';
 import { HtmlVideo } from './HTMLVideo/HTMLVideo';
 import { YoutubeVideo } from './YoutubeVideo/YoutubeVideo';
 import { LikeShareGeneric } from './LikeAndShare/LikeShare/LikeShareGeneric';
 
-<<<<<<< HEAD
-class Innercontent extends React.Component {
-	render = () => {
-		const item = this.props.item;
-
-		if (!item || !item.entity_id) return '';
-		let data = {};
-		if (item.data && typeof item.data === 'object') {
-			data = item.data;
-		} else if (item.dataParsed) {
-			data = item.dataParsed;
-		}
-
-		if (item.type === 'button') {
-			return item.name ? item.name : 'Button Label';
-		} else if (item.type === 'text') {
-			return item.name ? item.name : 'Your Text Go Here';
-		} else if (item.type === 'image') {
-			if (data.image)
-				return (
-					<React.Fragment>
-						<img
-							src={data.image}
-							alt={(data.alt !== undefined ? data.alt : 'pb img item') || ''}
-							title={(data.title !== undefined ? data.title : '') || ''}
-							style={{
-								width: data.width || '100%',
-								height: data.height || 'auto',
-							}}
-						/>
-					</React.Fragment>
-				);
-		} else if (item.type === 'category') {
-=======
 const Innercontent = (props) => {
 	const { item, ProductList, ProductGrid } = props;
 	if (!item || !item.entity_id) return '';
@@ -54,7 +19,6 @@ const Innercontent = (props) => {
 		return item.name ? item.name : 'Your Text Go Here';
 	} else if (item.type === 'image') {
 		if (data.image)
->>>>>>> develop
 			return (
 				<img
 					src={data.image}
