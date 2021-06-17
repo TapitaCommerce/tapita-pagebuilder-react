@@ -66,7 +66,7 @@ export const LikeShareReal = (props) => {
 	const { width, height } = translateButtonDimension(type);
 
 	const src =
-		`https://www.facebook.com/plugins/like.php?` +
+		'https://www.facebook.com/plugins/like.php?' +
 		`href=${encodedShareLink}&width=${width}` +
 		`&layout=${buttonType}&action=like` +
 		`&size=large&share=true&height=${height}` +

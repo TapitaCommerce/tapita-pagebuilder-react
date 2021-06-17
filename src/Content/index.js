@@ -14,7 +14,7 @@ const PbContent = (props) => {
 	const deviceFilterKey = useDeviceWidthPrefix();
 	const pageData =
 		spb_page && spb_page.items && spb_page.items[0] ? spb_page.items[0] : false;
-    const isRtl = pageData && pageData.is_rtl;
+	const isRtl = pageData && pageData.is_rtl;
 
 	const renderItem = (item, children) => {
 		const styles = prepareStyle(item);
@@ -35,23 +35,32 @@ const PbContent = (props) => {
 	};
 
 	const renderInnerContent = (item, children) => {
-        const dataParsed = item.dataParsed ?item.dataParsed : {};
+		const dataParsed = item.dataParsed ? item.dataParsed : {};
 		if (item.type === 'slider') {
 			const slideSettings = {
-				autoPlay: (parseInt(dataParsed.sliderAutoSlide) === 1) ? true : false,
-				showArrows: (parseInt(dataParsed.showSliderNavBtn) === 0) ? false : true,
+				autoPlay: parseInt(dataParsed.sliderAutoSlide) === 1,
+				showArrows: parseInt(dataParsed.showSliderNavBtn) !== 0,
 				showThumbs: false,
-				showIndicators: (parseInt(dataParsed.showSliderIndicator) === 0) ? false : !!(children.length && children.length !== 1),
+				showIndicators:
+					parseInt(dataParsed.showSliderIndicator) === 0
+						? false
+						: !!(children.length && children.length !== 1),
 				showStatus: false,
-				infiniteLoop: (parseInt(dataParsed.sliderInfiniteLoop) === 0) ? false : true,
+				infiniteLoop: parseInt(dataParsed.sliderInfiniteLoop) !== 0,
 				lazyLoad: true,
-                transitionTime: !parseInt(dataParsed.sliderTransitionTime) ? dataParsed.sliderTransitionTime : 350
+				transitionTime: !parseInt(dataParsed.sliderTransitionTime)
+					? dataParsed.sliderTransitionTime
+					: 350,
 			};
-            if (isRtl) {
-                slideSettings.selectedItem = children.length - 1;
-                slideSettings.autoPlay = false;
-            }
-			return <Carousel {...slideSettings}>{isRtl ? children.reverse() : children}</Carousel>;
+			if (isRtl) {
+				slideSettings.selectedItem = children.length - 1;
+				slideSettings.autoPlay = false;
+			}
+			return (
+				<Carousel {...slideSettings}>
+					{isRtl ? children.reverse() : children}
+				</Carousel>
+			);
 		}
 		return (
 			<React.Fragment>
@@ -70,7 +79,7 @@ const PbContent = (props) => {
 			display: 'flex',
 			flexDirection: 'column',
 			flexWrap: 'wrap',
-            direction: isRtl ? 'rtl' : 'ltr'
+			direction: isRtl ? 'rtl' : 'ltr',
 		};
 		let style = defaultStyles;
 		if (item && item.stylesParsed) {
@@ -109,9 +118,9 @@ const PbContent = (props) => {
 				}
 			}
 		}
-        if (item && item.type === 'slider') {
-            style.direction = 'ltr';
-        }
+		if (item && item.type === 'slider') {
+			style.direction = 'ltr';
+		}
 		return style;
 	};
 
