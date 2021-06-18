@@ -66,8 +66,8 @@ const GET_ITEM_QUERY = `
     }
 `;
 
-const getPbPageQuery = getPageItems => {
-    return `
+const getPbPageQuery = (getPageItems) => {
+	return `
         query getPagesByToken($integrationToken: String) {
             spb_page(integrationToken: $integrationToken) {
                 total_count
@@ -90,7 +90,7 @@ const getPbPageQuery = getPageItems => {
             }
         }
     `;
-}
+};
 
 export const PageBuilderComponent = (props) => {
 	const { endPoint, maskedId, pageData, toPreview, ProductList, ProductGrid } =
@@ -260,14 +260,13 @@ export const usePbFinder = (props) => {
 				(el1, el2) => parseInt(el2.priority) - parseInt(el1.priority),
 			);
 			const pageToFind = pbPages.find((item) => {
-                if (storeCode && item.storeview_visibility) {
-                    const storeViews = item.storeview_visibility.trim().split(',');
-                    if (!storeViews.includes(storeCode))
-                        return false;
-                }
-                return(item.url_path === pathToFind)
-            });
-            console.log(pageToFind)
+				if (storeCode && item.storeview_visibility) {
+					const storeViews = item.storeview_visibility.trim().split(',');
+					if (!storeViews.includes(storeCode)) return false;
+				}
+				return item.url_path === pathToFind;
+			});
+			console.log(pageToFind);
 			if (pageToFind && pageToFind.masked_id) {
 				pageData = pageToFind;
 				pageMaskedId = pageToFind.masked_id;

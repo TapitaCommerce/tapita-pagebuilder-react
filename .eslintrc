@@ -5,6 +5,8 @@
 		"standard-react",
 		"plugin:prettier/recommended",
 		"prettier/standard",
+		"prettier",
+		"plugin:prettier/recommended",
 		"prettier/react"
 	],
 	"env": {
@@ -19,6 +21,11 @@
 			"jsx": true
 		}
 	},
+	"ignorePatterns": [
+		"**/*.min.js",
+		"**/node_modules",
+		"**/dist"
+	],
 	"settings": {
 		"react": {
 			"version": "16"
@@ -31,8 +38,37 @@
 		"react/jsx-fragments": 0,
 		"react/no-unused-prop-types": 0,
 		"import/export": 0,
-		"indent": ["error", "tab", { "SwitchCase": 1, "VariableDeclarator": 1 }],
+		"indent": [
+			1,
+			"tab",
+			{
+				"ignoredNodes": [
+					"TemplateLiteral"
+				],
+				"SwitchCase": 1
+			}
+		],
 		"no-tabs": 0,
-		"semi": [2, "always"]
+		"semi": [
+			2,
+			"always"
+		],
+		"quotes": [
+			2,
+			"single"
+		],
+		"no-unused-vars": [
+			1,
+			{
+				"vars": "all",
+				"args": "after-used",
+				"ignoreRestSiblings": false
+			}
+		],
+		"camelcase": 1,
+		"prefer-const": 1,
+		"react/jsx-no-bind": 1,
+		"no-prototype-builtins": 1,
+		"no-extend-native": 0
 	}
 }
