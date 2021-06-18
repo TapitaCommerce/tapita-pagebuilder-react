@@ -3,6 +3,7 @@ import Innercontent from './Innercontent';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { randomString, listToTree } from '../Helper/Data';
+import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
 
 const PbContent = (props) => {
 	const {
