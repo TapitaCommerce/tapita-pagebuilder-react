@@ -25,6 +25,10 @@ const changeShareURLToEmbedded = (shareURL) => {
 export const _YoutubeVideo = (props) => {
 	const { width, size, showControl, videoURL } = props;
 
+	if (!videoURL) {
+		return '';
+	}
+
 	return (
 		<iframe
 			height={size || '100%'}

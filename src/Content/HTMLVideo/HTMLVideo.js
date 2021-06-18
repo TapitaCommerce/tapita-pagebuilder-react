@@ -2,10 +2,7 @@ import React, { Fragment } from 'react';
 
 export const _HtmlVideo = (props) => {
 	const { width, size, showControl, imgCover, videoURL } = props;
-	
-	if (!videoURL) {
-		return '';
-	}
+
 	return (
 		<Fragment>
 			<video
