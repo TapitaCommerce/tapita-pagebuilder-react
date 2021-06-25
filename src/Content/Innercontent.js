@@ -3,6 +3,7 @@ import HtmlParser from 'react-html-parser';
 import { HtmlVideo } from './HTMLVideo/HTMLVideo';
 import { YoutubeVideo } from './YoutubeVideo/YoutubeVideo';
 import { LikeShareGeneric } from './LikeAndShare/LikeShare/LikeShareGeneric';
+import { icons } from './icons/icons.js'
 
 const Innercontent = (props) => {
 	const { item, ProductList, ProductGrid } = props;
@@ -13,9 +14,7 @@ const Innercontent = (props) => {
 	} else if (item.dataParsed) {
 		data = item.dataParsed;
 	}
-	if (item.type === 'button') {
-		return item.name ? item.name : 'Button Label';
-	} else if (item.type === 'text') {
+	if (item.type === 'text') {
 		return item.name ? item.name : 'Your Text Go Here';
 	} else if (item.type === 'image') {
 		if (data.image)
@@ -84,7 +83,9 @@ const Innercontent = (props) => {
 		return <LikeShareGeneric item={item} />;
 	} else if (item.type === 'custom_html') {
 		if (data.htmlContent) return HtmlParser(data.htmlContent);
-	}
+	} else if (item.type === 'icon') {
+		if (data.icon) return icons[data.icon]
+	} 
 	return '';
 };
 
