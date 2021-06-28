@@ -1,6 +1,7 @@
 import React from 'react';
 import Innercontent from './Innercontent';
 import { Carousel } from 'react-responsive-carousel';
+import Button from './Button';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { randomString, listToTree } from '../Helper/Data';
 import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
@@ -61,6 +62,9 @@ const PbContent = (props) => {
 					{isRtl ? children.reverse() : children}
 				</Carousel>
 			);
+		}
+		if (item.type === 'button') {
+			return <Button item={item}>{children.length ? children : ''}</Button>
 		}
 		return (
 			<React.Fragment>
