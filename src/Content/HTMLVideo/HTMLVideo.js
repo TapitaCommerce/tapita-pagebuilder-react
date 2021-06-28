@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 export const _HtmlVideo = (props) => {
 	const { width, size, showControl, imgCover, videoURL } = props;
+
 	return (
-		<>
+		<Fragment>
 			<video
 				width={width || size || '100%'}
 				height={size || '100%'}
@@ -13,7 +14,7 @@ export const _HtmlVideo = (props) => {
 				<source src={videoURL} />
 				Your browser does not support the video tag.
 			</video>
-		</>
+		</Fragment>
 	);
 };
 
