@@ -93,7 +93,7 @@ const getPbPageQuery = (getPageItems) => {
 };
 
 export const PageBuilderComponent = (props) => {
-	const { endPoint, maskedId, pageData, toPreview, ProductList, ProductGrid } =
+	const { endPoint, maskedId, pageData, toPreview, ProductList, ProductGrid, Category } =
 		props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items
@@ -213,6 +213,7 @@ export const PageBuilderComponent = (props) => {
 					data={data.data}
 					ProductList={ProductList}
 					ProductGrid={ProductGrid}
+                    Category={Category}
 				/>
 			</React.Fragment>
 		);

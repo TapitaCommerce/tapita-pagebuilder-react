@@ -6,7 +6,7 @@ import { LikeShareGeneric } from './LikeAndShare/LikeShare/LikeShareGeneric';
 import { icons } from './icons/icons.js'
 
 const Innercontent = (props) => {
-	const { item, ProductList, ProductGrid } = props;
+	const { item, ProductList, ProductGrid, Category } = props;
 	if (!item || !item.entity_id) return '';
 	let data = {};
 	if (item.data && typeof item.data === 'object') {
@@ -30,18 +30,8 @@ const Innercontent = (props) => {
 				/>
 			);
 	} else if (item.type === 'category') {
-		return (
-			<React.Fragment>
-				{data.image ? (
-					<img src={data.image} alt='pb img item' style={{ width: '100%' }} />
-				) : (
-					''
-				)}
-				{item.name && (
-					<div style={{ textAlign: 'center', marginTop: 10 }}>{item.name}</div>
-				)}
-			</React.Fragment>
-		);
+		if (Category) return <Category item={item} />;
+		else return '';
 	} else if (item.type === 'product_scroll') {
 		if (ProductList) return <ProductList item={item} />;
 		else return '';

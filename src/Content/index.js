@@ -11,6 +11,7 @@ const PbContent = (props) => {
 		data: { spb_item, spb_page },
 		ProductList,
 		ProductGrid,
+        Category,
 	} = props;
 	const deviceFilterKey = useDeviceWidthPrefix();
 	const pageData =
@@ -80,6 +81,7 @@ const PbContent = (props) => {
 					item={item}
 					ProductList={ProductList}
 					ProductGrid={ProductGrid}
+                    Category={Category}
 				/>
 				{children.length ? children : ''}
 			</React.Fragment>
