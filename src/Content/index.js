@@ -18,6 +18,14 @@ const PbContent = (props) => {
 	const isRtl = pageData && pageData.is_rtl;
 
 	const renderItem = (item, children) => {
+        if (item.dataParsed) {
+            if (deviceFilterKey === 'm_' && item.dataParsed.hideOnMobile)
+                return ''
+            else if (deviceFilterKey === 't_' && item.dataParsed.hideOnTablet)
+                return ''
+            else if (deviceFilterKey === 'l_' && item.dataParsed.hideOnDesktop)
+                return ''
+        }
 		const styles = prepareStyle(item);
 		const itemProps = {
 			key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,

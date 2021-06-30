@@ -266,7 +266,6 @@ export const usePbFinder = (props) => {
 				}
 				return item.url_path === pathToFind;
 			});
-			console.log(pageToFind);
 			if (pageToFind && pageToFind.masked_id) {
 				pageData = pageToFind;
 				pageMaskedId = pageToFind.masked_id;
