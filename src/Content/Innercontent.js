@@ -3,7 +3,7 @@ import HtmlParser from 'react-html-parser';
 import { HtmlVideo } from './HTMLVideo/HTMLVideo';
 import { YoutubeVideo } from './YoutubeVideo/YoutubeVideo';
 import { LikeShareGeneric } from './LikeAndShare/LikeShare/LikeShareGeneric';
-import { icons } from './icons/icons.js'
+import { icons } from './icons/icons.js';
 
 const Innercontent = (props) => {
 	const { item, ProductList, ProductGrid, Category } = props;
@@ -74,8 +74,8 @@ const Innercontent = (props) => {
 	} else if (item.type === 'custom_html') {
 		if (data.htmlContent) return HtmlParser(data.htmlContent);
 	} else if (item.type === 'icon') {
-		if (data.icon) return icons[data.icon]
-	} 
+		if (data.icon) return icons[data.icon];
+	}
 	return '';
 };
 

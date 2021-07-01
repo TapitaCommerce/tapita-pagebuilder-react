@@ -11,7 +11,7 @@ const PbContent = (props) => {
 		data: { spb_item, spb_page },
 		ProductList,
 		ProductGrid,
-        Category,
+		Category,
 	} = props;
 	const deviceFilterKey = useDeviceWidthPrefix();
 	const pageData =
@@ -19,14 +19,13 @@ const PbContent = (props) => {
 	const isRtl = pageData && pageData.is_rtl;
 
 	const renderItem = (item, children) => {
-        if (item.dataParsed) {
-            if (deviceFilterKey === 'm_' && item.dataParsed.hideOnMobile)
-                return ''
-            else if (deviceFilterKey === 't_' && item.dataParsed.hideOnTablet)
-                return ''
-            else if (deviceFilterKey === 'l_' && item.dataParsed.hideOnDesktop)
-                return ''
-        }
+		if (item.dataParsed) {
+			if (deviceFilterKey === 'm_' && item.dataParsed.hideOnMobile) return '';
+			else if (deviceFilterKey === 't_' && item.dataParsed.hideOnTablet)
+				return '';
+			else if (deviceFilterKey === 'l_' && item.dataParsed.hideOnDesktop)
+				return '';
+		}
 		const styles = prepareStyle(item);
 		const itemProps = {
 			key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
@@ -73,7 +72,7 @@ const PbContent = (props) => {
 			);
 		}
 		if (item.type === 'button') {
-			return <Button item={item}>{children.length ? children : ''}</Button>
+			return <Button item={item}>{children.length ? children : ''}</Button>;
 		}
 		return (
 			<React.Fragment>
@@ -81,7 +80,7 @@ const PbContent = (props) => {
 					item={item}
 					ProductList={ProductList}
 					ProductGrid={ProductGrid}
-                    Category={Category}
+					Category={Category}
 				/>
 				{children.length ? children : ''}
 			</React.Fragment>

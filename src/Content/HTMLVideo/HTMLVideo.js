@@ -6,8 +6,8 @@ export const _HtmlVideo = (props) => {
 	return (
 		<Fragment>
 			<video
-				width={width || size || '100%'}
-				height={size || '100%'}
+				width={size || width || '100%'}
+				height={size || 'auto'}
 				controls={showControl || false}
 				poster={imgCover || undefined}
 			>

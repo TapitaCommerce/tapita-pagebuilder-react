@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 
 const defaultVideoLink = 'OrzMIhLpVps';
 
@@ -24,21 +24,36 @@ const changeShareURLToEmbedded = (shareURL) => {
 
 export const _YoutubeVideo = (props) => {
 	const { width, size, showControl, videoURL } = props;
+	const [currentVideoHeight, setCurrentVideoHeight] = useState(null);
+	const containerRef = useRef(null);
+
+	useLayoutEffect(() => {
+		if (containerRef.current) {
+			const { width } = containerRef.current.getBoundingClientRect();
+			setCurrentVideoHeight((width * 2) / 3);
+		}
+	}, []);
 
 	if (!videoURL) {
 		return '';
 	}
 
 	return (
-		<iframe
-			height={size || '100%'}
-			width={width || size || '100%'}
-			allowFullScreen=''
-			frameBorder='0'
-			src={
-				changeShareURLToEmbedded(videoURL) + `?controls=${showControl ? 1 : 0}`
-			}
-		/>
+		<div
+			ref={containerRef}
+			className={`magic-yt-video-container-${size || width || '100%'}`}
+		>
+			<iframe
+				height={currentVideoHeight || size || 'auto'}
+				width={size || width || '100%'}
+				allowFullScreen=''
+				frameBorder='0'
+				src={
+					changeShareURLToEmbedded(videoURL) +
+					`?controls=${showControl ? 1 : 0}`
+				}
+			/>
+		</div>
 	);
 };
 

@@ -44,46 +44,92 @@ import { ReactComponent as LogoBehanceIcon } from './icons/logo-behance.svg';
 import { ReactComponent as LogoDribbbleIcon } from './icons/logo-dribbble.svg';
 
 export const icons = {
-	'star': <StarIcon width='100%' height='100%' fill="currentColor"/>,
-	'add': <AddIcon width='100%' height='100%' fill="currentColor"/>,
-	'bag-add': <BagAddIcon width='100%' height='100%' fill="currentColor"/>,
-	'bookmark': <BookmarkIcon width='100%' height='100%' fill="currentColor"/>,
-	'calendar': <CalendarIcon width='100%' height='100%' fill="currentColor"/>,
-	'information-circle': <InformationCircleIcon width='100%' height='100%' fill="currentColor"/>,
-	'person-add': <PersonAddIcon width='100%' height='100%' fill="currentColor"/>,
-	'person-remove': <PersonRemoveIcon width='100%' height='100%' fill="currentColor"/>,
-	'scan': <ScanIcon width='100%' height='100%' fill="currentColor"/>,
-	'sync': <SyncIcon width='100%' height='100%' fill="currentColor"/>,
-	'home': <HomeIcon width='100%' height='100%' fill="currentColor"/>,
-	'heart': <HeartIcon width='100%' height='100%' fill="currentColor"/>,
-	'close': <CloseIcon width='100%' height='100%' fill="currentColor"/>,
-	'cart': <CartIcon width='100%' height='100%' fill="currentColor"/>,
-	'code': <CodeIcon width='100%' height='100%' fill="currentColor"/>,
-	'checkmark': <CheckmarkIcon width='100%' height='100%' fill="currentColor"/>,
-	'fast-food': <FastFoodIcon width='100%' height='100%' fill="currentColor"/>,
-	'chatbox-ellipses': <ChatboxEllipsesIcon width='100%' height='100%' fill="currentColor"/>,
-	'chatbox': <ChatboxIcon width='100%' height='100%' fill="currentColor"/>,
-	'chatbubble-ellipses': <ChatbubbleEllipsesIcon width='100%' height='100%' fill="currentColor"/>,
-	'chatbubble': <ChatbubbleIcon width='100%' height='100%' fill="currentColor"/>,
-	'alert-circle': <AlertCircleIcon width='100%' height='100%' fill="currentColor"/>,
-	'ellipsis-horizontal': <EllipsisHorizontalIcon width='100%' height='100%' fill="currentColor"/>,
-	'document-attach': <DocumentAttachIcon width='100%' height='100%' fill="currentColor"/>,
-	'mail': <MailIcon width='100%' height='100%' fill="currentColor"/>,
-	'image': <ImageIcon width='100%' height='100%' fill="currentColor"/>,
-	'chevron-back': <ChevronBackIcon width='100%' height='100%' fill="currentColor"/>,
-	'chevron-forward': <ChevronForwardIcon width='100%' height='100%' fill="currentColor"/>,
-	'chevron-down': <ChevronDownIcon width='100%' height='100%' fill="currentColor"/>,
-	'chevron-up': <ChevronUpIcon width='100%' height='100%' fill="currentColor"/>,
-	'trash': <TrashIcon width='100%' height='100%' fill="currentColor"/>,
-	'logo-amazon': <LogoAmazonIcon width='100%' height='100%' fill="currentColor"/>,
-	'logo-android': <LogoAndroidIcon width='100%' height='100%' fill="currentColor"/>,
-	'logo-google-playstore': <LogoGooglePlaystoreIcon width='100%' height='100%' fill="currentColor"/>,
-	'logo-apple': <LogoAppleIcon width='100%' height='100%' fill="currentColor"/>,
-	'logo-apple-appstore': <LogoAppleAppstoreIcon width='100%' height='100%' fill="currentColor"/>,
-	'logo-microsoft': <LogoMicrosoftIcon width='100%' height='100%' fill="currentColor"/>,
-	'logo-facebook': <LogoFacebookIcon width='100%' height='100%' fill="currentColor"/>,
-	'logo-google': <LogoGoogleIcon width='100%' height='100%' fill="currentColor"/>,
-	'logo-instagram': <LogoInstagramIcon width='100%' height='100%' fill="currentColor"/>,
-	'logo-behance': <LogoBehanceIcon width='100%' height='100%' fill="currentColor"/>,
-	'logo-dribbble': <LogoDribbbleIcon width='100%' height='100%' fill="currentColor"/>,
-}
+	star: <StarIcon width='100%' height='100%' fill='currentColor' />,
+	add: <AddIcon width='100%' height='100%' fill='currentColor' />,
+	'bag-add': <BagAddIcon width='100%' height='100%' fill='currentColor' />,
+	bookmark: <BookmarkIcon width='100%' height='100%' fill='currentColor' />,
+	calendar: <CalendarIcon width='100%' height='100%' fill='currentColor' />,
+	'information-circle': (
+		<InformationCircleIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'person-add': (
+		<PersonAddIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'person-remove': (
+		<PersonRemoveIcon width='100%' height='100%' fill='currentColor' />
+	),
+	scan: <ScanIcon width='100%' height='100%' fill='currentColor' />,
+	sync: <SyncIcon width='100%' height='100%' fill='currentColor' />,
+	home: <HomeIcon width='100%' height='100%' fill='currentColor' />,
+	heart: <HeartIcon width='100%' height='100%' fill='currentColor' />,
+	close: <CloseIcon width='100%' height='100%' fill='currentColor' />,
+	cart: <CartIcon width='100%' height='100%' fill='currentColor' />,
+	code: <CodeIcon width='100%' height='100%' fill='currentColor' />,
+	checkmark: <CheckmarkIcon width='100%' height='100%' fill='currentColor' />,
+	'fast-food': <FastFoodIcon width='100%' height='100%' fill='currentColor' />,
+	'chatbox-ellipses': (
+		<ChatboxEllipsesIcon width='100%' height='100%' fill='currentColor' />
+	),
+	chatbox: <ChatboxIcon width='100%' height='100%' fill='currentColor' />,
+	'chatbubble-ellipses': (
+		<ChatbubbleEllipsesIcon width='100%' height='100%' fill='currentColor' />
+	),
+	chatbubble: <ChatbubbleIcon width='100%' height='100%' fill='currentColor' />,
+	'alert-circle': (
+		<AlertCircleIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'ellipsis-horizontal': (
+		<EllipsisHorizontalIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'document-attach': (
+		<DocumentAttachIcon width='100%' height='100%' fill='currentColor' />
+	),
+	mail: <MailIcon width='100%' height='100%' fill='currentColor' />,
+	image: <ImageIcon width='100%' height='100%' fill='currentColor' />,
+	'chevron-back': (
+		<ChevronBackIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'chevron-forward': (
+		<ChevronForwardIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'chevron-down': (
+		<ChevronDownIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'chevron-up': (
+		<ChevronUpIcon width='100%' height='100%' fill='currentColor' />
+	),
+	trash: <TrashIcon width='100%' height='100%' fill='currentColor' />,
+	'logo-amazon': (
+		<LogoAmazonIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'logo-android': (
+		<LogoAndroidIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'logo-google-playstore': (
+		<LogoGooglePlaystoreIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'logo-apple': (
+		<LogoAppleIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'logo-apple-appstore': (
+		<LogoAppleAppstoreIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'logo-microsoft': (
+		<LogoMicrosoftIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'logo-facebook': (
+		<LogoFacebookIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'logo-google': (
+		<LogoGoogleIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'logo-instagram': (
+		<LogoInstagramIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'logo-behance': (
+		<LogoBehanceIcon width='100%' height='100%' fill='currentColor' />
+	),
+	'logo-dribbble': (
+		<LogoDribbbleIcon width='100%' height='100%' fill='currentColor' />
+	),
+};
