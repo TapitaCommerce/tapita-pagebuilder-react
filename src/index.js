@@ -166,6 +166,7 @@ export const PageBuilderComponent = (props) => {
                                 background-repeat: no-repeat;
                                 background-position: top left;
                                 padding: 15px;
+                                box-sizing: border-box;
                             }
                             .spb-item-root {
                                 align-items: center;
@@ -174,6 +175,7 @@ export const PageBuilderComponent = (props) => {
 
                             .spb-item .type_slider {
                                 background-color: white;
+                                padding: 0;
                             }
 
                             .spb-item.type_button {

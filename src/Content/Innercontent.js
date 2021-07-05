@@ -6,7 +6,7 @@ import { LikeShareGeneric } from './LikeAndShare/LikeShare/LikeShareGeneric';
 import { icons } from './icons/icons.js';
 
 const Innercontent = (props) => {
-	const { item, ProductList, ProductGrid, Category } = props;
+	const { item, parent, ProductList, ProductGrid, Category } = props;
 	if (!item || !item.entity_id) return '';
 	let data = {};
 	if (item.data && typeof item.data === 'object') {
@@ -25,7 +25,11 @@ const Innercontent = (props) => {
 					title={(data.title !== undefined ? data.title : '') || ''}
 					style={{
 						width: data.width || '100%',
-						height: data.height || 'auto',
+						height: data.height || '100%',
+						objectFit:
+							item.stylesParsed && item.stylesParsed.objectFit
+								? item.stylesParsed.objectFit
+								: 'cover',
 					}}
 				/>
 			);
@@ -74,7 +78,7 @@ const Innercontent = (props) => {
 	} else if (item.type === 'custom_html') {
 		if (data.htmlContent) return HtmlParser(data.htmlContent);
 	} else if (item.type === 'icon') {
-		if (data.icon) return icons[data.icon];
+		if (data.icon && icons[data.icon]) return icons[data.icon];
 	}
 	return '';
 };

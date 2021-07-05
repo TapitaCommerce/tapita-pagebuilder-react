@@ -18,7 +18,7 @@ const PbContent = (props) => {
 		spb_page && spb_page.items && spb_page.items[0] ? spb_page.items[0] : false;
 	const isRtl = pageData && pageData.is_rtl;
 
-	const renderItem = (item, children) => {
+	const renderItem = (item, children, parent) => {
 		if (item.dataParsed) {
 			if (deviceFilterKey === 'm_' && item.dataParsed.hideOnMobile) return '';
 			else if (deviceFilterKey === 't_' && item.dataParsed.hideOnTablet)
@@ -26,7 +26,7 @@ const PbContent = (props) => {
 			else if (deviceFilterKey === 'l_' && item.dataParsed.hideOnDesktop)
 				return '';
 		}
-		const styles = prepareStyle(item);
+		const styles = prepareStyle(item, parent);
 		const itemProps = {
 			key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
 			style: styles,
@@ -40,10 +40,12 @@ const PbContent = (props) => {
 				if (elmnt && elmnt.length) elmnt[0].scrollIntoView();
 			};
 		}
-		return <div {...itemProps}>{renderInnerContent(item, children)}</div>;
+		return (
+			<div {...itemProps}>{renderInnerContent(item, children, parent)}</div>
+		);
 	};
 
-	const renderInnerContent = (item, children) => {
+	const renderInnerContent = (item, children, parent) => {
 		const dataParsed = item.dataParsed ? item.dataParsed : {};
 		if (item.type === 'slider') {
 			const slideSettings = {
@@ -78,6 +80,7 @@ const PbContent = (props) => {
 			<React.Fragment>
 				<Innercontent
 					item={item}
+					parent={parent}
 					ProductList={ProductList}
 					ProductGrid={ProductGrid}
 					Category={Category}
@@ -87,7 +90,7 @@ const PbContent = (props) => {
 		);
 	};
 
-	const prepareStyle = (item) => {
+	const prepareStyle = (item, parent) => {
 		const defaultStyles = {
 			display: 'flex',
 			flexDirection: 'column',
@@ -97,7 +100,7 @@ const PbContent = (props) => {
 		let style = defaultStyles;
 		if (item && item.stylesParsed) {
 			try {
-				const itemStyle = item.stylesParsed;
+				const itemStyle = JSON.parse(JSON.stringify(item.stylesParsed));
 				if (itemStyle.widthPercent) {
 					itemStyle.width = parseInt(itemStyle.widthPercent, 10) + '%';
 					delete itemStyle.widthPercent;
@@ -113,7 +116,9 @@ const PbContent = (props) => {
 					delete itemStyle.heightPixel;
 				}
 				style = { ...style, ...itemStyle };
-			} catch (err) {}
+			} catch (err) {
+				console.warn(err);
+			}
 
 			// add device styles
 			Object.keys(style).forEach((key) => {
@@ -122,6 +127,16 @@ const PbContent = (props) => {
 					style[styleKey] = style[key];
 				}
 			});
+		}
+		if (parent && parent.type === 'slider') {
+			const parentSliderHeight =
+				parent.stylesParsed &&
+				(parent.stylesParsed.heightPixel ||
+					parent.stylesParsed[deviceFilterKey + 'heightPixel']);
+			if (parentSliderHeight) {
+				style.height = parseInt(parentSliderHeight) + 'px';
+				//style.overflowY = 'hidden';
+			}
 		}
 		if (item && item.type !== 'image' && item.type !== 'category') {
 			if (item.dataParsed) {
@@ -141,12 +156,12 @@ const PbContent = (props) => {
     Recursive render
     */
 
-	const recursiveRender = (childrenArray) => {
+	const recursiveRender = (childrenArray, parent) => {
 		const returnedItems = [];
 		if (childrenArray) {
 			childrenArray.map((item) => {
-				const children = recursiveRender(item.children);
-				returnedItems.push(renderItem(item, children));
+				const children = recursiveRender(item.children, item);
+				returnedItems.push(renderItem(item, children, parent));
 				return null;
 			});
 		}
