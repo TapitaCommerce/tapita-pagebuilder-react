@@ -78,7 +78,7 @@ const Innercontent = (props) => {
 	} else if (item.type === 'custom_html') {
 		if (data.htmlContent) return HtmlParser(data.htmlContent);
 	} else if (item.type === 'icon') {
-		if (data.icon) return icons[data.icon];
+		if (data.icon && icons[data.icon]) return icons[data.icon];
 	}
 	return '';
 };
