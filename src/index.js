@@ -3,8 +3,6 @@ import { sendRequest } from './Network/GraphQl';
 import Content from './Content';
 import { Helmet } from 'react-helmet';
 
-let runCustomJSOnce = false;
-
 const PREVIEW_ITEM_QUERY = `
     query getPbItem($pageMaskedId: String) {
         spb_page(pageMaskedId: $pageMaskedId) {
@@ -140,14 +138,6 @@ export const PageBuilderComponent = (props) => {
 	) {
 		spgData = data.data.spb_page.items[0];
 	}
-	useEffect(() => {
-		if (spgData && spgData.status && spgData.custom_js && !runCustomJSOnce) {
-			try {
-				runCustomJSOnce = true;
-				eval(spgData.custom_js);
-			} catch (err) {}
-		}
-	}, [spgData]);
 
 	if (spgData && spgData.status) {
 		return (
@@ -190,6 +180,32 @@ export const PageBuilderComponent = (props) => {
                             .spb-item.type_image {
                                 padding: 0;
                             }
+
+                            h1, h2, h3, h4, h5, h6,
+                            .h1, .h2, .h3, .h4, .h5, .h6 {    
+                                margin-top: 0;
+                                margin-bottom: 0.5rem;
+                                font-weight: 500;
+                                line-height: 1.2;
+                            }
+                            h1, .h1 {
+                                font-size: 2.1875rem;
+                            }
+                            h2, .h2 {
+                                font-size: 1.75rem;
+                            }
+                            h3, .h3 {
+                                font-size: 1.53125rem;
+                            }
+                            h4, .h4 {
+                                font-size: 1.3125rem;
+                            }
+                            h5, .h5 {
+                                font-size: 1.09375rem;
+                            }
+                            h6, .h6 {
+                                font-size: 0.875rem;
+                            }
                         `,
 						},
 					]}
@@ -199,6 +215,18 @@ export const PageBuilderComponent = (props) => {
 						style={[
 							{
 								cssText: spgData.custom_css,
+							},
+						]}
+					/>
+				) : (
+					''
+				)}
+				{spgData && spgData.custom_js ? (
+					<Helmet
+						script={[
+							{
+								type: 'text/javascript',
+								innerHTML: spgData.custom_js,
 							},
 						]}
 					/>

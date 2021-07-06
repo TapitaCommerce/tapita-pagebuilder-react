@@ -15,7 +15,12 @@ const Innercontent = (props) => {
 		data = item.dataParsed;
 	}
 	if (item.type === 'text') {
-		return item.name ? item.name : 'Your Text Go Here';
+		const textValue = item.name ? item.name : 'Your Text Go Here';
+		if (item.dataParsed && item.dataParsed.textTag) {
+			const TextTag = item.dataParsed.textTag;
+			return <TextTag>{textValue}</TextTag>;
+		}
+		return textValue;
 	} else if (item.type === 'image') {
 		if (data.image)
 			return (
