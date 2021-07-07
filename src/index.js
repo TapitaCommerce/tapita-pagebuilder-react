@@ -158,6 +158,11 @@ export const PageBuilderComponent = (props) => {
                                 padding: 15px;
                                 box-sizing: border-box;
                             }
+
+                            .type_slider .carousel-root {
+                                max-width: 100%;
+                            }
+
                             .spb-item-root {
                                 align-items: center;
                                 padding: 0px;
