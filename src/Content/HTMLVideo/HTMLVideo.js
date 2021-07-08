@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-const NO_SUPPORT = 'Your browser does not support the video tag.'
+const NO_SUPPORT = 'Your browser does not support the video tag.';
 
 export const _HtmlVideo = (props) => {
 	const { width, size, showControl, imgCover, videoURL, formatMessage } = props;
@@ -14,7 +14,7 @@ export const _HtmlVideo = (props) => {
 				poster={imgCover || undefined}
 			>
 				<source src={videoURL} />
-				{formatMessage({val: NO_SUPPORT})}
+				{formatMessage({ val: NO_SUPPORT })}
 			</video>
 		</Fragment>
 	);

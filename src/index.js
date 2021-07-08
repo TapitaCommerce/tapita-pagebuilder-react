@@ -99,7 +99,7 @@ export const PageBuilderComponent = (props) => {
 		ProductList,
 		ProductGrid,
 		Category,
-		formatMessage
+		formatMessage,
 	} = props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items

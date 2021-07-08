@@ -5,7 +5,7 @@ const Button = (props) => {
 	const { icon_position } = item.dataParsed;
 	const hasIcon = !!item.children.length;
 
-	const buttonName = formatMessage({val:item.name || 'Button Label'})
+	const buttonName = formatMessage({ val: item.name || 'Button Label' });
 
 	return (
 		<div

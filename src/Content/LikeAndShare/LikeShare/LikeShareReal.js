@@ -58,7 +58,7 @@ const translateButtonDimension = (type) => {
 export const LikeShareReal = (props) => {
 	const { likeURL: url, appID, type = 1 } = props;
 	if (!url) {
-		return <div/>;
+		return <div />;
 	}
 
 	const encodedShareLink = encodeURIComponent(url);

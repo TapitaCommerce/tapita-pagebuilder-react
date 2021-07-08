@@ -12,7 +12,7 @@ const PbContent = (props) => {
 		ProductList,
 		ProductGrid,
 		Category,
-		formatMessage
+		formatMessage,
 	} = props;
 	const deviceFilterKey = useDeviceWidthPrefix();
 	const pageData =
@@ -75,7 +75,11 @@ const PbContent = (props) => {
 			);
 		}
 		if (item.type === 'button') {
-			return <Button item={item} formatMessage={formatMessage} >{children.length ? children : ''}</Button>;
+			return (
+				<Button item={item} formatMessage={formatMessage}>
+					{children.length ? children : ''}
+				</Button>
+			);
 		}
 		return (
 			<React.Fragment>
@@ -137,7 +141,7 @@ const PbContent = (props) => {
 					parent.stylesParsed[deviceFilterKey + 'heightPixel']);
 			if (parentSliderHeight) {
 				style.height = parseInt(parentSliderHeight) + 'px';
-				//style.overflowY = 'hidden';
+				// style.overflowY = 'hidden';
 			}
 		}
 		if (item && item.type !== 'image' && item.type !== 'category') {
