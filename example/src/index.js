@@ -6,12 +6,12 @@ import App from './App'
 import {IntlProvider} from "react-intl";
 
 
-const messagesInFrench = {
+const messagesInJP = {
 	fish:'sanaka',
 }
 
 ReactDOM.render(
-	<IntlProvider messages={messagesInFrench} locale="fr" defaultLocale="en">
+	<IntlProvider messages={messagesInJP} locale="fr" defaultLocale="en">
 		<App />
 	</IntlProvider>
 	, document.getElementById('root'))

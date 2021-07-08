@@ -99,13 +99,23 @@ export const PageBuilderComponent = (props) => {
 		ProductList,
 		ProductGrid,
 		Category,
-		formatMessage,
+		formatMessage: _formatMessage,
 	} = props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items
 			? { data: { spb_page: { items: [pageData] } } }
 			: false,
 	);
+
+	const formatMessage = ({ id, val, defaultMessage }) => {
+		const msg = id || val || defaultMessage;
+		if (!_formatMessage || !msg) {
+			return val;
+		} else {
+			return _formatMessage({ id: msg, defaultMessage: val });
+		}
+	};
+
 	if (!data) {
 		sendRequest(
 			endPoint,
