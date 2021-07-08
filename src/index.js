@@ -99,6 +99,7 @@ export const PageBuilderComponent = (props) => {
 		ProductList,
 		ProductGrid,
 		Category,
+		formatMessage
 	} = props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items
@@ -187,7 +188,7 @@ export const PageBuilderComponent = (props) => {
                             }
 
                             h1, h2, h3, h4, h5, h6,
-                            .h1, .h2, .h3, .h4, .h5, .h6 {    
+                            .h1, .h2, .h3, .h4, .h5, .h6 {
                                 margin-top: 0;
                                 margin-bottom: 0.5rem;
                                 font-weight: 500;
@@ -256,6 +257,7 @@ export const PageBuilderComponent = (props) => {
 					ProductList={ProductList}
 					ProductGrid={ProductGrid}
 					Category={Category}
+					formatMessage={formatMessage}
 				/>
 			</React.Fragment>
 		);
