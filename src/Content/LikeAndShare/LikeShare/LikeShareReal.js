@@ -1,16 +1,16 @@
 import React from 'react';
 
-const DEFAULT_WIDTH_1 = 129;
-const DEFAULT_HEIGHT_1 = 28;
+const DEFAULT_WIDTH_1 = 131;
+const DEFAULT_HEIGHT_1 = 30;
 
-const DEFAULT_WIDTH_2 = 165;
-const DEFAULT_HEIGHT_2 = 28;
+const DEFAULT_WIDTH_2 = 168;
+const DEFAULT_HEIGHT_2 = 30;
 
-const DEFAULT_WIDTH_3 = 67;
-const DEFAULT_HEIGHT_3 = 90;
+const DEFAULT_WIDTH_3 = 76;
+const DEFAULT_HEIGHT_3 = 93;
 
-const DEFAULT_WIDTH_4 = 400;
-const DEFAULT_HEIGHT_4 = 28;
+const DEFAULT_WIDTH_4 = 403;
+const DEFAULT_HEIGHT_4 = 31;
 
 const translateButtonType = (type) => {
 	if (type === 1) {
@@ -58,7 +58,7 @@ const translateButtonDimension = (type) => {
 export const LikeShareReal = (props) => {
 	const { likeURL: url, appID, type = 1 } = props;
 	if (!url) {
-		return <h3>Nothing here</h3>;
+		return <div />;
 	}
 
 	const encodedShareLink = encodeURIComponent(url);

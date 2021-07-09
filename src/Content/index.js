@@ -12,6 +12,7 @@ const PbContent = (props) => {
 		ProductList,
 		ProductGrid,
 		Category,
+		formatMessage,
 	} = props;
 	const deviceFilterKey = useDeviceWidthPrefix();
 	const pageData =
@@ -77,7 +78,11 @@ const PbContent = (props) => {
 			);
 		}
 		if (item.type === 'button') {
-			return <Button item={item}>{children.length ? children : ''}</Button>;
+			return (
+				<Button item={item} formatMessage={formatMessage}>
+					{children.length ? children : ''}
+				</Button>
+			);
 		}
 		return (
 			<React.Fragment>
@@ -87,6 +92,7 @@ const PbContent = (props) => {
 					ProductList={ProductList}
 					ProductGrid={ProductGrid}
 					Category={Category}
+					formatMessage={formatMessage}
 				/>
 				{children.length ? children : ''}
 			</React.Fragment>

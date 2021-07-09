@@ -1,5 +1,6 @@
 import React from 'react'
 import { PageBuilderComponent } from 'simi-pagebuilder-react'
+import { useIntl } from "react-intl";
 
 const get = (name) => {
     let exist = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(window.location.search);
@@ -10,8 +11,10 @@ const get = (name) => {
 const App = () => {
     let endPoint = get('endPoint');
     let maskedId = get('maskedId');
+
+    const {formatMessage} = useIntl()
     if (endPoint && maskedId) {
-        return <PageBuilderComponent endPoint={endPoint} maskedId={maskedId} toPreview={true} />
+        return <PageBuilderComponent endPoint={endPoint} maskedId={maskedId} toPreview={true} formatMessage={formatMessage} />
     }
     return (
         <form onSubmit={e => {

@@ -23,7 +23,7 @@ const changeShareURLToEmbedded = (shareURL) => {
 };
 
 export const _YoutubeVideo = (props) => {
-	const { width, size, showControl, videoURL } = props;
+	const { width, size, showControl, videoURL, formatMessage } = props;
 	const [currentVideoHeight, setCurrentVideoHeight] = useState(null);
 	const containerRef = useRef(null);
 

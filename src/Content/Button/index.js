@@ -1,9 +1,11 @@
 import React from 'react';
 
 const Button = (props) => {
-	const { item } = props;
+	const { item, formatMessage } = props;
 	const { icon_position } = item.dataParsed;
 	const hasIcon = !!item.children.length;
+
+	const buttonName = formatMessage({ val: item.name || 'Button Label' });
 
 	return (
 		<div
@@ -27,7 +29,7 @@ const Button = (props) => {
 									: '',
 				}}
 			>
-				{item.name || 'Button Label'}
+				{buttonName}
 			</span>
 			{icon_position === 'right' && props.children}
 		</div>

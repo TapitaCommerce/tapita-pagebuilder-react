@@ -8,10 +8,10 @@ export const randomString = (charCount = 20) => {
 };
 
 export const listToTree = (list) => {
-	var map = {};
-	var node;
-	var roots = [];
-	var i;
+	const map = {};
+	let node;
+	const roots = [];
+	let i;
 
 	for (i = 0; i < list.length; i += 1) {
 		map[list[i].entity_id] = i;
