@@ -23,8 +23,8 @@ const Button = (props) => {
 							: hasIcon && icon_position === 'right'
 								? '0 5px 0 0'
 								: hasIcon
-							? '5px 0 0 0'
-							: '',
+									? '5px 0 0 0'
+									: '',
 				}}
 			>
 				{item.name || 'Button Label'}

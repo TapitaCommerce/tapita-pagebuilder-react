@@ -35,10 +35,13 @@ const PbContent = (props) => {
 			} ${'type_' + item.type}`,
 		};
 		if (item.dataParsed && item.dataParsed.scrollTo) {
-			itemProps.onClick = (e) => {
+			itemProps.onClick = () => {
 				var elmnt = document.getElementsByClassName(item.dataParsed.scrollTo);
 				if (elmnt && elmnt.length) elmnt[0].scrollIntoView();
 			};
+		}
+		if (item.dataParsed && item.dataParsed.openUrl) {
+			itemProps.onClick = () => window.open(item.dataParsed.openUrl, '_blank');
 		}
 		return (
 			<div {...itemProps}>{renderInnerContent(item, children, parent)}</div>
@@ -135,7 +138,7 @@ const PbContent = (props) => {
 					parent.stylesParsed[deviceFilterKey + 'heightPixel']);
 			if (parentSliderHeight) {
 				style.height = parseInt(parentSliderHeight) + 'px';
-				//style.overflowY = 'hidden';
+				// style.overflowY = 'hidden';
 			}
 		}
 		if (item && item.type !== 'image' && item.type !== 'category') {
