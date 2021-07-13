@@ -39,21 +39,21 @@ export const _YoutubeVideo = (props) => {
 	}
 
 	return (
-		<div
-			ref={containerRef}
-			className={`magic-yt-video-container-${size || width || '100%'}`}
-		>
-			<iframe
-				height={currentVideoHeight || size || 'auto'}
-				width={size || width || '100%'}
-				allowFullScreen=''
-				frameBorder='0'
-				src={
-					changeShareURLToEmbedded(videoURL) +
-					`?controls=${showControl ? 1 : 0}`
-				}
-			/>
-		</div>
+		<React.Fragment>
+			<div className={`magic-yt-video-container-${size || width || '100%'}`}>
+				<iframe
+					height={currentVideoHeight || size || 'auto'}
+					width={size || width || '100%'}
+					allowFullScreen=''
+					frameBorder='0'
+					src={
+						changeShareURLToEmbedded(videoURL) +
+						`?controls=${showControl ? 1 : 0}`
+					}
+					ref={containerRef}
+				/>
+			</div>
+		</React.Fragment>
 	);
 };
 
