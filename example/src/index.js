@@ -8,6 +8,8 @@ import {IntlProvider} from "react-intl";
 
 const messagesInJP = {
 	fish:'sanaka',
+    Image: 'Gazō',
+    'Your Text Go Here': 'Your Text Go Here',
 }
 
 ReactDOM.render(
