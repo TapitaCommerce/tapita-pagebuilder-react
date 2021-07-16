@@ -35,17 +35,30 @@ const PbContent = (props) => {
 				item.class_name
 			} ${'type_' + item.type}`,
 		};
-		if (item.dataParsed && item.dataParsed.scrollTo) {
+		if (item.dataParsed?.scrollTo) {
 			itemProps.onClick = () => {
 				var elmnt = document.getElementsByClassName(item.dataParsed.scrollTo);
 				if (elmnt && elmnt.length) elmnt[0].scrollIntoView();
 			};
 		}
-		if (item.dataParsed && item.dataParsed.openUrl) {
-			itemProps.onClick = () => window.open(item.dataParsed.openUrl, '_blank');
-		}
 		return (
-			<div {...itemProps}>{renderInnerContent(item, children, parent)}</div>
+			<div {...itemProps}>
+				{item.dataParsed?.openUrl && (
+					<a href={item.dataParsed?.openUrl} rel='noreferrer' target='_blank'>
+						<span
+							style={{
+								height: '100%',
+								width: '100%',
+								left: 0,
+								top: 0,
+								position: 'absolute',
+								zIndex: 1,
+							}}
+						/>
+					</a>
+				)}
+				{renderInnerContent(item, children, parent)}
+			</div>
 		);
 	};
 
