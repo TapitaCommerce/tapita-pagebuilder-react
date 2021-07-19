@@ -5,6 +5,9 @@ import { YoutubeVideo } from './YoutubeVideo/YoutubeVideo';
 import { LikeShareGeneric } from './LikeAndShare/LikeShare/LikeShareGeneric';
 import { icons } from './icons/icons.js';
 
+export const customIconDefKey = 'is-custom-icon';
+export const customIcon = 'custom-icon';
+
 const Innercontent = (props) => {
 	const { item, parent, ProductList, ProductGrid, Category, formatMessage } =
 		props;
@@ -109,8 +112,12 @@ const Innercontent = (props) => {
 				transform: HTMLTransform,
 			});
 	} else if (item.type === 'icon') {
-		if (data.icon && icons[data.icon]) return icons[data.icon];
-	}
+		const shouldUseCustomIcon = data[customIconDefKey];
+		const customIconValue = data[customIcon] || '';
+		if (shouldUseCustomIcon) {
+			return <i className={customIconValue} />;
+		}
+		if (data.icon && icons[data.icon]) return icons[data.icon];	}
 	return '';
 };
 
