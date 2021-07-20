@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import HtmlParser from 'react-html-parser';
 import { HtmlVideo } from './HTMLVideo/HTMLVideo';
 import { YoutubeVideo } from './YoutubeVideo/YoutubeVideo';
 import { LikeShareGeneric } from './LikeAndShare/LikeShare/LikeShareGeneric';
 import { icons } from './icons/icons.js';
+import { randomString } from '../Helper/Data';
 
 export const customIconDefKey = 'is-custom-icon';
 export const customIcon = 'custom-icon';
@@ -11,6 +12,8 @@ export const customIcon = 'custom-icon';
 const Innercontent = (props) => {
 	const { item, parent, ProductList, ProductGrid, Category, formatMessage } =
 		props;
+	const backUpName = useRef(randomString(5)).current;
+
 	if (!item || !item.entity_id) return '';
 	let data = {};
 	if (item.data && typeof item.data === 'object') {
@@ -18,12 +21,15 @@ const Innercontent = (props) => {
 	} else if (item.dataParsed) {
 		data = item.dataParsed;
 	}
+	const styles = item.stylesParsed || {};
 
 	const HTMLTransform = (node) => {
 		if (node.type === 'text') {
 			return formatMessage({ val: node.data });
 		}
 	};
+	const dataParsed = item.dataParsed || {};
+	const nameSpace = dataParsed.name || backUpName;
 
 	if (item.type === 'text') {
 		const textValue = item.name ? item.name : 'Your Text Go Here';
@@ -117,7 +123,59 @@ const Innercontent = (props) => {
 		if (shouldUseCustomIcon) {
 			return <i className={customIconValue} />;
 		}
-		if (data.icon && icons[data.icon]) return icons[data.icon];	}
+		if (data.icon && icons[data.icon]) return icons[data.icon];
+	} else if (item.type === 'text_input') {
+		const placeholder = data ? data.placeholder : '';
+		const applicableStyleAttr = [
+			'padding',
+			'paddingTop',
+			'paddingBottom',
+			'paddingLeft',
+			'paddingRight',
+			'fontWeight',
+			'fontSize',
+			'lineHeight',
+			'color',
+			'fontFamily',
+			'width',
+			'height',
+			'widthPixel',
+			'heightPixel',
+			'maxWidth',
+			'maxHeight',
+			'minWidth',
+			'minHeight',
+		];
+		// padding for input behave differently from others,
+		// so the above style can not be used in outer container
+
+		const miniStyle = Object.entries(styles)
+			.filter(([k, v]) => {
+				return applicableStyleAttr.includes(k);
+			})
+			.reduce((acc, [k, v]) => {
+				acc[k] = v;
+				return acc;
+			}, {});
+
+		if (miniStyle.widthPixel !== undefined) {
+			miniStyle.width = miniStyle.widthPixel;
+		}
+		if (miniStyle.heightPixel !== undefined) {
+			miniStyle.height = miniStyle.heightPixel;
+		}
+
+		return (
+			<div>
+				<input
+					type='text'
+					placeholder={placeholder}
+					style={miniStyle}
+					name={nameSpace}
+				/>
+			</div>
+		);
+	}
 	return '';
 };
 
