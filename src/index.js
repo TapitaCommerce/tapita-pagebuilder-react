@@ -158,7 +158,6 @@ export const PageBuilderComponent = (props) => {
 						{
 							cssText: `
                             .spb-item {
-                                background-color: white;
                                 overflow: auto;
                                 transition: transform 0.3s ease;
                                 position: relative;

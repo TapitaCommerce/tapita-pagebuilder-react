@@ -1,0 +1,15 @@
+.container {
+	background: #419be0;
+}
+
+.slick-slide img {
+	/*margin: auto;*/
+}
+
+.partial-slider-container {
+	max-width: 100%;
+	overflow: visible;
+	/*margin-bottom: 10px;*/
+}
+
+

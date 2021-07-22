@@ -5,6 +5,12 @@ import Button from './Button';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { randomString, listToTree } from '../Helper/Data';
 import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
+import { PartialSlider } from './PartialSlider/PartialSlider';
+
+export const buttonTypeFieldName = 'button-type';
+
+export const formSubmitMethod = 'form-submit-method';
+export const formSubmitTarget = 'form-submit-url';
 
 const PbContent = (props) => {
 	const {
@@ -27,7 +33,49 @@ const PbContent = (props) => {
 			else if (deviceFilterKey === 'l_' && item.dataParsed.hideOnDesktop)
 				return '';
 		}
-		const styles = prepareStyle(item, parent);
+		const itemType = item.type;
+		const shouldNotHavePadding = itemType === 'text_input';
+		const _styles = prepareStyle(item, parent);
+		const paddingAttrKey = [
+			'padding',
+			'paddingTop',
+			'paddingBottom',
+			'paddingLeft',
+			'paddingRight',
+			'fontWeight',
+			'fontSize',
+			'lineHeight',
+			'color',
+			'fontFamily',
+			'width',
+			'height',
+			'widthPixel',
+			'heightPixel',
+			'maxWidth',
+			'maxHeight',
+			'minWidth',
+			'minHeight',
+		];
+		const _stylesWithoutPadding = Object.entries(_styles)
+			.filter(([k, v]) => {
+				return !paddingAttrKey.includes(k);
+			})
+			.reduce((acc, [k, v]) => {
+				acc[k] = v;
+				return acc;
+			}, {});
+
+		_stylesWithoutPadding.padding = '0px'; // override default
+		_stylesWithoutPadding.borderRadius = '0px'; // override default
+
+		const finalStyle = shouldNotHavePadding ? _stylesWithoutPadding : _styles;
+
+		const styles = finalStyle;
+
+		if (styles.display && itemType === 'slider_1') {
+			styles.display = 'block';
+		}
+
 		const itemProps = {
 			key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
 			style: styles,
@@ -35,12 +83,42 @@ const PbContent = (props) => {
 				item.class_name
 			} ${'type_' + item.type}`,
 		};
-		if (item.dataParsed?.scrollTo) {
+		if (item.dataParsed && item.dataParsed.scrollTo) {
 			itemProps.onClick = () => {
-				var elmnt = document.getElementsByClassName(item.dataParsed.scrollTo);
+				const elmnt = document.getElementsByClassName(item.dataParsed.scrollTo);
 				if (elmnt && elmnt.length) elmnt[0].scrollIntoView();
 			};
 		}
+		if (item.dataParsed && item.dataParsed.openUrl) {
+			itemProps.onClick = () => window.open(item.dataParsed.openUrl, '_blank');
+		}
+		if (item.type === 'form_group') {
+			const formMethod = item.dataParsed[formSubmitMethod] || 'GET';
+			const formURL = item.dataParsed[formSubmitTarget] || '';
+			return (
+				<form
+					className='form-builder-artifact'
+					action={formURL}
+					method={formMethod}
+				>
+					<div {...itemProps}>{renderInnerContent(item, children, parent)}</div>
+				</form>
+			);
+		}
+		if (item.type === 'button' || item.type === 'form_button') {
+			const buttonType = item.dataParsed
+				? item.dataParsed[buttonTypeFieldName]
+				: 'button';
+
+			return (
+				<button type={buttonType} {...itemProps}>
+					<Button item={item} formatMessage={formatMessage}>
+						{children.length ? children : ''}
+					</Button>
+				</button>
+			);
+		}
+
 		return (
 			<div {...itemProps}>
 				{item.dataParsed?.openUrl && (
@@ -90,13 +168,14 @@ const PbContent = (props) => {
 				</Carousel>
 			);
 		}
-		if (item.type === 'button') {
+		if (item.type === 'button' || item.type === 'form_button') {
 			return (
 				<Button item={item} formatMessage={formatMessage}>
 					{children.length ? children : ''}
 				</Button>
 			);
 		}
+
 		return (
 			<React.Fragment>
 				<Innercontent
@@ -107,7 +186,12 @@ const PbContent = (props) => {
 					Category={Category}
 					formatMessage={formatMessage}
 				/>
-				{children.length ? children : ''}
+				{children.length && item.type !== 'slider_1' ? children : ''}
+				{item.type === 'slider_1' && (
+					<PartialSlider item={item} isRtl={isRtl}>
+						{children}
+					</PartialSlider>
+				)}
 			</React.Fragment>
 		);
 	};
