@@ -24,6 +24,8 @@ const Innercontent = (props) => {
 	const styles = item.stylesParsed || {};
 
 	const HTMLTransform = (node) => {
+		// comment out the line below to translate paragraph
+		return node.data;
 		if (node.type === 'text') {
 			return formatMessage({ val: node.data });
 		}
@@ -36,13 +38,30 @@ const Innercontent = (props) => {
 		const translatedText = formatMessage({ val: textValue });
 		if (item.dataParsed && item.dataParsed.textTag) {
 			const TextTag = item.dataParsed.textTag;
-			return <TextTag>{translatedText}</TextTag>;
+			const textStyle = {};
+			const {
+				stylesParsed: {
+					fontSize,
+					fontStyle,
+					textDecoration,
+					fontWeight,
+					fontFamily,
+					lineHeight,
+				},
+			} = item;
+			if (fontSize) textStyle.fontSize = fontSize;
+			if (fontStyle) textStyle.fontStyle = fontStyle;
+			if (textDecoration) textStyle.textDecoration = textDecoration;
+			if (fontWeight) textStyle.fontWeight = fontWeight;
+			if (fontFamily) textStyle.fontFamily = fontFamily;
+			if (lineHeight) textStyle.lineHeight = lineHeight;
+			return <TextTag style={textStyle}>{translatedText}</TextTag>;
 		}
 		return translatedText;
 	} else if (item.type === 'image') {
 		if (data.image) {
 			const alt = formatMessage({
-				val: (data.alt !== undefined ? data.alt : 'pb img item') || '',
+				val: (data.alt !== undefined ? data.alt : 'Image') || '',
 			});
 			const title = formatMessage({
 				val: (data.title !== undefined ? data.title : '') || '',
