@@ -1,5 +1,6 @@
 import React from 'react'
 import { PageBuilderComponent } from 'simi-pagebuilder-react'
+import 'simi-pagebuilder-react/dist/index.css'
 import { useIntl } from "react-intl";
 
 const get = (name) => {

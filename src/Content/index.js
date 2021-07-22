@@ -5,6 +5,7 @@ import Button from './Button';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { randomString, listToTree } from '../Helper/Data';
 import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
+import { PartialSlider } from './PartialSlider/PartialSlider';
 
 export const buttonTypeFieldName = 'button-type';
 
@@ -70,6 +71,10 @@ const PbContent = (props) => {
 		const finalStyle = shouldNotHavePadding ? _stylesWithoutPadding : _styles;
 
 		const styles = finalStyle;
+
+		if (styles.display && itemType === 'slider_1') {
+			styles.display = 'block';
+		}
 
 		const itemProps = {
 			key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
@@ -165,7 +170,12 @@ const PbContent = (props) => {
 					Category={Category}
 					formatMessage={formatMessage}
 				/>
-				{children.length ? children : ''}
+				{children.length && item.type !== 'slider_1' ? children : ''}
+				{item.type === 'slider_1' && (
+					<PartialSlider item={item} isRtl={isRtl}>
+						{children}
+					</PartialSlider>
+				)}
 			</React.Fragment>
 		);
 	};
