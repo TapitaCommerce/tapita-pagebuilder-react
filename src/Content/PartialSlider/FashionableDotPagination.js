@@ -1,5 +1,4 @@
 import React from 'react';
-import './FashionableDot.css';
 
 export const SimpleDot = (props) => {
 	return (
