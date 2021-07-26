@@ -5,6 +5,10 @@ const NO_SUPPORT = 'Your browser does not support the video tag.';
 export const _HtmlVideo = (props) => {
 	const { width, size, showControl, imgCover, videoURL, formatMessage } = props;
 
+	if (!videoURL) {
+		return '';
+	}
+
 	return (
 		<Fragment>
 			<video
