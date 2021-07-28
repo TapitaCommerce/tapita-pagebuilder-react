@@ -19,6 +19,8 @@ const PbContent = (props) => {
 		ProductGrid,
 		Category,
 		formatMessage,
+		ProductScroll,
+		CategoryScroll,
 	} = props;
 	const deviceFilterKey = useDeviceWidthPrefix();
 	const pageData =
@@ -181,10 +183,12 @@ const PbContent = (props) => {
 				<Innercontent
 					item={item}
 					parent={parent}
+					formatMessage={formatMessage}
 					ProductList={ProductList}
 					ProductGrid={ProductGrid}
 					Category={Category}
-					formatMessage={formatMessage}
+					ProductScroll={ProductScroll}
+					CategoryScroll={CategoryScroll}
 				/>
 				{children.length && item.type !== 'slider_1' ? children : ''}
 				{item.type === 'slider_1' && (

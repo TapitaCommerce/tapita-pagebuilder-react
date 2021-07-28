@@ -10,8 +10,17 @@ export const customIconDefKey = 'is-custom-icon';
 export const customIcon = 'custom-icon';
 
 const Innercontent = (props) => {
-	const { item, parent, ProductList, ProductGrid, Category, formatMessage } =
-		props;
+	const {
+		item,
+		parent,
+		ProductList,
+		ProductGrid,
+		Category,
+		formatMessage,
+		ProductScroll,
+		CategoryScroll,
+	} = props;
+
 	const backUpName = useRef(randomString(5)).current;
 
 	if (!item || !item.entity_id) return '';
@@ -92,6 +101,14 @@ const Innercontent = (props) => {
 	} else if (item.type === 'product_grid') {
 		if (ProductGrid)
 			return <ProductGrid item={item} formatMessage={formatMessage} />;
+		else return '';
+	} else if (item.type === 'category_scroll_1') {
+		if (ProductScroll)
+			return <ProductScroll item={item} formatMessage={formatMessage} />;
+		else return '';
+	} else if (item.type === 'product_scroll_1') {
+		if (CategoryScroll)
+			return <CategoryScroll item={item} formatMessage={formatMessage} />;
 		else return '';
 	} else if (item.type === 'paragraph') {
 		if (data.paragraphContent)
