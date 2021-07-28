@@ -14,7 +14,7 @@ const App = () => {
 
     const {formatMessage} = useIntl()
     if (endPoint && maskedId) {
-        return <PageBuilderComponent endPoint={endPoint} maskedId={maskedId} toPreview={true} formatMessage={formatMessage} />
+        return <PageBuilderComponent endPoint={endPoint} maskedId={maskedId} toPreview={true} formatMessage={formatMessage}/>
     }
     return (
         <form onSubmit={e => {

@@ -102,11 +102,11 @@ const Innercontent = (props) => {
 		if (ProductGrid)
 			return <ProductGrid item={item} formatMessage={formatMessage} />;
 		else return '';
-	} else if (item.type === 'category_scroll_1') {
+	} else if (item.type === 'product_scroll_1') {
 		if (ProductScroll)
 			return <ProductScroll item={item} formatMessage={formatMessage} />;
 		else return '';
-	} else if (item.type === 'product_scroll_1') {
+	} else if (item.type === 'category_scroll_1') {
 		if (CategoryScroll)
 			return <CategoryScroll item={item} formatMessage={formatMessage} />;
 		else return '';
