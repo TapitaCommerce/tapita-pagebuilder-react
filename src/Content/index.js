@@ -38,7 +38,7 @@ const PbContent = (props) => {
 		const itemType = item.type;
 		const shouldNotHavePadding = itemType === 'text_input';
 		const _styles = prepareStyle(item, parent);
-		const paddingAttrKey = [
+		const passingAttrKeys = [
 			'padding',
 			'paddingTop',
 			'paddingBottom',
@@ -60,7 +60,7 @@ const PbContent = (props) => {
 		];
 		const _stylesWithoutPadding = Object.entries(_styles)
 			.filter(([k, v]) => {
-				return !paddingAttrKey.includes(k);
+				return !passingAttrKeys.includes(k);
 			})
 			.reduce((acc, [k, v]) => {
 				acc[k] = v;
@@ -76,6 +76,27 @@ const PbContent = (props) => {
 
 		if (styles.display && itemType === 'slider_1') {
 			styles.display = 'block';
+		}
+
+		if (item.type === 'tabs') {
+			styles.display = 'flex';
+			styles.direction = 'ltr';
+			if (item.dataParsed) {
+				switch (item.dataParsed.tabTitleNavPos) {
+					case 'left':
+						styles.flexFlow = 'row';
+						break;
+					case 'right':
+						styles.flexFlow = 'row-reverse';
+						break;
+					case 'bottom':
+						styles.flexFlow = 'column-reverse';
+						break;
+					default:
+						styles.flexFlow = 'column';
+						break;
+				}
+			}
 		}
 
 		const itemProps = {

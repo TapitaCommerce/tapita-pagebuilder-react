@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import HtmlParser from 'react-html-parser';
 import { HtmlVideo } from './HTMLVideo/HTMLVideo';
 import { YoutubeVideo } from './YoutubeVideo/YoutubeVideo';
+import { Tab } from './Tab';
 import { LikeShareGeneric } from './LikeAndShare/LikeShare/LikeShareGeneric';
 import { icons } from './icons/icons.js';
 import { randomString } from '../Helper/Data';
@@ -67,6 +68,8 @@ const Innercontent = (props) => {
 			return <TextTag style={textStyle}>{translatedText}</TextTag>;
 		}
 		return translatedText;
+	} else if (item.type === 'tabs') {
+		return <Tab item={item} />;
 	} else if (item.type === 'image') {
 		if (data.image) {
 			const alt = formatMessage({
