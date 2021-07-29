@@ -6,6 +6,7 @@ import { Tab } from './Tab';
 import { LikeShareGeneric } from './LikeAndShare/LikeShare/LikeShareGeneric';
 import { icons } from './icons/icons.js';
 import { randomString } from '../Helper/Data';
+import { Dropdown } from './Dropdown';
 
 export const customIconDefKey = 'is-custom-icon';
 export const customIcon = 'custom-icon';
@@ -70,6 +71,8 @@ const Innercontent = (props) => {
 		return translatedText;
 	} else if (item.type === 'tabs') {
 		return <Tab item={item} />;
+	} else if (item.type === 'dropdown') {
+		return <Dropdown item={item} formatMessage={formatMessage} />;
 	} else if (item.type === 'image') {
 		if (data.image) {
 			const alt = formatMessage({
