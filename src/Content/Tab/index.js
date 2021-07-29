@@ -49,7 +49,7 @@ export const Tab = (props) => {
 						cssText: `
                             .spb-item.type_tabs .spbitem-tab-nav {
                                 direction: ltr;
-                                padding: 5px 15px;
+                                padding: 0px 15px;
                                 display: flex;
                                 justify-content: center;
                             }
@@ -60,11 +60,12 @@ export const Tab = (props) => {
 
                             .spb-item.type_tabs .spbitem-tab-nav .spbitem-tab-nav-item {
                                 cursor: pointer;
-                                margin-inline-end: 15px;
+                                margin-inline-end: 10px;
                                 padding: 10px 15px;
                             }
                             .spb-item.type_tabs .spbitem-tab-nav .spbitem-tab-nav-item.active {
-			                    background-color: rgb(255, 234, 224);
+                                background-color: #ffffff;
+                                font-weight: 600;
                             }
 
                             .spb-item.type_tabs .spbitem-tab-nav.vertical {
