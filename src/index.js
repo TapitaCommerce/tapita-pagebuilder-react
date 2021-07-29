@@ -188,6 +188,8 @@ export const PageBuilderComponent = (props) => {
                             .spb-item.type_button {
                                 padding: 10px 20px;
                                 cursor: pointer;
+                                border: none;
+                                background-color: #ffffff;
                             }
                             
                             .spb-item.type_button:hover {

@@ -112,8 +112,13 @@ const PbContent = (props) => {
 				if (elmnt && elmnt.length) elmnt[0].scrollIntoView();
 			};
 		}
-		if (item.dataParsed && item.dataParsed.openUrl) {
-			itemProps.onClick = () => window.open(item.dataParsed.openUrl, '_blank');
+		if (item.dataParsed && item.dataParsed.openUrl && item.type !== 'text') {
+			const openOnCurrentPage = item.dataParsed.openUrl.indexOf('http') === -1;
+			itemProps.onClick = () =>
+				window.open(
+					item.dataParsed.openUrl,
+					openOnCurrentPage ? '_self' : '_blank',
+				);
 		}
 		if (item.type === 'form_group') {
 			const formMethod = item.dataParsed[formSubmitMethod] || 'GET';
@@ -141,26 +146,21 @@ const PbContent = (props) => {
 				</button>
 			);
 		}
+		const innerContent = renderInnerContent(item, children, parent);
+		if (item.dataParsed && item.dataParsed.openUrl && item.type === 'text') {
+			const openOnCurrentPage = item.dataParsed.openUrl.indexOf('http') === -1;
+			return (
+				<a
+					href={item.dataParsed.openUrl}
+					target={openOnCurrentPage ? '_self' : '_blank'}
+					rel='noreferrer'
+				>
+					{innerContent}
+				</a>
+			);
+		}
 
-		return (
-			<div {...itemProps}>
-				{item.dataParsed?.openUrl && (
-					<a href={item.dataParsed?.openUrl} rel='noreferrer' target='_blank'>
-						<span
-							style={{
-								height: '100%',
-								width: '100%',
-								left: 0,
-								top: 0,
-								position: 'absolute',
-								zIndex: 1,
-							}}
-						/>
-					</a>
-				)}
-				{renderInnerContent(item, children, parent)}
-			</div>
-		);
+		return <div {...itemProps}>{innerContent}</div>;
 	};
 
 	const renderInnerContent = (item, children, parent) => {
