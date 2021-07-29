@@ -170,7 +170,7 @@ export const PageBuilderComponent = (props) => {
                                 padding: 15px;
                                 box-sizing: border-box;
                             }
-
+                            
                             .type_slider .carousel-root {
                                 max-width: 100%;
                             }
@@ -188,8 +188,10 @@ export const PageBuilderComponent = (props) => {
                             .spb-item.type_button {
                                 padding: 10px 20px;
                                 cursor: pointer;
+                                border: none;
+                                background-color: #ffffff;
                             }
-
+                            
                             .spb-item.type_button:hover {
                                 opacity: 0.8;
                             }

@@ -38,7 +38,7 @@ const PbContent = (props) => {
 		const itemType = item.type;
 		const shouldNotHavePadding = itemType === 'text_input';
 		const _styles = prepareStyle(item, parent);
-		const paddingAttrKey = [
+		const passingAttrKeys = [
 			'padding',
 			'paddingTop',
 			'paddingBottom',
@@ -60,7 +60,7 @@ const PbContent = (props) => {
 		];
 		const _stylesWithoutPadding = Object.entries(_styles)
 			.filter(([k, v]) => {
-				return !paddingAttrKey.includes(k);
+				return !passingAttrKeys.includes(k);
 			})
 			.reduce((acc, [k, v]) => {
 				acc[k] = v;
@@ -97,6 +97,27 @@ const PbContent = (props) => {
 			// styles.display = 'block';
 		}
 
+		if (item.type === 'tabs') {
+			styles.display = 'flex';
+			styles.direction = 'ltr';
+			if (item.dataParsed) {
+				switch (item.dataParsed.tabTitleNavPos) {
+					case 'left':
+						styles.flexFlow = 'row';
+						break;
+					case 'right':
+						styles.flexFlow = 'row-reverse';
+						break;
+					case 'bottom':
+						styles.flexFlow = 'column-reverse';
+						break;
+					default:
+						styles.flexFlow = 'column';
+						break;
+				}
+			}
+		}
+
 		const itemProps = {
 			key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
 			style: styles,
@@ -110,8 +131,13 @@ const PbContent = (props) => {
 				if (elmnt && elmnt.length) elmnt[0].scrollIntoView();
 			};
 		}
-		if (item.dataParsed && item.dataParsed.openUrl) {
-			itemProps.onClick = () => window.open(item.dataParsed.openUrl, '_blank');
+		if (item.dataParsed && item.dataParsed.openUrl && item.type !== 'text') {
+			const openOnCurrentPage = item.dataParsed.openUrl.indexOf('http') === -1;
+			itemProps.onClick = () =>
+				window.open(
+					item.dataParsed.openUrl,
+					openOnCurrentPage ? '_self' : '_blank',
+				);
 		}
 		if (item.type === 'form_group') {
 			const formMethod = item.dataParsed[formSubmitMethod] || 'GET';
@@ -139,26 +165,21 @@ const PbContent = (props) => {
 				</button>
 			);
 		}
+		const innerContent = renderInnerContent(item, children, parent);
+		if (item.dataParsed && item.dataParsed.openUrl && item.type === 'text') {
+			const openOnCurrentPage = item.dataParsed.openUrl.indexOf('http') === -1;
+			return (
+				<a
+					href={item.dataParsed.openUrl}
+					target={openOnCurrentPage ? '_self' : '_blank'}
+					rel='noreferrer'
+				>
+					{innerContent}
+				</a>
+			);
+		}
 
-		return (
-			<div {...itemProps}>
-				{item.dataParsed?.openUrl && (
-					<a href={item.dataParsed?.openUrl} rel='noreferrer' target='_blank'>
-						<span
-							style={{
-								height: '100%',
-								width: '100%',
-								left: 0,
-								top: 0,
-								position: 'absolute',
-								zIndex: 1,
-							}}
-						/>
-					</a>
-				)}
-				{renderInnerContent(item, children, parent)}
-			</div>
-		);
+		return <div {...itemProps}>{innerContent}</div>;
 	};
 
 	const renderInnerContent = (item, children, parent) => {

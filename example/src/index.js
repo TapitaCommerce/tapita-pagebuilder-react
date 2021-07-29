@@ -10,6 +10,8 @@ const messagesInJP = {
 	fish:'sanaka',
     Image: 'Gazō',
     'Your Text Go Here': 'Your Text Go Here',
+    'Button Label': 'Button Label',
+    'Heading': 'Heading'
 }
 
 ReactDOM.render(
