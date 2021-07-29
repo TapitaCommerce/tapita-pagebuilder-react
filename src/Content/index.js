@@ -78,6 +78,25 @@ const PbContent = (props) => {
 			styles.display = 'block';
 		}
 
+		if (item && ['html_video', 'youtube_video'].includes(item.type)) {
+			let data = {};
+			if (item.data && typeof item.data === 'object') {
+				data = item.data;
+			} else if (item.dataParsed) {
+				try {
+					data = item.dataParsed;
+				} catch (err) {}
+			}
+
+			const _size = (data ? data.size : null) || null;
+			const _width = (data ? data.width : null) || null;
+			const height = 'auto';
+			const width = _size || _width || '100%';
+			styles.width = width;
+			styles.height = height;
+			// styles.display = 'block';
+		}
+
 		const itemProps = {
 			key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
 			style: styles,

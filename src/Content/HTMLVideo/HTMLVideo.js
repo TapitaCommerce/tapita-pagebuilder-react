@@ -1,22 +1,28 @@
 import React, { Fragment } from 'react';
-
 const NO_SUPPORT = 'Your browser does not support the video tag.';
 
 export const _HtmlVideo = (props) => {
 	const { width, size, showControl, imgCover, videoURL, formatMessage } = props;
 
 	return (
-		<Fragment>
+		<div
+			style={{
+				display: 'flex',
+				flexDirection: 'row',
+				justifyContent: 'center',
+				alignItems: 'center',
+			}}
+		>
 			<video
-				width={size || width || '100%'}
-				height={size || 'auto'}
+				width='100%'
+				height='auto'
 				controls={showControl || false}
 				poster={imgCover || undefined}
 			>
 				<source src={videoURL} />
 				{formatMessage({ val: NO_SUPPORT })}
 			</video>
-		</Fragment>
+		</div>
 	);
 };
 

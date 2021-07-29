@@ -40,10 +40,18 @@ export const _YoutubeVideo = (props) => {
 
 	return (
 		<React.Fragment>
-			<div className={`magic-yt-video-container-${size || width || '100%'}`}>
+			<div
+				style={{
+					display: 'flex',
+					flexDirection: 'row',
+					justifyContent: 'center',
+					alignItems: 'center',
+				}}
+				className={`magic-yt-video-container-${size || width || '100%'}`}
+			>
 				<iframe
-					height={currentVideoHeight || size || 'auto'}
-					width={size || width || '100%'}
+					height={currentVideoHeight || 'auto'}
+					width='100%'
 					allowFullScreen=''
 					frameBorder='0'
 					src={
