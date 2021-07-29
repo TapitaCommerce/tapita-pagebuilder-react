@@ -74,6 +74,18 @@ const PbContent = (props) => {
 
 		const styles = finalStyle;
 
+		if (itemType === 'dropdown') {
+			/**
+			 * Dropdown padding is for dropdown title
+			 * default padding for dropdown container is zero
+			 */
+			styles.padding = 0;
+			styles.paddingTop = 0;
+			styles.paddingBottom = 0;
+			styles.paddingLeft = 0;
+			styles.paddingRight = 0;
+		}
+
 		if (styles.display && itemType === 'slider_1') {
 			styles.display = 'block';
 		}
@@ -173,6 +185,7 @@ const PbContent = (props) => {
 					href={item.dataParsed.openUrl}
 					target={openOnCurrentPage ? '_self' : '_blank'}
 					rel='noreferrer'
+					{...itemProps}
 				>
 					{innerContent}
 				</a>

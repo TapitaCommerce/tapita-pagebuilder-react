@@ -170,7 +170,7 @@ export const PageBuilderComponent = (props) => {
                                 padding: 15px;
                                 box-sizing: border-box;
                             }
-                            
+
                             .type_slider .carousel-root {
                                 max-width: 100%;
                             }
@@ -198,6 +198,18 @@ export const PageBuilderComponent = (props) => {
 
                             .spb-item.type_image {
                                 padding: 0;
+                            }
+                            .spb-item.type_dropdown .smpb-dropdown-title {
+                                cursor: pointer;
+                                display: flex;
+                                padding: 15px;
+                                justify-content: space-between;
+                            }
+
+                            .spb-item.type_dropdown .smpb-dropdown-title svg,
+                            .spb-item.type_dropdown .smpb-dropdown-title img {
+                                width: 21px;
+                                height: 21px;
                             }
 
                             h1,
