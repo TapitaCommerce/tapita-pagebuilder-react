@@ -199,6 +199,9 @@ export const PageBuilderComponent = (props) => {
                             .spb-item.type_image {
                                 padding: 0;
                             }
+                            .spb-item.type_dropdown.collapsed > .spb-item {
+                                display: none !important;
+                            }
                             .spb-item.type_dropdown .smpb-dropdown-title {
                                 cursor: pointer;
                                 display: flex;
