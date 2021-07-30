@@ -5,7 +5,7 @@ export const SimpleDot = (props) => {
 		<i
 			className='zmdi zmdi-circle simple-grey-dot'
 			style={{
-				opacity: '50%',
+				opacity: 0.5,
 				color: '#000',
 				fontSize: '12px',
 				marginLeft: 8,

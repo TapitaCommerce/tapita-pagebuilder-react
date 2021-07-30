@@ -86,10 +86,11 @@ const PbContent = (props) => {
 			styles.paddingRight = 0;
 		}
 
-		if (styles.display && itemType === 'slider_1') {
-			styles.display = 'block';
-		}
-
+		if (item.type === 'partial_slider') {
+            styles.flexDirection = 'row';
+            styles.flexWrap = 'nowrap';
+        }
+        
 		if (item && ['html_video', 'youtube_video'].includes(item.type)) {
 			let data = {};
 			if (item.data && typeof item.data === 'object') {
@@ -130,12 +131,15 @@ const PbContent = (props) => {
 			}
 		}
 
+
 		const itemProps = {
 			key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
 			style: styles,
 			className: `spb-item ${item.root ? 'spb-item-root' : ''} ${
-				item.class_name
-			} ${'type_' + item.type}`,
+				item.class_name ? item.class_name : ''
+			} ${'type_' + item.type} ${
+				item.entity_id ? 'spb-item-id_' + item.entity_id : ''
+			}`,
 		};
 		if (item.dataParsed && item.dataParsed.scrollTo) {
 			itemProps.onClick = () => {
@@ -223,6 +227,21 @@ const PbContent = (props) => {
 				</Carousel>
 			);
 		}
+		if (item.type === 'partial_slider') {
+            const showArrow = parseInt(dataParsed.showSliderNavBtn) !== 0;
+            const showIndicators = 
+                parseInt(dataParsed.showSliderIndicator) === 0
+                    ? false
+                    : !!(children.length && children.length !== 1);
+            return (
+                <PartialSlider item={item} isRtl={isRtl}
+                    showArrow={showArrow}
+                    showIndicators={showIndicators}>
+                    {children}
+                </PartialSlider>
+            )
+        }
+
 		if (item.type === 'button' || item.type === 'form_button') {
 			return (
 				<Button item={item} formatMessage={formatMessage}>
@@ -243,12 +262,7 @@ const PbContent = (props) => {
 					ProductScroll={ProductScroll}
 					CategoryScroll={CategoryScroll}
 				/>
-				{children.length && item.type !== 'slider_1' ? children : ''}
-				{item.type === 'slider_1' && (
-					<PartialSlider item={item} isRtl={isRtl}>
-						{children}
-					</PartialSlider>
-				)}
+				{children.length ? children : ''}
 			</React.Fragment>
 		);
 	};
