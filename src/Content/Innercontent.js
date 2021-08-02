@@ -208,14 +208,12 @@ const Innercontent = (props) => {
 		}
 
 		return (
-			<div>
-				<input
-					type='text'
-					placeholder={placeholder}
-					style={miniStyle}
-					name={nameSpace}
-				/>
-			</div>
+			<input
+				type='text'
+				placeholder={placeholder}
+				style={{...miniStyle, border: 'none', height: '100%'}}
+				name={nameSpace}
+			/>
 		);
 	}
 	return '';
