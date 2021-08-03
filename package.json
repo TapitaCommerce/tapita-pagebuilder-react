@@ -1,6 +1,6 @@
 {
 	"name": "simi-pagebuilder-react",
-	"version": "1.2.1",
+	"version": "1.2.2",
 	"description": "SimiCart React PageBuilder Client",
 	"author": "SimiCart",
 	"license": "MIT",
@@ -60,9 +60,7 @@
 	"dependencies": {
 		"react-helmet": "^6.1.0",
 		"react-html-parser": "^2.0.2",
-		"react-responsive-carousel": "^3.2.18",
-		"react-slick": "^0.28.1",
-		"slick-carousel": "^1.8.1"
+		"react-responsive-carousel": "^3.2.18"
 	},
 	"presets": [
 		"@babel/preset-flow"
