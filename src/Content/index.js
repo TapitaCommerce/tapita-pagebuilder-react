@@ -134,8 +134,8 @@ const PbContent = (props) => {
 			key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
 			style: styles,
 			className: `spb-item ${item.root ? 'spb-item-root' : ''} ${
-				item.class_name
-			} ${'type_' + item.type}`,
+				item.class_name || ''
+			} ${'type_' + (item.type || 'root')}`,
 		};
 		if (item.dataParsed && item.dataParsed.scrollTo) {
 			itemProps.onClick = () => {
@@ -263,7 +263,19 @@ const PbContent = (props) => {
 		let style = defaultStyles;
 		if (item && item.stylesParsed) {
 			try {
-				const itemStyle = JSON.parse(JSON.stringify(item.stylesParsed));
+				const _itemStyle = JSON.parse(
+					JSON.stringify(item.stylesParsed) || '{}',
+				);
+				const itemStyle = { ..._itemStyle };
+
+				// add device styles
+				Object.keys(itemStyle).forEach((key) => {
+					if (key.includes(deviceFilterKey)) {
+						const styleKey = key.replace(deviceFilterKey, '');
+						itemStyle[styleKey] = itemStyle[key];
+					}
+				});
+
 				if (itemStyle.widthPercent) {
 					itemStyle.width = parseInt(itemStyle.widthPercent, 10) + '%';
 					delete itemStyle.widthPercent;
@@ -282,14 +294,6 @@ const PbContent = (props) => {
 			} catch (err) {
 				console.warn(err);
 			}
-
-			// add device styles
-			Object.keys(style).forEach((key) => {
-				if (key.includes(deviceFilterKey)) {
-					const styleKey = key.replace(deviceFilterKey, '');
-					style[styleKey] = style[key];
-				}
-			});
 		}
 		if (parent && parent.type === 'slider') {
 			const parentSliderHeight =
@@ -312,6 +316,7 @@ const PbContent = (props) => {
 		if (item && item.type === 'slider') {
 			style.direction = 'ltr';
 		}
+
 		return style;
 	};
 
