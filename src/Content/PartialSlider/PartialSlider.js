@@ -4,6 +4,7 @@ import { ReactComponent as ChevronForward } from '../images/icons/chevron-forwar
 import { Helmet } from 'react-helmet';
 
 let slidedTheSlider = false;
+let childByPos = [];
 
 export const PartialSlider = (props) => {
 	const { item } = props;
@@ -11,22 +12,17 @@ export const PartialSlider = (props) => {
 	const unqId = 'smpb-partial-slider-' + item.entity_id;
 	const dataParsed = item.dataParsed || {};
 	const [currentIndex, setCurrentIndex] = useState(0);
+	const containerRef = useRef(null);
+
 	const handleScroll = (index) => {
 		if (currentIndex !== index) {
 			setCurrentIndex(index);
 		}
 	};
-	console.log(dataParsed);
 	const numberOfChildren =
 		children instanceof Array ? children.length : children ? 1 : 0;
-	const [numberOfSteps, setNumberOfSteps] = useState(0);
-	useEffect(() => {
-		const index = currentIndex;
-        if (index === 0) {
-            if (!slidedTheSlider)
-                return;
-        } else
-            slidedTheSlider = true;
+
+    const scrollToIndex = index => {
 		if (numberOfChildren <= 1) {
 			// no where to scroll
 		} else if (children[index]) {
@@ -36,6 +32,17 @@ export const PartialSlider = (props) => {
 			const target = elements.item(index);
 			target.scrollIntoView({ block: 'nearest', inline: 'start' });
 		}
+    }
+    
+	const [numberOfSteps, setNumberOfSteps] = useState(0);
+
+	useEffect(() => {
+        //first sliding event
+		if (currentIndex === 0) {
+			if (!slidedTheSlider) return;
+		} else slidedTheSlider = true;
+        //scroll by js
+        scrollToIndex(currentIndex);
 	}, [currentIndex]);
 
 	//calculate the steps
@@ -48,19 +55,40 @@ export const PartialSlider = (props) => {
 			const elements = Array.from(childContainerEl.children);
 			let itemToMinus = 0;
 			let widthFromEnd = 0;
-			for (let indx = elements.length - 1; indx > 1; indx--) {
+			for (let indx = elements.length - 1; indx >= 0; indx--) {
 				const target = elements[indx];
+				childByPos[elements.length - (1 + indx)] = widthFromEnd;
 				widthFromEnd += target.offsetWidth;
-				itemToMinus++;
-				if (widthFromEnd >= childContainerEl.offsetWidth) break;
+				if (widthFromEnd < childContainerEl.offsetWidth) {
+					itemToMinus++;
+				}
 			}
 			if (itemToMinus < numberOfChildren)
-				setNumberOfSteps(numberOfChildren + 1 - itemToMinus);
+				setNumberOfSteps(numberOfChildren - itemToMinus);
 			else setNumberOfSteps(numberOfChildren);
 		}, 1000);
 	}, []);
 
 	if (!numberOfChildren) return '';
+
+	const onSliderTouchEnd = () => {
+		if (containerRef && containerRef.current) {
+			const containerScrollLeft = containerRef.current.scrollLeft;
+            let nearestVal = 999999;
+            let nearestIndx = 0;
+            childByPos.map((childItmByPos, childIndx) => {
+                let distance = Math.abs(childItmByPos - containerScrollLeft); 
+                if (nearestVal >= distance) {
+                    nearestIndx = childIndx;
+                    nearestVal = distance;
+                }
+            })
+            if (currentIndex !== nearestIndx)
+                handleScroll(nearestIndx);
+            else scrollToIndex(nearestIndx);
+		}
+	};
+
 	let indicators = [];
 	if (numberOfSteps && dataParsed.showSliderIndicator) {
 		for (let index = 0; index <= numberOfSteps; index++) {
@@ -185,7 +213,11 @@ export const PartialSlider = (props) => {
 			) : (
 				''
 			)}
-			<div className={`${unqId} partial-slider-child-container`}>
+			<div
+				className={`${unqId} partial-slider-child-container`}
+				ref={containerRef}
+                onTouchEnd={onSliderTouchEnd}
+			>
 				{props.children}
 			</div>
 			{indicators}

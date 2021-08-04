@@ -87,10 +87,10 @@ const PbContent = (props) => {
 		}
 
 		if (item.type === 'partial_slider') {
-            styles.flexDirection = 'row';
-            styles.flexWrap = 'nowrap';
-        }
-        
+			styles.flexDirection = 'row';
+			styles.flexWrap = 'nowrap';
+		}
+
 		if (item && ['html_video', 'youtube_video'].includes(item.type)) {
 			let data = {};
 			if (item.data && typeof item.data === 'object') {
@@ -131,16 +131,16 @@ const PbContent = (props) => {
 			}
 		}
 
-
 		const itemProps = {
 			key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
 			style: styles,
 			className: `spb-item ${item.root ? 'spb-item-root' : ''} ${
-				item.class_name ? item.class_name : ''
-			} ${'type_' + item.type} ${
+				item.class_name || ''
+			} ${'type_' + (item.type || '')} ${
 				item.entity_id ? 'spb-item-id_' + item.entity_id : ''
 			}`,
 		};
+
 		if (item.dataParsed && item.dataParsed.scrollTo) {
 			itemProps.onClick = () => {
 				const elmnt = document.getElementsByClassName(item.dataParsed.scrollTo);
@@ -228,19 +228,22 @@ const PbContent = (props) => {
 			);
 		}
 		if (item.type === 'partial_slider') {
-            const showArrow = parseInt(dataParsed.showSliderNavBtn) !== 0;
-            const showIndicators = 
-                parseInt(dataParsed.showSliderIndicator) === 0
-                    ? false
-                    : !!(children.length && children.length !== 1);
-            return (
-                <PartialSlider item={item} isRtl={isRtl}
-                    showArrow={showArrow}
-                    showIndicators={showIndicators}>
-                    {children}
-                </PartialSlider>
-            )
-        }
+			const showArrow = parseInt(dataParsed.showSliderNavBtn) !== 0;
+			const showIndicators =
+				parseInt(dataParsed.showSliderIndicator) === 0
+					? false
+					: !!(children.length && children.length !== 1);
+			return (
+				<PartialSlider
+					item={item}
+					isRtl={isRtl}
+					showArrow={showArrow}
+					showIndicators={showIndicators}
+				>
+					{children}
+				</PartialSlider>
+			);
+		}
 
 		if (item.type === 'button' || item.type === 'form_button') {
 			return (
@@ -277,7 +280,19 @@ const PbContent = (props) => {
 		let style = defaultStyles;
 		if (item && item.stylesParsed) {
 			try {
-				const itemStyle = JSON.parse(JSON.stringify(item.stylesParsed));
+				const _itemStyle = JSON.parse(
+					JSON.stringify(item.stylesParsed) || '{}',
+				);
+				const itemStyle = { ..._itemStyle };
+
+				// add device styles
+				Object.keys(itemStyle).forEach((key) => {
+					if (key.includes(deviceFilterKey)) {
+						const styleKey = key.replace(deviceFilterKey, '');
+						itemStyle[styleKey] = itemStyle[key];
+					}
+				});
+
 				if (itemStyle.widthPercent) {
 					itemStyle.width = parseInt(itemStyle.widthPercent, 10) + '%';
 					delete itemStyle.widthPercent;
@@ -296,14 +311,6 @@ const PbContent = (props) => {
 			} catch (err) {
 				console.warn(err);
 			}
-
-			// add device styles
-			Object.keys(style).forEach((key) => {
-				if (key.includes(deviceFilterKey)) {
-					const styleKey = key.replace(deviceFilterKey, '');
-					style[styleKey] = style[key];
-				}
-			});
 		}
 		if (parent && parent.type === 'slider') {
 			const parentSliderHeight =
@@ -326,6 +333,7 @@ const PbContent = (props) => {
 		if (item && item.type === 'slider') {
 			style.direction = 'ltr';
 		}
+
 		return style;
 	};
 
