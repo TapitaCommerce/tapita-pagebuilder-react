@@ -215,33 +215,33 @@ export const PageBuilderComponent = (props) => {
                                 height: 21px;
                             }
 
-                            h1,
-                            h2,
-                            h3,
-                            h4,
-                            h5,
-                            h6 {
+                            .spb-item h1,
+                            .spb-item h2,
+                            .spb-item h3,
+                            .spb-item h4,
+                            .spb-item h5,
+                            .spb-item h6 {
                                 margin-top: 0;
                                 margin-bottom: 0;
                                 font-weight: 500;
                                 line-height: 1.2;
                             }
-                            h1 {
+                            .spb-item h1 {
                                 font-size: 2.1875rem;
                             }
-                            h2 {
+                            .spb-item h2 {
                                 font-size: 1.75rem;
                             }
-                            h3 {
+                            .spb-item h3 {
                                 font-size: 1.53125rem;
                             }
-                            h4 {
+                            .spb-item h4 {
                                 font-size: 1.3125rem;
                             }
-                            h5 {
+                            .spb-item h5 {
                                 font-size: 1.09375rem;
                             }
-                            h6 {
+                            .spb-item h6 {
                                 font-size: 0.875rem;
                             }
                             
