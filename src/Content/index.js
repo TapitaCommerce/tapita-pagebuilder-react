@@ -168,31 +168,38 @@ const PbContent = (props) => {
 				</form>
 			);
 		}
-		if (item.type === 'button' || item.type === 'form_button') {
+
+		const innerContent = renderInnerContent(item, children, parent);
+		if (item.dataParsed && item.dataParsed.openUrl) {
+			if (
+				item.type === 'text' ||
+				item.type === 'button' ||
+				item.type === 'form_button'
+			) {
+				const openOnCurrentPage =
+					item.dataParsed.openUrl.indexOf('http') === -1;
+				if (!itemProps.style.textDecoration)
+					itemProps.style.textDecoration = 'none';
+				if (!itemProps.style.color) itemProps.style.color = 'initial';
+				return (
+					<a
+						href={item.dataParsed.openUrl}
+						target={openOnCurrentPage ? '_self' : '_blank'}
+						rel='noreferrer'
+						{...itemProps}
+					>
+						{innerContent}
+					</a>
+				);
+			}
+		} else if (item.type === 'button' || item.type === 'form_button') {
 			const buttonType = item.dataParsed
 				? item.dataParsed[buttonTypeFieldName]
 				: 'button';
-
 			return (
 				<button type={buttonType} {...itemProps}>
-					<Button item={item} formatMessage={formatMessage}>
-						{children.length ? children : ''}
-					</Button>
-				</button>
-			);
-		}
-		const innerContent = renderInnerContent(item, children, parent);
-		if (item.dataParsed && item.dataParsed.openUrl && item.type === 'text') {
-			const openOnCurrentPage = item.dataParsed.openUrl.indexOf('http') === -1;
-			return (
-				<a
-					href={item.dataParsed.openUrl}
-					target={openOnCurrentPage ? '_self' : '_blank'}
-					rel='noreferrer'
-					{...itemProps}
-				>
 					{innerContent}
-				</a>
+				</button>
 			);
 		}
 
