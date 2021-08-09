@@ -148,11 +148,11 @@ const PbContent = (props) => {
 			};
 		}
 		if (item.dataParsed && item.dataParsed.openUrl && item.type !== 'text') {
-			const openOnCurrentPage = item.dataParsed.openUrl.indexOf('http') === -1;
+			const openUrlInNewTab = parseInt(item.dataParsed.openUrlInNewTab) === 1;
 			itemProps.onClick = () =>
 				window.open(
 					item.dataParsed.openUrl,
-					openOnCurrentPage ? '_self' : '_blank',
+					openUrlInNewTab ? '_blank' : '_self',
 				);
 		}
 		if (item.type === 'form_group') {
@@ -176,15 +176,15 @@ const PbContent = (props) => {
 				item.type === 'button' ||
 				item.type === 'form_button'
 			) {
-				const openOnCurrentPage =
-					item.dataParsed.openUrl.indexOf('http') === -1;
+				const openUrlInNewTab = parseInt(item.dataParsed.openUrlInNewTab) === 1;
 				if (!itemProps.style.textDecoration)
 					itemProps.style.textDecoration = 'none';
 				if (!itemProps.style.color) itemProps.style.color = 'initial';
+				delete itemProps.onClick;
 				return (
 					<a
 						href={item.dataParsed.openUrl}
-						target={openOnCurrentPage ? '_self' : '_blank'}
+						target={openUrlInNewTab ? '_blank' : '_self'}
 						rel='noreferrer'
 						{...itemProps}
 					>

@@ -4,7 +4,7 @@ import { ReactComponent as ChevronForward } from '../images/icons/chevron-forwar
 import { Helmet } from 'react-helmet';
 
 let slidedTheSlider = false;
-let childByPos = [];
+const childByPos = [];
 
 export const PartialSlider = (props) => {
 	const { item } = props;
@@ -22,7 +22,7 @@ export const PartialSlider = (props) => {
 	const numberOfChildren =
 		children instanceof Array ? children.length : children ? 1 : 0;
 
-    const scrollToIndex = index => {
+	const scrollToIndex = (index) => {
 		if (numberOfChildren <= 1) {
 			// no where to scroll
 		} else if (children[index]) {
@@ -32,22 +32,22 @@ export const PartialSlider = (props) => {
 			const target = elements.item(index);
 			target.scrollIntoView({ block: 'nearest', inline: 'start' });
 		}
-    }
-    
+	};
+
 	const [numberOfSteps, setNumberOfSteps] = useState(0);
 
 	useEffect(() => {
-        //first sliding event
+		// first sliding event
 		if (currentIndex === 0) {
 			if (!slidedTheSlider) return;
 		} else slidedTheSlider = true;
-        //scroll by js
-        scrollToIndex(currentIndex);
+		// scroll by js
+		scrollToIndex(currentIndex);
 	}, [currentIndex]);
 
-	//calculate the steps
+	// calculate the steps
 	useEffect(() => {
-		//wait for images to render, for better sure, set the min width to each child item
+		// wait for images to render, for better sure, set the min width to each child item
 		setTimeout(function () {
 			const childContainerEl = document.querySelector(
 				`.${unqId}.partial-slider-child-container`,
@@ -74,18 +74,17 @@ export const PartialSlider = (props) => {
 	const onSliderTouchEnd = () => {
 		if (containerRef && containerRef.current) {
 			const containerScrollLeft = containerRef.current.scrollLeft;
-            let nearestVal = 999999;
-            let nearestIndx = 0;
-            childByPos.map((childItmByPos, childIndx) => {
-                let distance = Math.abs(childItmByPos - containerScrollLeft); 
-                if (nearestVal >= distance) {
-                    nearestIndx = childIndx;
-                    nearestVal = distance;
-                }
-            })
-            if (currentIndex !== nearestIndx)
-                handleScroll(nearestIndx);
-            else scrollToIndex(nearestIndx);
+			let nearestVal = 999999;
+			let nearestIndx = 0;
+			childByPos.map((childItmByPos, childIndx) => {
+				const distance = Math.abs(childItmByPos - containerScrollLeft);
+				if (nearestVal >= distance) {
+					nearestIndx = childIndx;
+					nearestVal = distance;
+				}
+			});
+			if (currentIndex !== nearestIndx) handleScroll(nearestIndx);
+			else scrollToIndex(nearestIndx);
 		}
 	};
 
@@ -99,7 +98,7 @@ export const PartialSlider = (props) => {
 						index === currentIndex ? 'active' : ''
 					}`}
 					onClick={(e) => handleScroll(index)}
-				></div>,
+				/>,
 			);
 		}
 		indicators = <div className='partial-slider-dots'>{indicators}</div>;
@@ -216,7 +215,7 @@ export const PartialSlider = (props) => {
 			<div
 				className={`${unqId} partial-slider-child-container`}
 				ref={containerRef}
-                onTouchEnd={onSliderTouchEnd}
+				onTouchEnd={onSliderTouchEnd}
 			>
 				{props.children}
 			</div>
