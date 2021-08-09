@@ -98,7 +98,8 @@ const PbContent = (props) => {
 			} else if (item.dataParsed) {
 				try {
 					data = item.dataParsed;
-				} catch (err) {}
+				} catch (err) {
+				}
 			}
 
 			const _size = (data ? data.size : null) || null;
@@ -129,6 +130,10 @@ const PbContent = (props) => {
 						break;
 				}
 			}
+		}
+
+		if (item.type === 'category_scroll_1') {
+			styles.backgroundImage = 'none';
 		}
 
 		const itemProps = {
