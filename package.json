@@ -61,6 +61,7 @@
 		"react-helmet": "^6.1.0",
 		"react-html-parser": "^2.0.2",
 		"react-ig-feed": "^1.0.4",
+		"react-lazyload": "^3.2.0",
 		"react-responsive-carousel": "^3.2.18"
 	},
 	"presets": [

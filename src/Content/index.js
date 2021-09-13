@@ -6,6 +6,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { randomString, listToTree } from '../Helper/Data';
 import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
 import { PartialSlider } from './PartialSlider/PartialSlider';
+import LazyLoad from 'react-lazyload';
 
 export const buttonTypeFieldName = 'button-type';
 
@@ -206,6 +207,8 @@ const PbContent = (props) => {
 					{innerContent}
 				</button>
 			);
+		} else if (item.type === 'image') {
+			return <LazyLoad {...itemProps}>{innerContent}</LazyLoad>;
 		}
 
 		return <div {...itemProps}>{innerContent}</div>;

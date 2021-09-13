@@ -1,5 +1,5 @@
 import React from 'react';
-import { tryParseJSON } from '../../../Helper/tryParseJSON';
+import { tryParseJSON } from '../../Helper/tryParseJSON';
 import InstagramFeed from 'react-ig-feed';
 import 'react-ig-feed/dist/index.css';
 
