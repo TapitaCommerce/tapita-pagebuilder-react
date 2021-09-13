@@ -73,6 +73,7 @@ const PbContent = (props) => {
 		const finalStyle = shouldNotHavePadding ? _stylesWithoutPadding : _styles;
 
 		const styles = finalStyle;
+		item.stylesParsed = finalStyle;
 
 		if (itemType === 'dropdown') {
 			/**
@@ -98,8 +99,7 @@ const PbContent = (props) => {
 			} else if (item.dataParsed) {
 				try {
 					data = item.dataParsed;
-				} catch (err) {
-				}
+				} catch (err) {}
 			}
 
 			const _size = (data ? data.size : null) || null;
