@@ -6,6 +6,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { randomString, listToTree } from '../Helper/Data';
 import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
 import { PartialSlider } from './PartialSlider/PartialSlider';
+import LazyLoad from 'react-lazyload';
 
 export const buttonTypeFieldName = 'button-type';
 
@@ -73,6 +74,7 @@ const PbContent = (props) => {
 		const finalStyle = shouldNotHavePadding ? _stylesWithoutPadding : _styles;
 
 		const styles = finalStyle;
+		item.stylesParsed = finalStyle;
 
 		if (itemType === 'dropdown') {
 			/**
@@ -98,8 +100,7 @@ const PbContent = (props) => {
 			} else if (item.dataParsed) {
 				try {
 					data = item.dataParsed;
-				} catch (err) {
-				}
+				} catch (err) {}
 			}
 
 			const _size = (data ? data.size : null) || null;
@@ -179,6 +180,7 @@ const PbContent = (props) => {
 			if (
 				item.type === 'text' ||
 				item.type === 'button' ||
+				item.type === 'container' ||
 				item.type === 'form_button'
 			) {
 				const openUrlInNewTab = parseInt(item.dataParsed.openUrlInNewTab) === 1;
@@ -206,6 +208,8 @@ const PbContent = (props) => {
 					{innerContent}
 				</button>
 			);
+		} else if (item.type === 'image') {
+			return <LazyLoad {...itemProps}>{innerContent}</LazyLoad>;
 		}
 
 		return <div {...itemProps}>{innerContent}</div>;

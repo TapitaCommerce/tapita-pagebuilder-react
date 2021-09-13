@@ -4,6 +4,7 @@ import { HtmlVideo } from './HTMLVideo/HTMLVideo';
 import { YoutubeVideo } from './YoutubeVideo/YoutubeVideo';
 import { Tab } from './Tab';
 import { LikeShareGeneric } from './LikeAndShare/LikeShare/LikeShareGeneric';
+import { Instagram } from './Instagram';
 import { icons } from './icons/icons.js';
 import { randomString } from '../Helper/Data';
 import { Dropdown } from './Dropdown';
@@ -154,6 +155,8 @@ const Innercontent = (props) => {
 		}
 	} else if (item.type === 'share_button') {
 		return <LikeShareGeneric item={item} formatMessage={formatMessage} />;
+	} else if (item.type === 'instagram') {
+		return <Instagram item={item} formatMessage={formatMessage} />;
 	} else if (item.type === 'custom_html') {
 		if (data.htmlContent)
 			return HtmlParser(data.htmlContent, {
@@ -211,7 +214,7 @@ const Innercontent = (props) => {
 			<input
 				type='text'
 				placeholder={placeholder}
-				style={{...miniStyle, border: 'none', height: '100%'}}
+				style={{ ...miniStyle, border: 'none', height: '100%' }}
 				name={nameSpace}
 			/>
 		);

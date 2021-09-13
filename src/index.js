@@ -244,7 +244,16 @@ export const PageBuilderComponent = (props) => {
                             .spb-item h6 {
                                 font-size: 0.875rem;
                             }
-                            
+
+                            .spb-item.type_instagram .simipb-insta-item {
+                                display: block;
+                            }
+                            .spb-item.type_instagram .simipb-insta-item img,
+                            .spb-item.type_instagram .simipb-insta-item video {    
+                                max-width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                            }
                         `,
 						},
 					]}
