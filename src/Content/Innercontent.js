@@ -4,7 +4,7 @@ import { HtmlVideo } from './HTMLVideo/HTMLVideo';
 import { YoutubeVideo } from './YoutubeVideo/YoutubeVideo';
 import { Tab } from './Tab';
 import { LikeShareGeneric } from './LikeAndShare/LikeShare/LikeShareGeneric';
-import { Instagram } from './Instagram/Instagram';
+import { Instagram } from './Instagram';
 import { icons } from './icons/icons.js';
 import { randomString } from '../Helper/Data';
 import { Dropdown } from './Dropdown';

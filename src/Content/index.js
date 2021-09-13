@@ -180,6 +180,7 @@ const PbContent = (props) => {
 			if (
 				item.type === 'text' ||
 				item.type === 'button' ||
+				item.type === 'container' ||
 				item.type === 'form_button'
 			) {
 				const openUrlInNewTab = parseInt(item.dataParsed.openUrlInNewTab) === 1;
