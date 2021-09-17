@@ -205,6 +205,7 @@ const PbContent = (props) => {
 							to={item.dataParsed.openUrl}
 							target={openUrlInNewTab ? '_blank' : '_self'}
 							rel='noreferrer'
+                            {...itemProps}
 						>
 							{innerContent}
 						</Link>
