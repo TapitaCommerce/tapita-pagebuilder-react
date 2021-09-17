@@ -158,19 +158,19 @@ const PbContent = (props) => {
 		if (item.dataParsed && item.dataParsed.openUrl && item.type !== 'text') {
 			const openUrlInNewTab = parseInt(item.dataParsed.openUrlInNewTab) === 1;
 			itemProps.onClick = () => {
-                if (
-                    history &&
-                    !openUrlInNewTab &&
-                    item.dataParsed.openUrl.indexOf('http') === -1
-                )
-                    history.push(item.dataParsed.openUrl);
-                else {
-                    window.open(
-                        item.dataParsed.openUrl,
-                        openUrlInNewTab ? '_blank' : '_self',
-                    );
-                }
-            }
+				if (
+					history &&
+					!openUrlInNewTab &&
+					item.dataParsed.openUrl.indexOf('http') === -1
+				)
+					history.push(item.dataParsed.openUrl);
+				else {
+					window.open(
+						item.dataParsed.openUrl,
+						openUrlInNewTab ? '_blank' : '_self',
+					);
+				}
+			};
 		}
 		if (item.type === 'form_group') {
 			const formMethod = item.dataParsed[formSubmitMethod] || 'GET';
@@ -205,7 +205,7 @@ const PbContent = (props) => {
 							to={item.dataParsed.openUrl}
 							target={openUrlInNewTab ? '_blank' : '_self'}
 							rel='noreferrer'
-                            {...itemProps}
+							{...itemProps}
 						>
 							{innerContent}
 						</Link>
