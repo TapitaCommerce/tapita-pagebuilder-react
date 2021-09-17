@@ -28,7 +28,7 @@ const App = () => {
             </label>
             <br/>
             <label>
-                Masked Id: <input type="text" name="maskedId" id="maskedId_input" defaultValue="14BhhVlVCBPHJTQEtkaLSa1621573067" />
+                Masked Id: <input type="text" name="maskedId" id="maskedId_input" defaultValue="48mLip5LwVQpjX9ZJaIDan1631181384" />
             </label>
             <br/>
             <input type="submit" value="Go!" />

@@ -4,13 +4,22 @@ export const useWindowSize = () => {
 	const [size, setSize] = useState({ width: 0, height: 0 });
 	useLayoutEffect(() => {
 		function updateSize() {
-			setSize({
-				width: Math.max(
-					document.documentElement.clientWidth || 0,
-					window.innerWidth || 0,
-				),
-				height: window.innerHeight,
-			});
+			const newWidth = Math.max(
+				document.documentElement.clientWidth || 0,
+				window.innerWidth || 0,
+			);
+			const newHeight = window.innerHeight;
+			if (
+				newWidth !== window.smpbWindowWidth ||
+				Math.abs(newHeight - window.smpbWindowHeight) > 160
+			) {
+				window.smpbWindowWidth = newWidth;
+				window.smpbWindowHeight = newHeight;
+				setSize({
+					width: newWidth,
+					height: newHeight,
+				});
+			}
 		}
 		window.addEventListener('resize', updateSize);
 		updateSize();
