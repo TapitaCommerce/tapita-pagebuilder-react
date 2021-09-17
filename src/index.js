@@ -102,6 +102,8 @@ export const PageBuilderComponent = (props) => {
 		ProductScroll,
 		CategoryScroll,
 		formatMessage: _formatMessage,
+		history,
+		Link,
 	} = props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items
@@ -295,6 +297,8 @@ export const PageBuilderComponent = (props) => {
 					)}
 				</Helmet>
 				<Content
+					history={history}
+					Link={Link}
 					data={data.data}
 					ProductList={ProductList}
 					ProductGrid={ProductGrid}
