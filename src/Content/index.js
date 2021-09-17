@@ -7,6 +7,7 @@ import { randomString, listToTree } from '../Helper/Data';
 import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
 import { PartialSlider } from './PartialSlider/PartialSlider';
 import LazyLoad from 'react-lazyload';
+import { Link, useHistory } from 'react-router-dom';
 
 export const buttonTypeFieldName = 'button-type';
 
@@ -23,6 +24,7 @@ const PbContent = (props) => {
 		ProductScroll,
 		CategoryScroll,
 	} = props;
+	const history = useHistory();
 	const deviceFilterKey = useDeviceWidthPrefix();
 	const pageData =
 		spb_page && spb_page.items && spb_page.items[0] ? spb_page.items[0] : false;
@@ -188,6 +190,17 @@ const PbContent = (props) => {
 					itemProps.style.textDecoration = 'none';
 				if (!itemProps.style.color) itemProps.style.color = 'initial';
 				delete itemProps.onClick;
+				if (history && item.dataParsed.openUrl.indexOf('http') === -1) {
+					return (
+						<Link
+							to={item.dataParsed.openUrl}
+							target={openUrlInNewTab ? '_blank' : '_self'}
+							rel='noreferrer'
+						>
+							{innerContent}
+						</Link>
+					);
+				}
 				return (
 					<a
 						href={item.dataParsed.openUrl}
