@@ -157,17 +157,20 @@ const PbContent = (props) => {
 		}
 		if (item.dataParsed && item.dataParsed.openUrl && item.type !== 'text') {
 			const openUrlInNewTab = parseInt(item.dataParsed.openUrlInNewTab) === 1;
-			if (
-				history &&
-				!openUrlInNewTab &&
-				item.dataParsed.openUrl.indexOf('http') === -1
-			)
-				history.push(item.dataParsed.openUrl);
-			itemProps.onClick = () =>
-				window.open(
-					item.dataParsed.openUrl,
-					openUrlInNewTab ? '_blank' : '_self',
-				);
+			itemProps.onClick = () => {
+                if (
+                    history &&
+                    !openUrlInNewTab &&
+                    item.dataParsed.openUrl.indexOf('http') === -1
+                )
+                    history.push(item.dataParsed.openUrl);
+                else {
+                    window.open(
+                        item.dataParsed.openUrl,
+                        openUrlInNewTab ? '_blank' : '_self',
+                    );
+                }
+            }
 		}
 		if (item.type === 'form_group') {
 			const formMethod = item.dataParsed[formSubmitMethod] || 'GET';
