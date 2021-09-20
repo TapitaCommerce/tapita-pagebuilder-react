@@ -326,7 +326,7 @@ export const usePbFinder = (props) => {
 
 	const findPage = (pathName) => {
 		setPathFoFind(pathName);
-		if (window.smPbPagesByToken) {
+		if (typeof window !== 'undefined' && window.smPbPagesByToken) {
 			setPbData(window.smPbPagesByToken);
 		} else {
 			if (!loading) {
@@ -335,7 +335,12 @@ export const usePbFinder = (props) => {
 					endPoint,
 					(result) => {
 						setLoading(false);
-						if (result && result.data && result.data.spb_page)
+						if (
+							result &&
+							result.data &&
+							result.data.spb_page &&
+							typeof window !== 'undefined'
+						)
 							window.smPbPagesByToken = result;
 						setPbData(result);
 					},

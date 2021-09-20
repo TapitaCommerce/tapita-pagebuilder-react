@@ -165,10 +165,12 @@ const PbContent = (props) => {
 				)
 					history.push(item.dataParsed.openUrl);
 				else {
-					window.open(
-						item.dataParsed.openUrl,
-						openUrlInNewTab ? '_blank' : '_self',
-					);
+					if (typeof window !== 'undefined') {
+						window.open(
+							item.dataParsed.openUrl,
+							openUrlInNewTab ? '_blank' : '_self',
+						);
+					}
 				}
 			};
 		}
