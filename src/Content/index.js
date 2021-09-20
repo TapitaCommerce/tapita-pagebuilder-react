@@ -2,7 +2,6 @@ import React from 'react';
 import Innercontent from './Innercontent';
 import { Carousel } from 'react-responsive-carousel';
 import Button from './Button';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { randomString, listToTree } from '../Helper/Data';
 import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
 import { PartialSlider } from './PartialSlider/PartialSlider';
@@ -140,6 +139,7 @@ const PbContent = (props) => {
 		}
 
 		const itemProps = {
+			id: item && item.entity_id ? `pbitm-id-${item.entity_id}` : null,
 			key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
 			style: styles,
 			className: `spb-item ${item.root ? 'spb-item-root' : ''} ${
