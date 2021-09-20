@@ -154,7 +154,7 @@ export const PageBuilderComponent = (props) => {
 		spgData = data.data.spb_page.items[0];
 	}
 
-	if (spgData && spgData.status) {
+	if (spgData && (spgData.status || toPreview)) {
 		return (
 			<React.Fragment>
 				<Helmet
