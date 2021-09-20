@@ -44,6 +44,9 @@ Then go to example directory, run another `yarn start` command.
 - __ProductGrid__ - ReactComponent - _which would receive item data as props_
 - __ProductScroll__ - ReactComponent - _which would receive item data as props_
 - __CategoryScroll__ - ReactComponent - _which would receive item data as props_
+- __Link__ - ReactComponent - _For internal linking_
+- __history__ - Object - _For history push inside pagebuilder component_
+- __formatMessage__ - Function - _For Localization Purpose_
 
 
 ## License
