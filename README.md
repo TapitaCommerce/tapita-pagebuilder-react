@@ -47,6 +47,7 @@ Then go to example directory, run another `yarn start` command.
 - __Link__ - ReactComponent - _For internal linking_
 - __history__ - Object - _For history push inside pagebuilder component_
 - __formatMessage__ - Function - _For Localization Purpose_
+- __lazyloadPlaceHolder__ - ReactComponent - _Place holder for lazyload Image, if false/ no lazyload applied_
 
 
 ## License
