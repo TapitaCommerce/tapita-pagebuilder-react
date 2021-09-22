@@ -23,6 +23,7 @@ const PbContent = (props) => {
 		CategoryScroll,
 		history,
 		Link,
+		lazyloadPlaceHolder,
 	} = props;
 	const deviceFilterKey = useDeviceWidthPrefix();
 	const pageData =
@@ -233,8 +234,12 @@ const PbContent = (props) => {
 					{innerContent}
 				</button>
 			);
-		} else if (item.type === 'image') {
-			return <LazyLoad {...itemProps}>{innerContent}</LazyLoad>;
+		} else if (item.type === 'image' && lazyloadPlaceHolder) {
+			return (
+				<LazyLoad {...itemProps} placeholder={lazyloadPlaceHolder}>
+					{innerContent}
+				</LazyLoad>
+			);
 		}
 
 		return <div {...itemProps}>{innerContent}</div>;

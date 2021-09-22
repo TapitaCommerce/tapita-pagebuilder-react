@@ -104,6 +104,7 @@ export const PageBuilderComponent = (props) => {
 		formatMessage: _formatMessage,
 		history,
 		Link,
+		lazyloadPlaceHolder,
 	} = props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items
@@ -309,6 +310,7 @@ export const PageBuilderComponent = (props) => {
 					ProductScroll={ProductScroll}
 					CategoryScroll={CategoryScroll}
 					formatMessage={formatMessage}
+					lazyloadPlaceHolder={lazyloadPlaceHolder}
 				/>
 			</React.Fragment>
 		);
