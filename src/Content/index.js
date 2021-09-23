@@ -267,9 +267,10 @@ const PbContent = (props) => {
 				slideSettings.selectedItem = children.length - 1;
 				slideSettings.autoPlay = false;
 			}
+			const cChild = children.filter((itm) => itm !== '');
 			return (
 				<Carousel {...slideSettings}>
-					{isRtl ? children.reverse() : children}
+					{isRtl ? cChild.reverse() : cChild}
 				</Carousel>
 			);
 		}
