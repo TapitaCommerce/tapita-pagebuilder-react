@@ -2,8 +2,8 @@ import { useLayoutEffect, useState } from 'react';
 
 export const useWindowSize = () => {
 	const [size, setSize] = useState({
-		width: typeof window !== 'undefined' ? 0 : 1280,
-		height: typeof window !== 'undefined' ? 0 : 1280,
+		width: typeof window !== 'undefined' ? window.smpbWindowWidth || 0 : 1440,
+		height: typeof window !== 'undefined' ? window.smpbWindowHeight || 0 : 1440,
 	});
 	useLayoutEffect(() => {
 		function updateSize() {
