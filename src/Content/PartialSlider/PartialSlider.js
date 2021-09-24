@@ -52,20 +52,22 @@ export const PartialSlider = (props) => {
 			const childContainerEl = document.querySelector(
 				`.${unqId}.partial-slider-child-container`,
 			);
-			const elements = Array.from(childContainerEl.children);
-			let itemToMinus = 0;
-			let widthFromEnd = 0;
-			for (let indx = elements.length - 1; indx >= 0; indx--) {
-				const target = elements[indx];
-				childByPos[elements.length - (1 + indx)] = widthFromEnd;
-				widthFromEnd += target.offsetWidth;
-				if (widthFromEnd < childContainerEl.offsetWidth) {
-					itemToMinus++;
+			if (childContainerEl) {
+				const elements = Array.from(childContainerEl.children);
+				let itemToMinus = 0;
+				let widthFromEnd = 0;
+				for (let indx = elements.length - 1; indx >= 0; indx--) {
+					const target = elements[indx];
+					childByPos[elements.length - (1 + indx)] = widthFromEnd;
+					widthFromEnd += target.offsetWidth;
+					if (widthFromEnd < childContainerEl.offsetWidth) {
+						itemToMinus++;
+					}
 				}
+				if (itemToMinus < numberOfChildren)
+					setNumberOfSteps(numberOfChildren - itemToMinus);
+				else setNumberOfSteps(numberOfChildren);
 			}
-			if (itemToMinus < numberOfChildren)
-				setNumberOfSteps(numberOfChildren - itemToMinus);
-			else setNumberOfSteps(numberOfChildren);
 		}, 1000);
 	}, []);
 

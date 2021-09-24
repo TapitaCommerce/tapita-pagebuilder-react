@@ -362,8 +362,8 @@ const PbContent = (props) => {
 		if (parent && parent.type === 'slider') {
 			const parentSliderHeight =
 				parent.stylesParsed &&
-				(parent.stylesParsed.heightPixel ||
-					parent.stylesParsed[deviceFilterKey + 'heightPixel']);
+				(parent.stylesParsed[deviceFilterKey + 'heightPixel'] ||
+					parent.stylesParsed.heightPixel);
 			if (parentSliderHeight) {
 				style.height = parseInt(parentSliderHeight) + 'px';
 				// style.overflowY = 'hidden';
