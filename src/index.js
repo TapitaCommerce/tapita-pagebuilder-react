@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { sendRequest } from './Network/GraphQl';
 import Content from './Content';
 import { Helmet } from 'react-helmet';
+import { styleString } from './style.css';
 
 const PREVIEW_ITEM_QUERY = `
     query getPbItem($pageMaskedId: String) {
@@ -102,6 +103,9 @@ export const PageBuilderComponent = (props) => {
 		ProductScroll,
 		CategoryScroll,
 		formatMessage: _formatMessage,
+		history,
+		Link,
+		lazyloadPlaceHolder,
 	} = props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items
@@ -152,100 +156,13 @@ export const PageBuilderComponent = (props) => {
 		spgData = data.data.spb_page.items[0];
 	}
 
-	if (spgData && spgData.status) {
+	if (spgData && (spgData.status || toPreview)) {
 		return (
 			<React.Fragment>
 				<Helmet
 					style={[
 						{
-							cssText: `
-                            .spb-item {
-                                overflow: auto;
-                                transition: transform 0.3s ease;
-                                position: relative;
-                                flex-shrink: 0;
-                                background-size: cover;
-                                background-repeat: no-repeat;
-                                background-position: top left;
-                                padding: 15px;
-                                box-sizing: border-box;
-                            }
-
-                            .type_slider .carousel-root {
-                                max-width: 100%;
-                            }
-
-                            .spb-item-root {
-                                align-items: center;
-                                padding: 0px;
-                            }
-
-                            .spb-item .type_slider {
-                                background-color: white;
-                                padding: 0;
-                            }
-
-                            .spb-item.type_button {
-                                padding: 10px 20px;
-                                cursor: pointer;
-                                border: none;
-                                background-color: #ffffff;
-                            }
-                            
-                            .spb-item.type_button:hover {
-                                opacity: 0.8;
-                            }
-
-                            .spb-item.type_image {
-                                padding: 0;
-                            }
-                            .spb-item.type_dropdown.collapsed > .spb-item {
-                                display: none !important;
-                            }
-                            .spb-item.type_dropdown .smpb-dropdown-title {
-                                cursor: pointer;
-                                display: flex;
-                                padding: 15px;
-                                justify-content: space-between;
-                            }
-
-                            .spb-item.type_dropdown .smpb-dropdown-title svg,
-                            .spb-item.type_dropdown .smpb-dropdown-title img {
-                                width: 21px;
-                                height: 21px;
-                            }
-
-                            .spb-item h1,
-                            .spb-item h2,
-                            .spb-item h3,
-                            .spb-item h4,
-                            .spb-item h5,
-                            .spb-item h6 {
-                                margin-top: 0;
-                                margin-bottom: 0;
-                                font-weight: 500;
-                                line-height: 1.2;
-                            }
-                            .spb-item h1 {
-                                font-size: 2.1875rem;
-                            }
-                            .spb-item h2 {
-                                font-size: 1.75rem;
-                            }
-                            .spb-item h3 {
-                                font-size: 1.53125rem;
-                            }
-                            .spb-item h4 {
-                                font-size: 1.3125rem;
-                            }
-                            .spb-item h5 {
-                                font-size: 1.09375rem;
-                            }
-                            .spb-item h6 {
-                                font-size: 0.875rem;
-                            }
-                            
-                        `,
+							cssText: styleString,
 						},
 					]}
 				/>
@@ -286,6 +203,8 @@ export const PageBuilderComponent = (props) => {
 					)}
 				</Helmet>
 				<Content
+					history={history}
+					Link={Link}
 					data={data.data}
 					ProductList={ProductList}
 					ProductGrid={ProductGrid}
@@ -293,6 +212,7 @@ export const PageBuilderComponent = (props) => {
 					ProductScroll={ProductScroll}
 					CategoryScroll={CategoryScroll}
 					formatMessage={formatMessage}
+					lazyloadPlaceHolder={lazyloadPlaceHolder}
 				/>
 			</React.Fragment>
 		);
@@ -310,7 +230,7 @@ export const usePbFinder = (props) => {
 
 	const findPage = (pathName) => {
 		setPathFoFind(pathName);
-		if (window.smPbPagesByToken) {
+		if (typeof window !== 'undefined' && window.smPbPagesByToken) {
 			setPbData(window.smPbPagesByToken);
 		} else {
 			if (!loading) {
@@ -319,7 +239,12 @@ export const usePbFinder = (props) => {
 					endPoint,
 					(result) => {
 						setLoading(false);
-						if (result && result.data && result.data.spb_page)
+						if (
+							result &&
+							result.data &&
+							result.data.spb_page &&
+							typeof window !== 'undefined'
+						)
 							window.smPbPagesByToken = result;
 						setPbData(result);
 					},

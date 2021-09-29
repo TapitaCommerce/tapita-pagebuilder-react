@@ -37,15 +37,18 @@ Then go to example directory, run another `yarn start` command.
 
 ## Props
 
-endPoint - String
+- __endPoint__ - String
+- __maskedId__ - String
+- __toPreview__ - Boolean
+- __ProductList__ - ReactComponent - _which would receive item data as props_
+- __ProductGrid__ - ReactComponent - _which would receive item data as props_
+- __ProductScroll__ - ReactComponent - _which would receive item data as props_
+- __CategoryScroll__ - ReactComponent - _which would receive item data as props_
+- __Link__ - ReactComponent - _For internal linking_
+- __history__ - Object - _For history push inside pagebuilder component_
+- __formatMessage__ - Function - _For Localization Purpose_
+- __lazyloadPlaceHolder__ - ReactComponent - _Place holder for lazyload Image, if false/ no lazyload applied_
 
-maskedId - String
-
-toPreview - Boolean
-
-ProductList - ReactComponent - which would receive item data as props
-
-ProductGrid - ReactComponent - which would receive item data as props
 
 ## License
 

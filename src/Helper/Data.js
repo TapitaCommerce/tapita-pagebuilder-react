@@ -4,7 +4,10 @@ export const randomString = (charCount = 20) => {
 		'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 	for (let i = 0; i < charCount; i++)
 		text += possible.charAt(Math.floor(Math.random() * possible.length));
-	return btoa(text + Date.now());
+
+	return typeof window !== 'undefined'
+		? window.btoa(text + Date.now())
+		: text + Date.now();
 };
 
 export const listToTree = (list) => {

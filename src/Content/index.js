@@ -2,10 +2,10 @@ import React from 'react';
 import Innercontent from './Innercontent';
 import { Carousel } from 'react-responsive-carousel';
 import Button from './Button';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { randomString, listToTree } from '../Helper/Data';
 import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
 import { PartialSlider } from './PartialSlider/PartialSlider';
+import LazyLoad from 'react-lazyload';
 
 export const buttonTypeFieldName = 'button-type';
 
@@ -21,6 +21,9 @@ const PbContent = (props) => {
 		formatMessage,
 		ProductScroll,
 		CategoryScroll,
+		history,
+		Link,
+		lazyloadPlaceHolder,
 	} = props;
 	const deviceFilterKey = useDeviceWidthPrefix();
 	const pageData =
@@ -73,6 +76,7 @@ const PbContent = (props) => {
 		const finalStyle = shouldNotHavePadding ? _stylesWithoutPadding : _styles;
 
 		const styles = finalStyle;
+		item.stylesParsed = finalStyle;
 
 		if (itemType === 'dropdown') {
 			/**
@@ -98,8 +102,7 @@ const PbContent = (props) => {
 			} else if (item.dataParsed) {
 				try {
 					data = item.dataParsed;
-				} catch (err) {
-				}
+				} catch (err) {}
 			}
 
 			const _size = (data ? data.size : null) || null;
@@ -137,6 +140,7 @@ const PbContent = (props) => {
 		}
 
 		const itemProps = {
+			id: item && item.entity_id ? `pbitm-id-${item.entity_id}` : null,
 			key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
 			style: styles,
 			className: `spb-item ${item.root ? 'spb-item-root' : ''} ${
@@ -154,11 +158,22 @@ const PbContent = (props) => {
 		}
 		if (item.dataParsed && item.dataParsed.openUrl && item.type !== 'text') {
 			const openUrlInNewTab = parseInt(item.dataParsed.openUrlInNewTab) === 1;
-			itemProps.onClick = () =>
-				window.open(
-					item.dataParsed.openUrl,
-					openUrlInNewTab ? '_blank' : '_self',
-				);
+			itemProps.onClick = () => {
+				if (
+					history &&
+					!openUrlInNewTab &&
+					item.dataParsed.openUrl.indexOf('http') === -1
+				)
+					history.push(item.dataParsed.openUrl);
+				else {
+					if (typeof window !== 'undefined') {
+						window.open(
+							item.dataParsed.openUrl,
+							openUrlInNewTab ? '_blank' : '_self',
+						);
+					}
+				}
+			};
 		}
 		if (item.type === 'form_group') {
 			const formMethod = item.dataParsed[formSubmitMethod] || 'GET';
@@ -179,6 +194,7 @@ const PbContent = (props) => {
 			if (
 				item.type === 'text' ||
 				item.type === 'button' ||
+				item.type === 'container' ||
 				item.type === 'form_button'
 			) {
 				const openUrlInNewTab = parseInt(item.dataParsed.openUrlInNewTab) === 1;
@@ -186,6 +202,18 @@ const PbContent = (props) => {
 					itemProps.style.textDecoration = 'none';
 				if (!itemProps.style.color) itemProps.style.color = 'initial';
 				delete itemProps.onClick;
+				if (Link && item.dataParsed.openUrl.indexOf('http') === -1) {
+					return (
+						<Link
+							to={item.dataParsed.openUrl}
+							target={openUrlInNewTab ? '_blank' : '_self'}
+							rel='noreferrer'
+							{...itemProps}
+						>
+							{innerContent}
+						</Link>
+					);
+				}
 				return (
 					<a
 						href={item.dataParsed.openUrl}
@@ -205,6 +233,12 @@ const PbContent = (props) => {
 				<button type={buttonType} {...itemProps}>
 					{innerContent}
 				</button>
+			);
+		} else if (item.type === 'image' && lazyloadPlaceHolder) {
+			return (
+				<LazyLoad {...itemProps} placeholder={lazyloadPlaceHolder}>
+					{innerContent}
+				</LazyLoad>
 			);
 		}
 
@@ -233,9 +267,10 @@ const PbContent = (props) => {
 				slideSettings.selectedItem = children.length - 1;
 				slideSettings.autoPlay = false;
 			}
+			const cChild = children.filter((itm) => itm !== '');
 			return (
 				<Carousel {...slideSettings}>
-					{isRtl ? children.reverse() : children}
+					{isRtl ? cChild.reverse() : cChild}
 				</Carousel>
 			);
 		}
@@ -327,8 +362,8 @@ const PbContent = (props) => {
 		if (parent && parent.type === 'slider') {
 			const parentSliderHeight =
 				parent.stylesParsed &&
-				(parent.stylesParsed.heightPixel ||
-					parent.stylesParsed[deviceFilterKey + 'heightPixel']);
+				(parent.stylesParsed[deviceFilterKey + 'heightPixel'] ||
+					parent.stylesParsed.heightPixel);
 			if (parentSliderHeight) {
 				style.height = parseInt(parentSliderHeight) + 'px';
 				// style.overflowY = 'hidden';
