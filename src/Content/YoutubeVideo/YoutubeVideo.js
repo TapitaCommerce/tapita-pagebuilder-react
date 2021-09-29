@@ -68,14 +68,16 @@ export const _YoutubeVideo = (props) => {
 export const YoutubeVideo = React.memo(
 	_YoutubeVideo,
 	(prevProps, nextProps) => {
-		const { width, size, showControl, videoURL } = prevProps || {};
-		const { width1, size1, showControl1, videoURL1 } = nextProps || {};
+		const { width, size, showControl, videoURL, imgCover } = prevProps || {};
+		const { width1, size1, showControl1, videoURL1, imgCover1 } =
+			nextProps || {};
 
 		return (
 			width === width1 &&
 			size === size1 &&
 			showControl === showControl1 &&
-			videoURL === videoURL1
+			videoURL === videoURL1 &&
+			imgCover === imgCover1
 		);
 	},
 );

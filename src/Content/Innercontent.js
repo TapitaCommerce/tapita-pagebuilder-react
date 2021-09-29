@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { Fragment, useRef } from 'react';
 import HtmlParser from 'react-html-parser';
 import { HtmlVideo } from './HTMLVideo/HTMLVideo';
 import { YoutubeVideo } from './YoutubeVideo/YoutubeVideo';
@@ -7,6 +7,7 @@ import { LikeShareGeneric } from './LikeAndShare/LikeShare/LikeShareGeneric';
 import { icons } from './icons/icons.js';
 import { randomString } from '../Helper/Data';
 import { Dropdown } from './Dropdown';
+import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
 
 export const customIconDefKey = 'is-custom-icon';
 export const customIcon = 'custom-icon';
@@ -25,13 +26,22 @@ const Innercontent = (props) => {
 
 	const backUpName = useRef(randomString(5)).current;
 
+	const deviceFilterKey = useDeviceWidthPrefix();
+
 	if (!item || !item.entity_id) return '';
+
 	let data = {};
 	if (item.data && typeof item.data === 'object') {
-		data = item.data;
+		data = { ...item.data };
 	} else if (item.dataParsed) {
-		data = item.dataParsed;
+		data = { ...item.dataParsed };
 	}
+	Object.keys(data).forEach((key) => {
+		if (key.includes(deviceFilterKey)) {
+			const styleKey = key.replace(deviceFilterKey, '');
+			data[styleKey] = data[key];
+		}
+	});
 	const styles = item.stylesParsed || {};
 
 	const HTMLTransform = (node) => {
@@ -98,23 +108,59 @@ const Innercontent = (props) => {
 			);
 		}
 	} else if (item.type === 'category') {
-		if (Category) return <Category item={item} formatMessage={formatMessage} />;
+		if (Category)
+			return (
+				<Category
+					item={item}
+					formatMessage={formatMessage}
+					data={data}
+					styles={styles}
+				/>
+			);
 		else return '';
 	} else if (item.type === 'product_scroll') {
 		if (ProductList)
-			return <ProductList item={item} formatMessage={formatMessage} />;
+			return (
+				<ProductList
+					item={item}
+					formatMessage={formatMessage}
+					data={data}
+					styles={styles}
+				/>
+			);
 		else return '';
 	} else if (item.type === 'product_grid') {
 		if (ProductGrid)
-			return <ProductGrid item={item} formatMessage={formatMessage} />;
+			return (
+				<ProductGrid
+					item={item}
+					formatMessage={formatMessage}
+					data={data}
+					styles={styles}
+				/>
+			);
 		else return '';
 	} else if (item.type === 'product_scroll_1') {
 		if (ProductScroll)
-			return <ProductScroll item={item} formatMessage={formatMessage} />;
+			return (
+				<ProductScroll
+					item={item}
+					formatMessage={formatMessage}
+					data={data}
+					styles={styles}
+				/>
+			);
 		else return '';
 	} else if (item.type === 'category_scroll_1') {
 		if (CategoryScroll)
-			return <CategoryScroll item={item} formatMessage={formatMessage} />;
+			return (
+				<CategoryScroll
+					item={item}
+					formatMessage={formatMessage}
+					data={data}
+					styles={styles}
+				/>
+			);
 		else return '';
 	} else if (item.type === 'paragraph') {
 		if (data.paragraphContent)
@@ -131,14 +177,16 @@ const Innercontent = (props) => {
 
 		if (item.type === 'html_video') {
 			return (
-				<HtmlVideo
-					width={width}
-					size={size}
-					showControl={showControl}
-					imgCover={imgCover}
-					videoURL={videoURL}
-					formatMessage={formatMessage}
-				/>
+				<Fragment>
+					<HtmlVideo
+						width={width}
+						size={size}
+						showControl={showControl}
+						imgCover={imgCover}
+						videoURL={videoURL}
+						formatMessage={formatMessage}
+					/>
+				</Fragment>
 			);
 		} else if (item.type === 'youtube_video') {
 			return (
@@ -211,7 +259,7 @@ const Innercontent = (props) => {
 			<input
 				type='text'
 				placeholder={placeholder}
-				style={{...miniStyle, border: 'none', height: '100%'}}
+				style={{ ...miniStyle, border: 'none', height: '100%' }}
 				name={nameSpace}
 			/>
 		);
