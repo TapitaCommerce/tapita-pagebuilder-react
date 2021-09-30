@@ -311,6 +311,7 @@ const PbContent = (props) => {
 					Category={Category}
 					ProductScroll={ProductScroll}
 					CategoryScroll={CategoryScroll}
+					deviceFilterKey={deviceFilterKey}
 				/>
 				{children.length ? children : ''}
 			</React.Fragment>

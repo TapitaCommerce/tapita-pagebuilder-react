@@ -8,7 +8,6 @@ import { Instagram } from './Instagram';
 import { icons } from './icons/icons.js';
 import { randomString } from '../Helper/Data';
 import { Dropdown } from './Dropdown';
-import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
 
 export const customIconDefKey = 'is-custom-icon';
 export const customIcon = 'custom-icon';
@@ -23,12 +22,10 @@ const Innercontent = (props) => {
 		formatMessage,
 		ProductScroll,
 		CategoryScroll,
+		deviceFilterKey,
 	} = props;
 
 	const backUpName = useRef(randomString(5)).current;
-
-	const deviceFilterKey = useDeviceWidthPrefix();
-
 	if (!item || !item.entity_id) return '';
 
 	let data = {};
