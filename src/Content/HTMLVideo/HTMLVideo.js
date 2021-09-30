@@ -8,8 +8,6 @@ export const HtmlVideo = (props) => {
 		return '';
 	}
 
-	return <h5>{imgCover}</h5>
-
 	return (
 		<div
 			style={{
