@@ -13,10 +13,7 @@ export const useWindowSize = () => {
 					window.innerWidth || 0,
 				);
 				const newHeight = window.innerHeight;
-				if (
-					newWidth !== window.smpbWindowWidth ||
-					Math.abs(newHeight - window.smpbWindowHeight) > 160
-				) {
+				if (newWidth !== window.smpbWindowWidth) {
 					window.smpbWindowWidth = newWidth;
 					window.smpbWindowHeight = newHeight;
 					setSize({
