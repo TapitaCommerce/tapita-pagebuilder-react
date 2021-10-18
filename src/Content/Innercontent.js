@@ -25,7 +25,6 @@ const Innercontent = (props) => {
 		deviceFilterKey,
 	} = props;
 
-	const backUpName = useRef(randomString(5)).current;
 	if (!item || !item.entity_id) return '';
 
 	let data = {};
@@ -50,7 +49,7 @@ const Innercontent = (props) => {
 		}
 	};
 	const dataParsed = item.dataParsed || {};
-	const nameSpace = dataParsed.name || backUpName;
+	const nameSpace = useRef(dataParsed.name || randomString(5)).current;
 
 	if (item.type === 'text') {
 		const textValue = item.name ? item.name : 'Your Text Go Here';

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 const NO_SUPPORT = 'Your browser does not support the video tag.';
 
-export const HtmlVideo = (props) => {
+export const _HtmlVideo = (props) => {
 	const { width, size, showControl, imgCover, videoURL, formatMessage } = props;
 
 	if (!videoURL) {
@@ -30,7 +30,7 @@ export const HtmlVideo = (props) => {
 	);
 };
 
-export const _HtmlVideo = React.memo(_HtmlVideo, (prevProps, nextProps) => {
+export const HtmlVideo = React.memo(_HtmlVideo, (prevProps, nextProps) => {
 	const { width, size, showControl, videoURL, imgCover } = prevProps || {};
 	const { width1, size1, showControl1, videoURL1, imgCover1 } = nextProps || {};
 
