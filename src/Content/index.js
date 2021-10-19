@@ -24,6 +24,7 @@ const PbContent = (props) => {
 		history,
 		Link,
 		lazyloadPlaceHolder,
+        overRender
 	} = props;
 	const deviceFilterKey = useDeviceWidthPrefix();
 	const pageData =
@@ -175,6 +176,14 @@ const PbContent = (props) => {
 				}
 			};
 		}
+
+		const innerContent = renderInnerContent(item, children, parent);
+        
+        if(overRender) {
+            const overRendered = overRender(item, itemProps, innerContent);
+            if (overRendered)
+                return overRendered;
+        }
 		if (item.type === 'form_group') {
 			const formMethod = item.dataParsed[formSubmitMethod] || 'GET';
 			const formURL = item.dataParsed[formSubmitTarget] || '';
@@ -184,12 +193,10 @@ const PbContent = (props) => {
 					action={formURL}
 					method={formMethod}
 				>
-					<div {...itemProps}>{renderInnerContent(item, children, parent)}</div>
+					<div {...itemProps}>{innerContent}</div>
 				</form>
 			);
 		}
-
-		const innerContent = renderInnerContent(item, children, parent);
 		if (item.dataParsed && item.dataParsed.openUrl) {
 			if (
 				item.type === 'text' ||
@@ -225,7 +232,8 @@ const PbContent = (props) => {
 					</a>
 				);
 			}
-		} else if (item.type === 'button' || item.type === 'form_button') {
+		} 
+        if (item.type === 'button' || item.type === 'form_button') {
 			const buttonType = item.dataParsed
 				? item.dataParsed[buttonTypeFieldName]
 				: 'button';

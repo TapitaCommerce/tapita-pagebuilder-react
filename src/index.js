@@ -4,74 +4,22 @@ import Content from './Content';
 import { Helmet } from 'react-helmet';
 import { styleString } from './style.css';
 
-const PREVIEW_ITEM_QUERY = `
-    query getPbItem($pageMaskedId: String) {
-        spb_page(pageMaskedId: $pageMaskedId) {
-            total_count
-            items {
-                entity_id
-                name
-                status
-                masked_id
-                custom_css
-                custom_js
-                keywords
-                title
-                desc
-                is_rtl
-                storeview_visibility
-            }
-        }
-        spb_item(pageMaskedId: $pageMaskedId) {
-            total_count
-            items {
-                entity_id
-                page_id
-                parent_id
-                styles
-                data
-                name
-                tag_id
-                class_name
-                type
-                status
-                visibility
-                storeview_visibility
-                sort_order
-            }
-        }
-    }
+const itemFields = `
+    entity_id
+    page_id
+    parent_id
+    styles
+    data
+    name
+    class_name
+    type
+    status
+    visibility
+    storeview_visibility
+    sort_order
 `;
 
-const GET_ITEM_QUERY = `
-    query getPbItem($pageMaskedId: String) {
-        spb_page(pageMaskedId: $pageMaskedId) {
-            total_count
-            items {
-                entity_id
-                name
-                status
-                masked_id
-                custom_css
-                custom_js
-                keywords
-                title
-                desc
-                publish_items
-                is_rtl
-                storeview_visibility
-            }
-        }
-    }
-`;
-
-const getPbPageQuery = (getPageItems) => {
-	return `
-        query getPagesByToken($integrationToken: String) {
-            spb_page(integrationToken: $integrationToken) {
-                total_count
-                items {
-                    url_path
+const pageFields = `
                     priority
                     entity_id
                     name
@@ -84,7 +32,71 @@ const getPbPageQuery = (getPageItems) => {
                     desc
                     is_rtl
                     storeview_visibility
-                    ${getPageItems ? 'publish_items' : ''}
+`;
+
+const PREVIEW_ITEM_QUERY = `
+    query getPbItem($pageMaskedId: String) {
+        spb_page(pageMaskedId: $pageMaskedId) {
+            total_count
+            items {
+                ${pageFields}
+            }
+        }
+        spb_item(pageMaskedId: $pageMaskedId) {
+            total_count
+            items {
+                ${itemFields}
+            }
+        }
+        catalog_builder_page(pageMaskedId: $pageMaskedId) {
+            total_count
+            items {
+                ${pageFields}
+            }
+        }
+        catalog_builder_item(pageMaskedId: $pageMaskedId) {
+            total_count
+            items {
+                ${itemFields}
+            }
+        }
+    }
+`;
+
+const GET_ITEM_QUERY = `
+    query getPbItem($pageMaskedId: String) {
+        spb_page(pageMaskedId: $pageMaskedId) {
+            total_count
+            items {
+                ${pageFields}
+            }
+        }
+        catalog_builder_page(pageMaskedId: $pageMaskedId) {
+            total_count
+            items {
+                ${pageFields}
+            }
+        }
+    }
+`;
+
+const getQuery = (getPageItems) => {
+	return `
+        query getPagesByToken($integrationToken: String) {
+            spb_page(integrationToken: $integrationToken) {
+                total_count
+                items {
+                    url_path
+                    ${pageFields}
+                    ${getPageItems !== false ? 'publish_items' : ''}
+                }
+            }
+            catalog_builder_page(integrationToken: $integrationToken) {
+                total_count
+                items {
+                    apply_to
+                    ${pageFields}
+                    publish_items
                 }
             }
         }
@@ -106,6 +118,7 @@ export const PageBuilderComponent = (props) => {
 		history,
 		Link,
 		lazyloadPlaceHolder,
+		overRender,
 	} = props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items
@@ -136,6 +149,7 @@ export const PageBuilderComponent = (props) => {
 		);
 	}
 	let spgData;
+	let contentData = data.data;
 	if (
 		(data &&
 			data.data &&
@@ -154,6 +168,28 @@ export const PageBuilderComponent = (props) => {
 			data.data.spb_page.items[0].publish_items)
 	) {
 		spgData = data.data.spb_page.items[0];
+	} else if (
+		(data &&
+			data.data &&
+			data.data.catalog_builder_page &&
+			// live
+			data.data.catalog_builder_item &&
+			data.data.catalog_builder_item.items &&
+			data.data.catalog_builder_page &&
+			data.data.catalog_builder_page.items[0]) ||
+		// preview
+		(data &&
+			data.data &&
+			data.data.catalog_builder_page &&
+			data.data.catalog_builder_page.items &&
+			data.data.catalog_builder_page.items[0] &&
+			data.data.catalog_builder_page.items[0].publish_items)
+	) {
+		spgData = data.data.catalog_builder_page.items[0];
+		contentData = {
+			spb_page: data.data.catalog_builder_page,
+			spb_item: data.data.catalog_builder_item,
+		};
 	}
 
 	if (spgData && (spgData.status || toPreview)) {
@@ -205,7 +241,7 @@ export const PageBuilderComponent = (props) => {
 				<Content
 					history={history}
 					Link={Link}
-					data={data.data}
+					data={contentData}
 					ProductList={ProductList}
 					ProductGrid={ProductGrid}
 					Category={Category}
@@ -213,6 +249,7 @@ export const PageBuilderComponent = (props) => {
 					CategoryScroll={CategoryScroll}
 					formatMessage={formatMessage}
 					lazyloadPlaceHolder={lazyloadPlaceHolder}
+					overRender={overRender}
 				/>
 			</React.Fragment>
 		);
@@ -225,11 +262,19 @@ export const usePbFinder = (props) => {
 	const [pbData, setPbData] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [pathToFind, setPathFoFind] = useState(false);
+	const [catalogItemIdToFind, setCatalogItemIdToFind] = useState(false);
 	let pageMaskedId;
 	let pageData;
 
-	const findPage = (pathName) => {
-		setPathFoFind(pathName);
+	const findPage = (pathName, catalogItemId) => {
+		if (pathName) {
+			setCatalogItemIdToFind(false);
+			setPathFoFind(pathName);
+		} else if (catalogItemId) {
+			setCatalogItemIdToFind(catalogItemId);
+			setPathFoFind(false);
+		}
+
 		if (typeof window !== 'undefined' && window.smPbPagesByToken) {
 			setPbData(window.smPbPagesByToken);
 		} else {
@@ -248,7 +293,7 @@ export const usePbFinder = (props) => {
 							window.smPbPagesByToken = result;
 						setPbData(result);
 					},
-					getPbPageQuery(getPageItems),
+					getQuery(getPageItems),
 					{ integrationToken },
 					'getPbPage',
 				);
@@ -256,24 +301,49 @@ export const usePbFinder = (props) => {
 		}
 	};
 
-	if (pbData && pbData.data && pbData.data.spb_page && pathToFind) {
-		const { spb_page } = pbData.data;
-		pageMaskedId = 'notfound';
-		if (spb_page.items && spb_page.items.length) {
-			const pbPages = JSON.parse(JSON.stringify(spb_page.items));
-			pbPages.sort(
-				(el1, el2) => parseInt(el2.priority) - parseInt(el1.priority),
-			);
-			const pageToFind = pbPages.find((item) => {
-				if (storeCode && item.storeview_visibility) {
-					const storeViews = item.storeview_visibility.trim().split(',');
-					if (!storeViews.includes(storeCode)) return false;
+	if (pbData && pbData.data) {
+		if (pathToFind && pbData.data.spb_page) {
+			const { spb_page } = pbData.data;
+			pageMaskedId = 'notfound';
+			if (spb_page.items && spb_page.items.length) {
+				const pbPages = JSON.parse(JSON.stringify(spb_page.items));
+				pbPages.sort(
+					(el1, el2) => parseInt(el2.priority) - parseInt(el1.priority),
+				);
+				const pageToFind = pbPages.find((item) => {
+					if (storeCode && item.storeview_visibility) {
+						const storeViews = item.storeview_visibility.trim().split(',');
+						if (!storeViews.includes(storeCode)) return false;
+					}
+					return item.url_path === pathToFind;
+				});
+				if (pageToFind && pageToFind.masked_id) {
+					pageData = pageToFind;
+					pageMaskedId = pageToFind.masked_id;
 				}
-				return item.url_path === pathToFind;
-			});
-			if (pageToFind && pageToFind.masked_id) {
-				pageData = pageToFind;
-				pageMaskedId = pageToFind.masked_id;
+			}
+		} else if (catalogItemIdToFind && pbData.data.catalog_builder_page) {
+			const { catalog_builder_page } = pbData.data;
+			pageMaskedId = 'notfound';
+			if (catalog_builder_page.items && catalog_builder_page.items.length) {
+				const cbPages = JSON.parse(JSON.stringify(catalog_builder_page.items));
+				cbPages.sort(
+					(el1, el2) => parseInt(el2.priority) - parseInt(el1.priority),
+				);
+				const pageToFind = cbPages.find((item) => {
+					if (storeCode && item.storeview_visibility) {
+						const storeViews = item.storeview_visibility.trim().split(',');
+						if (!storeViews.includes(storeCode)) return false;
+					}
+					return (
+						!item.apply_to ||
+						(item.apply_to && item.apply_to.trim.split(',').includes(produtId))
+					);
+				});
+				if (pageToFind && pageToFind.masked_id) {
+					pageData = pageToFind;
+					pageMaskedId = pageToFind.masked_id;
+				}
 			}
 		}
 	}
@@ -283,6 +353,7 @@ export const usePbFinder = (props) => {
 		pageMaskedId,
 		findPage,
 		pathToFind,
+		catalogItemIdToFind,
 		pageData,
 	};
 };
