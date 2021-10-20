@@ -24,7 +24,7 @@ const PbContent = (props) => {
 		history,
 		Link,
 		lazyloadPlaceHolder,
-        overRender
+		overRender,
 	} = props;
 	const deviceFilterKey = useDeviceWidthPrefix();
 	const pageData =
@@ -178,12 +178,11 @@ const PbContent = (props) => {
 		}
 
 		const innerContent = renderInnerContent(item, children, parent);
-        
-        if(overRender) {
-            const overRendered = overRender(item, itemProps, innerContent);
-            if (overRendered)
-                return overRendered;
-        }
+
+		if (overRender) {
+			const overRendered = overRender(item, itemProps, innerContent);
+			if (overRendered) return overRendered;
+		}
 		if (item.type === 'form_group') {
 			const formMethod = item.dataParsed[formSubmitMethod] || 'GET';
 			const formURL = item.dataParsed[formSubmitTarget] || '';
@@ -197,19 +196,29 @@ const PbContent = (props) => {
 				</form>
 			);
 		}
-		if (item.dataParsed && item.dataParsed.openUrl) {
+		if (
+			item.dataParsed &&
+			(item.dataParsed.openUrl ||
+				item.dataParsed.sendEmail ||
+				item.dataParsed.callNumber)
+		) {
 			if (
 				item.type === 'text' ||
 				item.type === 'button' ||
 				item.type === 'container' ||
-				item.type === 'form_button'
+				item.type === 'form_button' ||
+				item.type === 'image'
 			) {
 				const openUrlInNewTab = parseInt(item.dataParsed.openUrlInNewTab) === 1;
 				if (!itemProps.style.textDecoration)
 					itemProps.style.textDecoration = 'none';
 				if (!itemProps.style.color) itemProps.style.color = 'initial';
 				delete itemProps.onClick;
-				if (Link && item.dataParsed.openUrl.indexOf('http') === -1) {
+				if (
+					Link &&
+					item.dataParsed.openUrl &&
+					item.dataParsed.openUrl.indexOf('http') === -1
+				) {
 					return (
 						<Link
 							to={item.dataParsed.openUrl}
@@ -221,9 +230,14 @@ const PbContent = (props) => {
 						</Link>
 					);
 				}
+				let aHref = item.dataParsed.openUrl;
+				if (item.dataParsed.sendEmail)
+					aHref = 'mailto: ' + item.dataParsed.sendEmail;
+				else if (item.dataParsed.callNumber)
+					aHref = 'tel:' + item.dataParsed.callNumber;
 				return (
 					<a
-						href={item.dataParsed.openUrl}
+						href={aHref}
 						target={openUrlInNewTab ? '_blank' : '_self'}
 						rel='noreferrer'
 						{...itemProps}
@@ -232,8 +246,8 @@ const PbContent = (props) => {
 					</a>
 				);
 			}
-		} 
-        if (item.type === 'button' || item.type === 'form_button') {
+		}
+		if (item.type === 'button' || item.type === 'form_button') {
 			const buttonType = item.dataParsed
 				? item.dataParsed[buttonTypeFieldName]
 				: 'button';
@@ -242,7 +256,13 @@ const PbContent = (props) => {
 					{innerContent}
 				</button>
 			);
-		} else if (item.type === 'image' && lazyloadPlaceHolder) {
+		} else if (
+			item.type === 'image' &&
+			lazyloadPlaceHolder &&
+			item.dataParsed &&
+			!item.dataParsed.openUrl &&
+			!item.dataParsed.scrollTo
+		) {
 			return (
 				<LazyLoad {...itemProps} placeholder={lazyloadPlaceHolder}>
 					{innerContent}
