@@ -69,12 +69,14 @@ const GET_ITEM_QUERY = `
             total_count
             items {
                 ${pageFields}
+                publish_items
             }
         }
         catalog_builder_page(pageMaskedId: $pageMaskedId) {
             total_count
             items {
                 ${pageFields}
+                publish_items
             }
         }
     }
@@ -191,7 +193,8 @@ export const PageBuilderComponent = (props) => {
 			spb_item: data.data.catalog_builder_item,
 		};
 	}
-
+    console.log(spgData);
+    console.log(contentData);
 	if (spgData && (spgData.status || toPreview)) {
 		return (
 			<React.Fragment>
