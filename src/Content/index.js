@@ -92,8 +92,8 @@ const PbContent = (props) => {
 
 					// add hover style
 					Object.keys(itemStyle).forEach((key) => {
-						if (key.includes('hover-')) {
-							const styleKey = key.replace('hover-', '');
+						if (key.includes('hover_')) {
+							const styleKey = key.replace('hover_', '');
 							itemStyle[styleKey] = itemStyle[key];
 						}
 					});
