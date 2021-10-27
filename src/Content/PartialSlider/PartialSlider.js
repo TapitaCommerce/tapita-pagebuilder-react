@@ -1,7 +1,6 @@
 import React, { Component, useRef, useState, useEffect } from 'react';
 import { ReactComponent as ChevronBack } from '../images/icons/chevron-back-sharp.svg';
 import { ReactComponent as ChevronForward } from '../images/icons/chevron-forward-sharp.svg';
-import { Helmet } from 'react-helmet';
 
 let slidedTheSlider = false;
 const childByPos = [];
@@ -107,82 +106,6 @@ export const PartialSlider = (props) => {
 	}
 	return (
 		<React.Fragment>
-			<Helmet
-				style={[
-					{
-						cssText: `
-                            .spb-item.type_partial_slider {
-                                position: relative;
-                            }
-                            .spb-item .partial-slider-child-container {
-                                display: flex;
-                                flex-wrap: nowrap;
-                                overflow-y: auto;
-                                width: 100%;
-                                margin-bottom: 20px;
-                                scroll-behavior: smooth;
-                                scrollbar-width: none;
-                                -ms-overflow-style: none;
-                                ::-webkit-scrollbar {
-                                    display: none;
-                                }
-                            }
-                            .spb-item.type_partial_slider .partial-slider-navic {
-                                position: absolute;
-                                width: 30px;
-                                height: 30px;
-                                border-radius: 15px;
-                                background-color: rgba(255, 255, 255, 0.6);
-                                padding: 5px;
-                                z-index: 1;
-                                top: calc(50% - 40px);
-                                cursor: pointer;
-                            }
-
-                            .spb-item.type_partial_slider .partial-slider-navic.partial-slider-back-ic {
-                                left: 0px;
-                            }
-
-                            .spb-item.type_partial_slider .partial-slider-navic.partial-slider-next-ic {
-                                right: 0px;
-                            }
-
-                            .spb-item.type_partial_slider .partial-slider-navic svg {
-                                width: 20px;
-                                height: 20px;
-                            }
-
-                            .spb-item.type_partial_slider .partial-slider-dots {
-                                position: absolute;
-                                bottom: 5px;
-                                padding: 4px 8px;
-                                border-radius: 11px;
-                                display: flex;
-                                left: 50%;
-                                transform: translateX(-50%);
-                                z-index: 2;
-                            }
-
-                            .spb-item.type_partial_slider .partial-slider-dot {
-                                height: 10px;
-                                width: 10px;
-                                border-radius: 5px;
-                                background-color: #999999;
-                                cursor: pointer;
-                                margin-top: 3px;
-                            }
-
-                            .spb-item.type_partial_slider .partial-slider-dot:not(:last-of-type) {
-                                -webkit-margin-end: 10px;
-                                margin-inline-end: 10px;
-                            }
-                            .spb-item.type_partial_slider .partial-slider-dot.active {   
-                                background-color: #fa6402;
-                            }
-                        `,
-					},
-				]}
-			/>
 			{dataParsed &&
 			dataParsed.showSliderNavBtn &&
 			numberOfSteps &&

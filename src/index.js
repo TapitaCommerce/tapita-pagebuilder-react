@@ -153,39 +153,21 @@ export const PageBuilderComponent = (props) => {
 	let spgData;
 	let contentData = data.data;
 	if (
-		(data &&
-			data.data &&
-			data.data.spb_page &&
-			// live
-			data.data.spb_item &&
-			data.data.spb_item.items &&
-			data.data.spb_page &&
-			data.data.spb_page.items[0]) ||
-		// preview
-		(data &&
-			data.data &&
-			data.data.spb_page &&
-			data.data.spb_page.items &&
-			data.data.spb_page.items[0] &&
-			data.data.spb_page.items[0].publish_items)
+		data &&
+		data.data &&
+		data.data.spb_page &&
+		data.data.spb_page.items[0] &&
+		(data.data.spb_page.items[0].publish_items ||
+			(data.data.spb_item && data.data.spb_item.items))
 	) {
 		spgData = data.data.spb_page.items[0];
 	} else if (
-		(data &&
-			data.data &&
-			data.data.catalog_builder_page &&
-			// live
-			data.data.catalog_builder_item &&
-			data.data.catalog_builder_item.items &&
-			data.data.catalog_builder_page &&
-			data.data.catalog_builder_page.items[0]) ||
-		// preview
-		(data &&
-			data.data &&
-			data.data.catalog_builder_page &&
-			data.data.catalog_builder_page.items &&
-			data.data.catalog_builder_page.items[0] &&
-			data.data.catalog_builder_page.items[0].publish_items)
+		data &&
+		data.data &&
+		data.data.catalog_builder_page &&
+		data.data.catalog_builder_page.items[0] &&
+		(data.data.catalog_builder_page.items[0].publish_items ||
+			(data.data.catalog_builder_item && data.data.catalog_builder_item.items))
 	) {
 		spgData = data.data.catalog_builder_page.items[0];
 		contentData = {
@@ -193,8 +175,7 @@ export const PageBuilderComponent = (props) => {
 			spb_item: data.data.catalog_builder_item,
 		};
 	}
-    console.log(spgData);
-    console.log(contentData);
+    
 	if (spgData && (spgData.status || toPreview)) {
 		return (
 			<React.Fragment>
@@ -265,19 +246,11 @@ export const usePbFinder = (props) => {
 	const [pbData, setPbData] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [pathToFind, setPathFoFind] = useState(false);
-	const [catalogItemIdToFind, setCatalogItemIdToFind] = useState(false);
 	let pageMaskedId;
 	let pageData;
 
-	const findPage = (pathName, catalogItemId) => {
-		if (pathName) {
-			setCatalogItemIdToFind(false);
-			setPathFoFind(pathName);
-		} else if (catalogItemId) {
-			setCatalogItemIdToFind(catalogItemId);
-			setPathFoFind(false);
-		}
-
+	const findPage = (pathName) => {
+		setPathFoFind(pathName);
 		if (typeof window !== 'undefined' && window.smPbPagesByToken) {
 			setPbData(window.smPbPagesByToken);
 		} else {
@@ -325,29 +298,6 @@ export const usePbFinder = (props) => {
 					pageMaskedId = pageToFind.masked_id;
 				}
 			}
-		} else if (catalogItemIdToFind && pbData.data.catalog_builder_page) {
-			const { catalog_builder_page } = pbData.data;
-			pageMaskedId = 'notfound';
-			if (catalog_builder_page.items && catalog_builder_page.items.length) {
-				const cbPages = JSON.parse(JSON.stringify(catalog_builder_page.items));
-				cbPages.sort(
-					(el1, el2) => parseInt(el2.priority) - parseInt(el1.priority),
-				);
-				const pageToFind = cbPages.find((item) => {
-					if (storeCode && item.storeview_visibility) {
-						const storeViews = item.storeview_visibility.trim().split(',');
-						if (!storeViews.includes(storeCode)) return false;
-					}
-					return (
-						!item.apply_to ||
-						(item.apply_to && item.apply_to.trim.split(',').includes(produtId))
-					);
-				});
-				if (pageToFind && pageToFind.masked_id) {
-					pageData = pageToFind;
-					pageMaskedId = pageToFind.masked_id;
-				}
-			}
 		}
 	}
 
@@ -356,7 +306,7 @@ export const usePbFinder = (props) => {
 		pageMaskedId,
 		findPage,
 		pathToFind,
-		catalogItemIdToFind,
 		pageData,
+		allPages: pbData,
 	};
 };

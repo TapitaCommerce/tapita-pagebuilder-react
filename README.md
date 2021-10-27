@@ -50,6 +50,32 @@ Then go to example directory, run another `yarn start` command.
 - __lazyloadPlaceHolder__ - ReactComponent - _Place holder for lazyload Image, if false/ no lazyload applied_
 - __overRender__ - Function - _Function to override render function for each Item_
 
+## usePbFinder
+
+usePbFinder is a hook to help you find your page from the pages you created on Pagebuilder dashboard.
+
+```
+// storeCode is optional
+const pbFinderProps = usePbFinder({
+    endPoint,
+    integrationToken,
+    storeCode
+});
+const {
+    loading,
+    pageMaskedId,
+    findPage,
+    pathToFind,
+    pageData,
+    allPages
+} = pbFinderProps;
+
+with findPage(pathname) and use pageData and pageMaskedId to find your page with path_name
+
+and findPage() to getData and check `allPages` to get page with your own condition.
+
+```
+
 
 ## License
 

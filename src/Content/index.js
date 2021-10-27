@@ -188,6 +188,7 @@ const PbContent = (props) => {
 			const formURL = item.dataParsed[formSubmitTarget] || '';
 			return (
 				<form
+                    key={itemProps.key}
 					className='form-builder-artifact'
 					action={formURL}
 					method={formMethod}

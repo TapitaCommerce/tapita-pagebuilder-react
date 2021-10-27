@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { randomString } from '../../Helper/Data';
-import { Helmet } from 'react-helmet';
 
 export const Tab = (props) => {
 	const { item } = props;
@@ -43,47 +42,6 @@ export const Tab = (props) => {
 					: 'horizontal'
 			}`}
 		>
-			<Helmet
-				style={[
-					{
-						cssText: `
-                            .spb-item.type_tabs .spbitem-tab-nav {
-                                direction: ltr;
-                                padding: 0px 15px;
-                                display: flex;
-                                justify-content: center;
-                            }
-
-                            .spb-item.type_tabs > .spb-item {
-                                flex-shrink: initial;
-                            }
-
-                            .spb-item.type_tabs .spbitem-tab-nav .spbitem-tab-nav-item {
-                                cursor: pointer;
-                                margin-inline-end: 10px;
-                                padding: 10px 15px;
-                            }
-                            .spb-item.type_tabs .spbitem-tab-nav .spbitem-tab-nav-item.active {
-                                background-color: #ffffff;
-                                font-weight: 600;
-                            }
-
-                            .spb-item.type_tabs .spbitem-tab-nav.vertical {
-                                display: inline-block;
-                                flex-shrink: inherit;
-                                padding: 0;
-                            }
-
-                            .spb-item.type_tabs .spbitem-tab-nav.vertical .spbitem-tab-nav-item {
-                                width: 100%;
-                                margin-bottom: 5px;
-                                box-sizing: border-box;
-                            }
-
-                            `,
-					},
-				]}
-			/>
 			{itemChildren.map((childItem, childIndx) => {
 				return (
 					<div
