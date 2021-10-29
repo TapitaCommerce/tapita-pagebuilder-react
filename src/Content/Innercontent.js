@@ -40,6 +40,7 @@ const Innercontent = (props) => {
 		}
 	});
 	const styles = item.stylesParsed || {};
+	if(item.type === 'text_input') console.log(styles);
 
 	const HTMLTransform = (node) => {
 		// comment out the line below to translate paragraph
@@ -223,6 +224,8 @@ const Innercontent = (props) => {
 			'paddingRight',
 			'fontWeight',
 			'fontSize',
+			'border',
+			'borderRadius',
 			'lineHeight',
 			'color',
 			'fontFamily',
@@ -258,7 +261,7 @@ const Innercontent = (props) => {
 			<input
 				type='text'
 				placeholder={placeholder}
-				style={{ ...miniStyle, border: 'none', height: '100%' }}
+				style={{ ...miniStyle, height: '100%' }}
 				name={nameSpace}
 			/>
 		);

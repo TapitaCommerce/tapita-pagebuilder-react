@@ -42,6 +42,7 @@ const PbContent = (props) => {
 		const itemType = item.type;
 		const shouldNotHavePadding = itemType === 'text_input';
 		const _styles = prepareStyle(item, parent);
+		if (shouldNotHavePadding) console.log(_styles);
 		const passingAttrKeys = [
 			'padding',
 			'paddingTop',
@@ -49,6 +50,8 @@ const PbContent = (props) => {
 			'paddingLeft',
 			'paddingRight',
 			'fontWeight',
+			'border',
+			'borderRadius',
 			'fontSize',
 			'lineHeight',
 			'color',
@@ -72,12 +75,11 @@ const PbContent = (props) => {
 			}, {});
 
 		_stylesWithoutPadding.padding = '0px'; // override default
-		_stylesWithoutPadding.borderRadius = '0px'; // override default
 
 		const finalStyle = shouldNotHavePadding ? _stylesWithoutPadding : _styles;
 
 		const styles = finalStyle;
-		item.stylesParsed = finalStyle;
+		// item.stylesParsed = finalStyle;
 
 		if (itemType === 'dropdown') {
 			/**
