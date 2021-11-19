@@ -1,5 +1,4 @@
 import React, { Fragment, useRef } from 'react';
-import HtmlParser from 'react-html-parser';
 import { HtmlVideo } from './HTMLVideo/HTMLVideo';
 import { YoutubeVideo } from './YoutubeVideo/YoutubeVideo';
 import { Tab } from './Tab';
@@ -41,13 +40,6 @@ const Innercontent = (props) => {
 	});
 	const styles = item.stylesParsed || {};
 
-	const HTMLTransform = (node) => {
-		// comment out the line below to translate paragraph
-		return node.data;
-		if (node.type === 'text') {
-			return formatMessage({ val: node.data });
-		}
-	};
 	const dataParsed = item.dataParsed || {};
 	const nameSpace = useRef(dataParsed.name || randomString(5)).current;
 
@@ -160,10 +152,12 @@ const Innercontent = (props) => {
 			);
 		else return '';
 	} else if (item.type === 'paragraph') {
-		if (data.paragraphContent)
-			return HtmlParser(data.paragraphContent, {
-				transform: HTMLTransform,
-			});
+		return (
+			<div
+				contentEditable='true'
+				dangerouslySetInnerHTML={{ __html: data.paragraphContent }}
+			/>
+		);
 	} else if (['html_video', 'youtube_video'].includes(item.type)) {
 		const imgCover = (data ? data.imageCover : null) || null;
 		const size = (data ? data.size : null) || null;
@@ -203,9 +197,12 @@ const Innercontent = (props) => {
 		return <Instagram item={item} formatMessage={formatMessage} />;
 	} else if (item.type === 'custom_html') {
 		if (data.htmlContent)
-			return HtmlParser(data.htmlContent, {
-				transform: HTMLTransform,
-			});
+			return (
+				<div
+					contentEditable='true'
+					dangerouslySetInnerHTML={{ __html: data.htmlContent }}
+				/>
+			);
 	} else if (item.type === 'icon') {
 		const shouldUseCustomIcon = data[customIconDefKey];
 		const customIconValue = data[customIcon] || '';
