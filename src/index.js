@@ -82,29 +82,6 @@ const GET_ITEM_QUERY = `
     }
 `;
 
-const getQuery = (getPageItems) => {
-	return `
-        query getPagesByToken($integrationToken: String) {
-            spb_page(integrationToken: $integrationToken) {
-                total_count
-                items {
-                    url_path
-                    ${pageFields}
-                    ${getPageItems !== false ? 'publish_items' : ''}
-                }
-            }
-            catalog_builder_page(integrationToken: $integrationToken) {
-                total_count
-                items {
-                    apply_to
-                    ${pageFields}
-                    publish_items
-                }
-            }
-        }
-    `;
-};
-
 export const PageBuilderComponent = (props) => {
 	const {
 		endPoint,
