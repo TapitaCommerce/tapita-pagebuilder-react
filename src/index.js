@@ -152,7 +152,7 @@ export const PageBuilderComponent = (props) => {
 			spb_item: data.data.catalog_builder_item,
 		};
 	}
-    
+
 	if (spgData && (spgData.status || toPreview)) {
 		return (
 			<React.Fragment>

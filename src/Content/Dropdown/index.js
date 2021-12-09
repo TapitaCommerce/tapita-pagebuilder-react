@@ -54,18 +54,18 @@ export const Dropdown = (props) => {
 	}, [dropdownIcon]);
 
 	useEffect(() => {
-        if (titleRef && titleRef.current && titleRef.current.parentElement) {
-            let parentEl = titleRef.current.parentElement;
-            if (showing) {
-                parentEl.classList.add("expanded");
-                parentEl.classList.remove("collapsed");
-            } else {
-                parentEl.classList.add("collapsed");
-                parentEl.classList.remove("expanded");
-            }
-        }
+		if (titleRef && titleRef.current && titleRef.current.parentElement) {
+			const parentEl = titleRef.current.parentElement;
+			if (showing) {
+				parentEl.classList.add('expanded');
+				parentEl.classList.remove('collapsed');
+			} else {
+				parentEl.classList.add('collapsed');
+				parentEl.classList.remove('expanded');
+			}
+		}
 	}, [showing]);
-    
+
 	let title = item.name ? item.name : 'Your Dropdown Title';
 	title = formatMessage({
 		val: title,
