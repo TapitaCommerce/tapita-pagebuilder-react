@@ -82,29 +82,6 @@ const GET_ITEM_QUERY = `
     }
 `;
 
-const getQuery = (getPageItems) => {
-	return `
-        query getPagesByToken($integrationToken: String) {
-            spb_page(integrationToken: $integrationToken) {
-                total_count
-                items {
-                    url_path
-                    ${pageFields}
-                    ${getPageItems !== false ? 'publish_items' : ''}
-                }
-            }
-            catalog_builder_page(integrationToken: $integrationToken) {
-                total_count
-                items {
-                    apply_to
-                    ${pageFields}
-                    publish_items
-                }
-            }
-        }
-    `;
-};
-
 export const PageBuilderComponent = (props) => {
 	const {
 		endPoint,
@@ -242,13 +219,17 @@ export const PageBuilderComponent = (props) => {
 };
 
 export const usePbFinder = (props) => {
-	const { endPoint, integrationToken, storeCode, getPageItems } = props;
+	const { endPoint, integrationToken, storeCode } = props;
 	const [pbData, setPbData] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [pathToFind, setPathFoFind] = useState(false);
 	let pageMaskedId;
 	let pageData;
-
+	let pbUrl = endPoint.replace('/graphql', '/publishedpb');
+	if (!pbUrl.endsWith('/')) pbUrl += '/';
+	if (pbUrl.indexOf('?') !== -1)
+		pbUrl += '&integrationToken=' + integrationToken;
+	else pbUrl += '?integrationToken=' + integrationToken;
 	const findPage = (pathName) => {
 		setPathFoFind(pathName);
 		if (typeof window !== 'undefined' && window.smPbPagesByToken) {
@@ -257,7 +238,7 @@ export const usePbFinder = (props) => {
 			if (!loading) {
 				setLoading(true);
 				sendRequest(
-					endPoint,
+					pbUrl,
 					(result) => {
 						setLoading(false);
 						if (
@@ -269,7 +250,7 @@ export const usePbFinder = (props) => {
 							window.smPbPagesByToken = result;
 						setPbData(result);
 					},
-					getQuery(getPageItems),
+					'',
 					{ integrationToken },
 					'getPbPage',
 				);
