@@ -152,12 +152,7 @@ const Innercontent = (props) => {
 			);
 		else return '';
 	} else if (item.type === 'paragraph') {
-		return (
-			<div
-				contentEditable='true'
-				dangerouslySetInnerHTML={{ __html: data.paragraphContent }}
-			/>
-		);
+		return <div dangerouslySetInnerHTML={{ __html: data.paragraphContent }} />;
 	} else if (['html_video', 'youtube_video'].includes(item.type)) {
 		const imgCover = (data ? data.imageCover : null) || null;
 		const size = (data ? data.size : null) || null;
@@ -197,12 +192,7 @@ const Innercontent = (props) => {
 		return <Instagram item={item} formatMessage={formatMessage} />;
 	} else if (item.type === 'custom_html') {
 		if (data.htmlContent)
-			return (
-				<div
-					contentEditable='true'
-					dangerouslySetInnerHTML={{ __html: data.htmlContent }}
-				/>
-			);
+			return <div dangerouslySetInnerHTML={{ __html: data.htmlContent }} />;
 	} else if (item.type === 'icon') {
 		const shouldUseCustomIcon = data[customIconDefKey];
 		const customIconValue = data[customIcon] || '';
