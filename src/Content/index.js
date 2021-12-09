@@ -40,46 +40,8 @@ const PbContent = (props) => {
 				return '';
 		}
 		const itemType = item.type;
-		const shouldNotHavePadding = itemType === 'text_input';
-		const _styles = prepareStyle(item, parent);
-		if (shouldNotHavePadding) console.log(_styles);
-		const passingAttrKeys = [
-			'padding',
-			'paddingTop',
-			'paddingBottom',
-			'paddingLeft',
-			'paddingRight',
-			'fontWeight',
-			'border',
-			'borderRadius',
-			'fontSize',
-			'lineHeight',
-			'color',
-			'fontFamily',
-			'width',
-			'height',
-			'widthPixel',
-			'heightPixel',
-			'maxWidth',
-			'maxHeight',
-			'minWidth',
-			'minHeight',
-		];
-		const _stylesWithoutPadding = Object.entries(_styles)
-			.filter(([k, v]) => {
-				return !passingAttrKeys.includes(k);
-			})
-			.reduce((acc, [k, v]) => {
-				acc[k] = v;
-				return acc;
-			}, {});
-
-		_stylesWithoutPadding.padding = '0px'; // override default
-
-		const finalStyle = shouldNotHavePadding ? _stylesWithoutPadding : _styles;
-
-		const styles = finalStyle;
-		// item.stylesParsed = finalStyle;
+		const styles = prepareStyle(item, parent);
+		item.stylesParsed = JSON.parse(JSON.stringify(styles));
 
 		if (itemType === 'dropdown') {
 			/**
@@ -91,6 +53,9 @@ const PbContent = (props) => {
 			styles.paddingBottom = 0;
 			styles.paddingLeft = 0;
 			styles.paddingRight = 0;
+		} else if (itemType === 'text_input') {
+			styles.padding = 0;
+			styles.overflow = 'hidden';
 		}
 
 		if (item.type === 'partial_slider') {
@@ -190,7 +155,7 @@ const PbContent = (props) => {
 			const formURL = item.dataParsed[formSubmitTarget] || '';
 			return (
 				<form
-                    key={itemProps.key}
+					key={itemProps.key}
 					className='form-builder-artifact'
 					action={formURL}
 					method={formMethod}

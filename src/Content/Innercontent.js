@@ -39,8 +39,6 @@ const Innercontent = (props) => {
 		}
 	});
 	const styles = item.stylesParsed || {};
-	if(item.type === 'text_input') console.log(styles);
-
 	const dataParsed = item.dataParsed || {};
 	const nameSpace = useRef(dataParsed.name || randomString(5)).current;
 
@@ -243,7 +241,7 @@ const Innercontent = (props) => {
 		if (miniStyle.heightPixel !== undefined) {
 			miniStyle.height = miniStyle.heightPixel;
 		}
-
+		miniStyle.border = 'none';
 		return (
 			<input
 				type='text'
