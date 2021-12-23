@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 //uncomment this to build standalone package
-//import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom'
 import { sendRequest } from './Network/GraphQl';
 import Content from './Content';
 import { Helmet } from 'react-helmet';
@@ -221,6 +221,7 @@ export const PageBuilderComponent = (props) => {
 };
 
 // comment this to build standalone package
+/*
 export const usePbFinder = (props) => {
 	const { endPoint, integrationToken, storeCode } = props;
 	const [pbData, setPbData] = useState(false);
@@ -294,9 +295,8 @@ export const usePbFinder = (props) => {
 		allPages: pbData,
 	};
 };
-/*
-uncomment this to build standalone package
+*/
+
 export const renderForIdWithProps = (elId, pbProps) => {
 	ReactDOM.render(<PageBuilderComponent {...pbProps} />, document.getElementById(elId));
 }
-*/
