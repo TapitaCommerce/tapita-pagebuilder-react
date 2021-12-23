@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom'
 import { sendRequest } from './Network/GraphQl';
 import Content from './Content';
 import { Helmet } from 'react-helmet';
@@ -291,3 +292,7 @@ export const usePbFinder = (props) => {
 		allPages: pbData,
 	};
 };
+
+export const renderForIdWithProps = (elId, pbProps) => {
+	ReactDOM.render(<PageBuilderComponent {...pbProps} />, document.getElementById(elId));
+}
