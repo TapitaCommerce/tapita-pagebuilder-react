@@ -6,6 +6,7 @@ import { randomString, listToTree } from '../Helper/Data';
 import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
 import { PartialSlider } from './PartialSlider/PartialSlider';
 import LazyLoad from 'react-lazyload';
+import { TreeDataProductDetailUtils } from '../Helper/treeDataUtils';
 
 export const buttonTypeFieldName = 'button-type';
 
@@ -25,13 +26,32 @@ const PbContent = (props) => {
 		Link,
 		lazyloadPlaceHolder,
 		overRender,
+		layoutFilter,
+		filterRootChildrenOnly,
 	} = props;
+
 	const deviceFilterKey = useDeviceWidthPrefix();
 	const pageData =
 		spb_page && spb_page.items && spb_page.items[0] ? spb_page.items[0] : false;
 	const isRtl = pageData && pageData.is_rtl;
 
 	const renderItem = (item, children, parent) => {
+		if (layoutFilter !== null) {
+			if (filterRootChildrenOnly) {
+				if (
+					TreeDataProductDetailUtils.isRootChildren(item) &&
+					!item.root &&
+					TreeDataProductDetailUtils.getCurrentMarker(item) !== layoutFilter
+				) {
+					return null;
+				}
+			} else if (
+				!item.root &&
+				TreeDataProductDetailUtils.getCurrentMarker(item) !== layoutFilter
+			) {
+				return null;
+			}
+		}
 		if (item.dataParsed) {
 			if (deviceFilterKey === 'm_' && item.dataParsed.hideOnMobile) return '';
 			else if (deviceFilterKey === 't_' && item.dataParsed.hideOnTablet)

@@ -98,6 +98,8 @@ export const PageBuilderComponent = (props) => {
 		Link,
 		lazyloadPlaceHolder,
 		overRender,
+		layoutFilter = null,
+		filterRootChildrenOnly = true,
 	} = props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items
@@ -211,6 +213,8 @@ export const PageBuilderComponent = (props) => {
 					formatMessage={formatMessage}
 					lazyloadPlaceHolder={lazyloadPlaceHolder}
 					overRender={overRender}
+					layoutFilter={layoutFilter}
+					filterRootChildrenOnly={filterRootChildrenOnly}
 				/>
 			</React.Fragment>
 		);
@@ -291,3 +295,5 @@ export const usePbFinder = (props) => {
 		allPages: pbData,
 	};
 };
+
+export { TreeDataProductDetailMarkerEnum } from './Helper/treeDataUtils';
