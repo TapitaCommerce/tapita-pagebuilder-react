@@ -100,6 +100,8 @@ export const PageBuilderComponent = (props) => {
 		Link,
 		lazyloadPlaceHolder,
 		overRender,
+		layoutFilter = null,
+		filterRootChildrenOnly = true,
 	} = props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items
@@ -213,6 +215,8 @@ export const PageBuilderComponent = (props) => {
 					formatMessage={formatMessage}
 					lazyloadPlaceHolder={lazyloadPlaceHolder}
 					overRender={overRender}
+					layoutFilter={layoutFilter}
+					filterRootChildrenOnly={filterRootChildrenOnly}
 				/>
 			</React.Fragment>
 		);
@@ -221,7 +225,6 @@ export const PageBuilderComponent = (props) => {
 };
 
 // comment this to build standalone package
-/*
 export const usePbFinder = (props) => {
 	const { endPoint, integrationToken, storeCode } = props;
 	const [pbData, setPbData] = useState(false);
@@ -295,8 +298,10 @@ export const usePbFinder = (props) => {
 		allPages: pbData,
 	};
 };
-*/
+
+export { TreeDataProductDetailMarkerEnum } from './Helper/treeDataUtils';
 
 export const renderForIdWithProps = (elId, pbProps) => {
 	ReactDOM.render(<PageBuilderComponent {...pbProps} />, document.getElementById(elId));
 }
+

@@ -27,6 +27,7 @@ const AppWithRouter = () => {
 				findPage(location.pathname);
 		}
 	}, [location, pageMaskedId, pathToFind, findPage]);
+
 	if (pageMaskedId && pageMaskedId !== 'notfound') {
 		const pbcProps = {
 			Link: Link,
@@ -34,12 +35,12 @@ const AppWithRouter = () => {
 			endPoint,
 			lazyloadPlaceHolder: <div />,
 		};
+
 		return (
 			<PageBuilderComponent
 				{...pbcProps}
 				key={pageMaskedId}
 				maskedId={pageMaskedId}
-				pageData={pageData && pageData.publish_items ? pageData : false}
 			/>
 		);
 	}

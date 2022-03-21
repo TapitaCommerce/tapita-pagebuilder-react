@@ -6,6 +6,7 @@ import { randomString, listToTree } from '../Helper/Data';
 import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
 import { PartialSlider } from './PartialSlider/PartialSlider';
 import LazyLoad from 'react-lazyload';
+import { TreeDataProductDetailUtils } from '../Helper/treeDataUtils';
 
 export const buttonTypeFieldName = 'button-type';
 
@@ -25,13 +26,32 @@ const PbContent = (props) => {
 		Link,
 		lazyloadPlaceHolder,
 		overRender,
+		layoutFilter,
+		filterRootChildrenOnly,
 	} = props;
+
 	const deviceFilterKey = useDeviceWidthPrefix();
 	const pageData =
 		spb_page && spb_page.items && spb_page.items[0] ? spb_page.items[0] : false;
 	const isRtl = pageData && pageData.is_rtl;
 
 	const renderItem = (item, children, parent) => {
+		if (layoutFilter !== null) {
+			if (filterRootChildrenOnly) {
+				if (
+					TreeDataProductDetailUtils.isRootChildren(item) &&
+					!item.root &&
+					TreeDataProductDetailUtils.getCurrentMarker(item) !== layoutFilter
+				) {
+					return null;
+				}
+			} else if (
+				!item.root &&
+				TreeDataProductDetailUtils.getCurrentMarker(item) !== layoutFilter
+			) {
+				return null;
+			}
+		}
 		if (item.dataParsed) {
 			if (deviceFilterKey === 'm_' && item.dataParsed.hideOnMobile) return '';
 			else if (deviceFilterKey === 't_' && item.dataParsed.hideOnTablet)
@@ -182,6 +202,8 @@ const PbContent = (props) => {
 					itemProps.style.textDecoration = 'none';
 				if (!itemProps.style.color) itemProps.style.color = 'initial';
 				delete itemProps.onClick;
+				if (item.dataParsed && item.dataParsed.nofollow)
+					itemProps.rel = 'nofollow';
 				if (
 					Link &&
 					item.dataParsed.openUrl &&
@@ -191,7 +213,6 @@ const PbContent = (props) => {
 						<Link
 							to={item.dataParsed.openUrl}
 							target={openUrlInNewTab ? '_blank' : '_self'}
-							rel='noreferrer'
 							{...itemProps}
 						>
 							{innerContent}
@@ -207,7 +228,6 @@ const PbContent = (props) => {
 					<a
 						href={aHref}
 						target={openUrlInNewTab ? '_blank' : '_self'}
-						rel='noreferrer'
 						{...itemProps}
 					>
 						{innerContent}

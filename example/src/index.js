@@ -7,7 +7,7 @@ import {IntlProvider} from "react-intl";
 
 
 const messagesInJP = {
-	fish:'sanaka',
+	fish:'魚',
     Image: 'Gazō',
     'Your Text Go Here': 'Your Text Go Here',
     'Button Label': 'Button Label',
