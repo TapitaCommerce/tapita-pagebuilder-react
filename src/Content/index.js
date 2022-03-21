@@ -202,6 +202,8 @@ const PbContent = (props) => {
 					itemProps.style.textDecoration = 'none';
 				if (!itemProps.style.color) itemProps.style.color = 'initial';
 				delete itemProps.onClick;
+				if (item.dataParsed && item.dataParsed.nofollow)
+					itemProps.rel = 'nofollow';
 				if (
 					Link &&
 					item.dataParsed.openUrl &&
@@ -211,7 +213,6 @@ const PbContent = (props) => {
 						<Link
 							to={item.dataParsed.openUrl}
 							target={openUrlInNewTab ? '_blank' : '_self'}
-							rel='noreferrer'
 							{...itemProps}
 						>
 							{innerContent}
@@ -227,7 +228,6 @@ const PbContent = (props) => {
 					<a
 						href={aHref}
 						target={openUrlInNewTab ? '_blank' : '_self'}
-						rel='noreferrer'
 						{...itemProps}
 					>
 						{innerContent}
