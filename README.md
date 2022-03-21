@@ -49,8 +49,8 @@ Then go to example directory, run another `yarn start` command.
 - __formatMessage__ - Function - _For Localization Purpose_
 - __lazyloadPlaceHolder__ - ReactComponent - _Place holder for lazyload Image, if false/ no lazyload applied_
 - __overRender__ - Function - _Function to override render function for each Item_
-- __layoutFilter__ - Int - Add filter to render the item: UNKNOWN: -1, PAGE_COMPONENT: 0, TOP: 1, BOTTOM: 2_
-- __filterRootChildrenOnly__ - Boolean - Only apply layoutFilter to highest level elements_
+- __layoutFilter__ - Int - _Add filter to render the item: UNKNOWN: -1, PAGE\_COMPONENT: 0, TOP: 1, BOTTOM: 2_
+- __filterRootChildrenOnly__ - _Boolean - Only apply layoutFilter to highest level elements_
 
 ## usePbFinder
 
