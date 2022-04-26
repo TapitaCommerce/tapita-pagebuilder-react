@@ -63,6 +63,8 @@ const PbContent = (props) => {
 		const styles = prepareStyle(item, parent);
 		item.stylesParsed = JSON.parse(JSON.stringify(styles));
 
+		console.log(item.stylesParsed, styles, item.styles);
+
 		if (itemType === 'dropdown') {
 			/**
 			 * Dropdown padding is for dropdown title
@@ -90,7 +92,8 @@ const PbContent = (props) => {
 			} else if (item.dataParsed) {
 				try {
 					data = item.dataParsed;
-				} catch (err) {}
+				} catch (err) {
+				}
 			}
 
 			const _size = (data ? data.size : null) || null;
@@ -126,6 +129,18 @@ const PbContent = (props) => {
 		if (item.type === 'category_scroll_1') {
 			styles.backgroundImage = 'none';
 		}
+		if (
+			['text', 'paragraph', 'html_video', 'youtube_video', 'icon'].includes(
+				item.type,
+			)
+		) {
+			styles.boxShadow = 'none';
+		}
+
+		const noShadow = !styles.boxShadow || styles.boxShadow === 'none';
+		if (!noShadow) {
+			styles.overflow = 'visible';
+		}
 
 		const itemProps = {
 			id: item && item.entity_id ? `pbitm-id-${item.entity_id}` : null,
@@ -135,7 +150,7 @@ const PbContent = (props) => {
 				item.class_name || ''
 			} ${'type_' + (item.type || '')} ${
 				item.entity_id ? 'spb-item-id_' + item.entity_id : ''
-			}`,
+			} ${!noShadow ? 'spb-shadowed' : ''}`,
 		};
 
 		if (item.dataParsed && item.dataParsed.scrollTo) {
