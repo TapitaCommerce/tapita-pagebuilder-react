@@ -23,7 +23,7 @@ const changeShareURLToEmbedded = (shareURL) => {
 };
 
 export const _YoutubeVideo = (props) => {
-	const { width, size, showControl, videoURL, formatMessage } = props;
+	const { width, size, showControl, videoURL, formatMessage, style } = props;
 	const [currentVideoHeight, setCurrentVideoHeight] = useState(null);
 	const containerRef = useRef(null);
 
@@ -59,6 +59,7 @@ export const _YoutubeVideo = (props) => {
 						`?controls=${showControl ? 1 : 0}`
 					}
 					ref={containerRef}
+					style={style}
 				/>
 			</div>
 		</React.Fragment>
@@ -68,9 +69,9 @@ export const _YoutubeVideo = (props) => {
 export const YoutubeVideo = React.memo(
 	_YoutubeVideo,
 	(prevProps, nextProps) => {
-		const { width, size, showControl, videoURL, imgCover } = prevProps || {};
-		const { width1, size1, showControl1, videoURL1, imgCover1 } =
-			nextProps || {};
+		const { width, size, showControl, videoURL, imgCover, style } = prevProps || {};
+		const { width1, size1, showControl1, videoURL1, imgCover1, style1 } =
+		nextProps || {};
 
 		return (
 			width === width1 &&
@@ -78,6 +79,7 @@ export const YoutubeVideo = React.memo(
 			showControl === showControl1 &&
 			videoURL === videoURL1 &&
 			imgCover === imgCover1
+			&& JSON.stringify(style) === JSON.stringify(style1)
 		);
 	},
 );

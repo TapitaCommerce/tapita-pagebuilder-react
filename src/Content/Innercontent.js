@@ -7,6 +7,8 @@ import { Instagram } from './Instagram';
 import { icons } from './icons/icons.js';
 import { randomString } from '../Helper/Data';
 import { Dropdown } from './Dropdown';
+import { convertBoxShadowToTextShadow } from '../Helper/convertBoxShadowToTextShadow';
+import { tryParseJSON } from '../Helper/tryParseJSON';
 
 export const customIconDefKey = 'is-custom-icon';
 export const customIcon = 'custom-icon';
@@ -38,7 +40,7 @@ const Innercontent = (props) => {
 			data[styleKey] = data[key];
 		}
 	});
-	const styles = item.stylesParsed || {};
+	const styles = tryParseJSON(item.styles) || {};
 	const dataParsed = item.dataParsed || {};
 	const nameSpace = useRef(dataParsed.name || randomString(5)).current;
 
@@ -56,14 +58,18 @@ const Innercontent = (props) => {
 					fontWeight,
 					fontFamily,
 					lineHeight,
+					boxShadow,
 				},
 			} = item;
+			console.log(item);
 			if (fontSize) textStyle.fontSize = fontSize;
 			if (fontStyle) textStyle.fontStyle = fontStyle;
 			if (textDecoration) textStyle.textDecoration = textDecoration;
 			if (fontWeight) textStyle.fontWeight = fontWeight;
 			if (fontFamily) textStyle.fontFamily = fontFamily;
 			if (lineHeight) textStyle.lineHeight = lineHeight;
+			if (boxShadow)
+				textStyle.textShadow = convertBoxShadowToTextShadow(boxShadow);
 			return <TextTag style={textStyle}>{translatedText}</TextTag>;
 		}
 		return translatedText;
@@ -151,7 +157,20 @@ const Innercontent = (props) => {
 			);
 		else return '';
 	} else if (item.type === 'paragraph') {
-		return <div dangerouslySetInnerHTML={{ __html: data.paragraphContent }} />;
+		const wrapperStyle = item.stylesParsed.boxShadow
+			? {
+				textShadow: convertBoxShadowToTextShadow(item.stylesParsed.boxShadow),
+			}
+			: null;
+
+		if (data.paragraphContent) {
+			return (
+				<div
+					dangerouslySetInnerHTML={{ __html: data.paragraphContent }}
+					style={wrapperStyle}
+				/>
+			);
+		}
 	} else if (['html_video', 'youtube_video'].includes(item.type)) {
 		const imgCover = (data ? data.imageCover : null) || null;
 		const size = (data ? data.size : null) || null;
@@ -159,6 +178,11 @@ const Innercontent = (props) => {
 		const videoURL = (data ? data.videoURL : null) || '';
 		const showControl =
 			data && data.showControl !== undefined ? data.showControl : true;
+		const shadowStyle = item.stylesParsed.boxShadow
+			? {
+				boxShadow: item.stylesParsed.boxShadow,
+			}
+			: null;
 
 		if (item.type === 'html_video') {
 			return (
@@ -170,6 +194,7 @@ const Innercontent = (props) => {
 						imgCover={imgCover}
 						videoURL={videoURL}
 						formatMessage={formatMessage}
+						style={shadowStyle}
 					/>
 				</Fragment>
 			);
@@ -182,6 +207,7 @@ const Innercontent = (props) => {
 					imgCover={imgCover}
 					videoURL={videoURL}
 					formatMessage={formatMessage}
+					style={shadowStyle}
 				/>
 			);
 		}
@@ -190,13 +216,29 @@ const Innercontent = (props) => {
 	} else if (item.type === 'instagram') {
 		return <Instagram item={item} formatMessage={formatMessage} />;
 	} else if (item.type === 'custom_html') {
-		if (data.htmlContent)
-			return <div dangerouslySetInnerHTML={{ __html: data.htmlContent }} />;
+		if (data.htmlContent) {
+			const shadowStyle = item.stylesParsed.boxShadow
+				? {
+					boxShadow: item.stylesParsed.boxShadow,
+				}
+				: null;
+			return (
+				<div
+					dangerouslySetInnerHTML={{ __html: data.htmlContent }}
+					style={shadowStyle}
+				/>
+			);
+		}
 	} else if (item.type === 'icon') {
 		const shouldUseCustomIcon = data[customIconDefKey];
 		const customIconValue = data[customIcon] || '';
+		const shadowStyle = item.stylesParsed.boxShadow
+			? {
+				boxShadow: item.stylesParsed.boxShadow,
+			}
+			: null;
 		if (shouldUseCustomIcon) {
-			return <i className={customIconValue} />;
+			return <i className={customIconValue} style={shadowStyle} />;
 		}
 		if (data.icon && icons[data.icon]) return icons[data.icon];
 	} else if (item.type === 'text_input') {

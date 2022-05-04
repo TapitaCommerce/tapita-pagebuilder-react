@@ -11,7 +11,9 @@ const styleStringBeauty = `
         padding: 15px;
         box-sizing: border-box;
     }
-
+    .spb-item.spb-shadowed {
+    	overflow: visible;
+    }
     .type_slider .carousel-root {
         max-width: 100%;
     }
@@ -480,7 +482,7 @@ const styleStringBeauty = `
         -webkit-margin-end: 10px;
         margin-inline-end: 10px;
     }
-    .spb-item.type_partial_slider .partial-slider-dot.active {   
+    .spb-item.type_partial_slider .partial-slider-dot.active {
         background-color: #fa6402;
     }
 `;
