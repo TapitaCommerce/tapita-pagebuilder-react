@@ -63,7 +63,6 @@ const PbContent = (props) => {
 		const styles = prepareStyle(item, parent);
 		item.stylesParsed = JSON.parse(JSON.stringify(styles));
 
-		console.log(item.stylesParsed, styles, item.styles);
 
 		if (itemType === 'dropdown') {
 			/**
