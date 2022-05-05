@@ -61,7 +61,7 @@ const Innercontent = (props) => {
 					boxShadow,
 				},
 			} = item;
-			console.log(item);
+			
 			if (fontSize) textStyle.fontSize = fontSize;
 			if (fontStyle) textStyle.fontStyle = fontStyle;
 			if (textDecoration) textStyle.textDecoration = textDecoration;
