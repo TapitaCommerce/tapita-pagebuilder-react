@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-//uncomment this to build standalone package
-//import ReactDOM from 'react-dom'
+// uncomment this to build standalone package
+// import ReactDOM from 'react-dom'
 import { sendRequest } from './Network/GraphQl';
 import Content from './Content';
 import { Helmet } from 'react-helmet';

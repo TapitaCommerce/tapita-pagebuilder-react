@@ -228,6 +228,7 @@ const PbContent = (props) => {
 					<a
 						href={aHref}
 						target={openUrlInNewTab ? '_blank' : '_self'}
+						rel='noreferrer'
 						{...itemProps}
 					>
 						{innerContent}
