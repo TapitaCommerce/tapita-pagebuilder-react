@@ -7,6 +7,7 @@ import { Instagram } from './Instagram';
 import { icons } from './icons/icons.js';
 import { randomString } from '../Helper/Data';
 import { Dropdown } from './Dropdown';
+import { FacebookPagePlugin } from './FacebookPagePlugin';
 
 export const customIconDefKey = 'is-custom-icon';
 export const customIcon = 'custom-icon';
@@ -187,6 +188,8 @@ const Innercontent = (props) => {
 		}
 	} else if (item.type === 'share_button') {
 		return <LikeShareGeneric item={item} formatMessage={formatMessage} />;
+	} else if (item.type === 'facebook_page_plugin') {
+		return <FacebookPagePlugin item={item} formatMessage={formatMessage} />;
 	} else if (item.type === 'instagram') {
 		return <Instagram item={item} formatMessage={formatMessage} />;
 	} else if (item.type === 'custom_html') {
