@@ -300,9 +300,7 @@ export const usePbFinder = (props) => {
 };
 
 export { TreeDataProductDetailMarkerEnum } from './Helper/treeDataUtils';
-/*
-uncomment this to build standalone package
-export const renderForIdWithProps = (elId, pbProps) => {
-	ReactDOM.render(<PageBuilderComponent {...pbProps} />, document.getElementById(elId));
-}
-*/
+// uncomment this to build standalone package
+// export const renderForIdWithProps = (elId, pbProps) => {
+// 	ReactDOM.render(<PageBuilderComponent {...pbProps} />, document.getElementById(elId));
+// }
