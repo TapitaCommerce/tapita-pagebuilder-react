@@ -7,6 +7,7 @@ import { Instagram } from './Instagram';
 import { icons } from './icons/icons.js';
 import { randomString } from '../Helper/Data';
 import { Dropdown } from './Dropdown';
+import { FacebookPagePlugin } from './FacebookPagePlugin';
 import { convertBoxShadowToTextShadow } from '../Helper/convertBoxShadowToTextShadow';
 import { tryParseJSON } from '../Helper/tryParseJSON';
 
@@ -61,7 +62,7 @@ const Innercontent = (props) => {
 					boxShadow,
 				},
 			} = item;
-			
+
 			if (fontSize) textStyle.fontSize = fontSize;
 			if (fontStyle) textStyle.fontStyle = fontStyle;
 			if (textDecoration) textStyle.textDecoration = textDecoration;
@@ -213,6 +214,8 @@ const Innercontent = (props) => {
 		}
 	} else if (item.type === 'share_button') {
 		return <LikeShareGeneric item={item} formatMessage={formatMessage} />;
+	} else if (item.type === 'facebook_page_plugin') {
+		return <FacebookPagePlugin item={item} formatMessage={formatMessage} />;
 	} else if (item.type === 'instagram') {
 		return <Instagram item={item} formatMessage={formatMessage} />;
 	} else if (item.type === 'custom_html') {
