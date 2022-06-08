@@ -2,7 +2,7 @@ import React from 'react';
 
 // implemented according to https://developers.facebook.com/docs/plugins/page-plugin/
 
-const DEFAULT_SHARE_URL = 'https://www.facebook.com/simicart';
+const DEFAULT_SHARE_URL = 'https://www.facebook.com/tapita';
 export const FacebookPagePlugin = (props) => {
 	const { item } = props;
 

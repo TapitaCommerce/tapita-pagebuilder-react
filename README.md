@@ -1,13 +1,13 @@
-# simi-pagebuilder-react
+# tapita-pagebuilder-react
 
-> SimiCart React PageBuilder Client
+> Tapita React PageBuilder Client
 
-[![NPM](https://img.shields.io/npm/v/simi-pagebuilder-react.svg)](https://www.npmjs.com/package/simi-pagebuilder-react) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/tapita-pagebuilder-react.svg)](https://www.npmjs.com/package/tapita-pagebuilder-react) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
 ```bash
-npm install --save simi-pagebuilder-react
+npm install --save tapita-pagebuilder-react
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ npm install --save simi-pagebuilder-react
 ```jsx
 import React, { Component } from 'react'
 
-import { PageBuilderComponent } from 'simi-pagebuilder-react'
+import { PageBuilderComponent } from 'tapita-pagebuilder-react'
 
 class Example extends Component {
   render() {
@@ -27,8 +27,8 @@ class Example extends Component {
 ## Develop
 
 ```bash
-git clone https://github.com/Simicart/simi-pagebuilder-react
-cd simi-pagebuilder-react
+git clone https://github.com/TapitaCommerce/tapita-pagebuilder-react
+cd tapita-pagebuilder-react
 yarn install && cd example && yarn install && cd ..
 yarn start
 ```
@@ -81,4 +81,4 @@ and findPage() to getData and check `allPages` to get page with your own conditi
 
 ## License
 
-MIT © [SimiCart](https://github.com/SimiCart)
+MIT © [Tapita](https://github.com/TapitaCommerce)

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { PageBuilderComponent, usePbFinder } from 'simi-pagebuilder-react';
+import { PageBuilderComponent, usePbFinder } from 'tapita-pagebuilder-react';
 import {
 	Route,
 	Switch,
