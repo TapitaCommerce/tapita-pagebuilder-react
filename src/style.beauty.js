@@ -27,7 +27,9 @@ const styleStringBeauty = `
         background-color: white;
         padding: 0;
     }
-
+    .spb-item.type_paragraph * {
+        color: inherit !important;
+    }
     .spb-item.type_button {
         padding: 10px 20px;
         cursor: pointer;

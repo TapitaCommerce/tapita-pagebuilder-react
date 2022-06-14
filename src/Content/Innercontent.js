@@ -60,6 +60,7 @@ const Innercontent = (props) => {
 					fontFamily,
 					lineHeight,
 					boxShadow,
+					color,
 				},
 			} = item;
 
@@ -69,6 +70,7 @@ const Innercontent = (props) => {
 			if (fontWeight) textStyle.fontWeight = fontWeight;
 			if (fontFamily) textStyle.fontFamily = fontFamily;
 			if (lineHeight) textStyle.lineHeight = lineHeight;
+			if (color) textStyle.color = color;
 			if (boxShadow)
 				textStyle.textShadow = convertBoxShadowToTextShadow(boxShadow);
 			return <TextTag style={textStyle}>{translatedText}</TextTag>;
@@ -160,8 +162,8 @@ const Innercontent = (props) => {
 	} else if (item.type === 'paragraph') {
 		const wrapperStyle = item.stylesParsed.boxShadow
 			? {
-				textShadow: convertBoxShadowToTextShadow(item.stylesParsed.boxShadow),
-			}
+					textShadow: convertBoxShadowToTextShadow(item.stylesParsed.boxShadow),
+			  }
 			: null;
 
 		if (data.paragraphContent) {
@@ -181,8 +183,8 @@ const Innercontent = (props) => {
 			data && data.showControl !== undefined ? data.showControl : true;
 		const shadowStyle = item.stylesParsed.boxShadow
 			? {
-				boxShadow: item.stylesParsed.boxShadow,
-			}
+					boxShadow: item.stylesParsed.boxShadow,
+			  }
 			: null;
 
 		if (item.type === 'html_video') {
@@ -222,8 +224,8 @@ const Innercontent = (props) => {
 		if (data.htmlContent) {
 			const shadowStyle = item.stylesParsed.boxShadow
 				? {
-					boxShadow: item.stylesParsed.boxShadow,
-				}
+						boxShadow: item.stylesParsed.boxShadow,
+				  }
 				: null;
 			return (
 				<div
@@ -237,8 +239,8 @@ const Innercontent = (props) => {
 		const customIconValue = data[customIcon] || '';
 		const shadowStyle = item.stylesParsed.boxShadow
 			? {
-				boxShadow: item.stylesParsed.boxShadow,
-			}
+					boxShadow: item.stylesParsed.boxShadow,
+			  }
 			: null;
 		if (shouldUseCustomIcon) {
 			return <i className={customIconValue} style={shadowStyle} />;
