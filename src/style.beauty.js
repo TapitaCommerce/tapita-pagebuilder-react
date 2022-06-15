@@ -30,6 +30,9 @@ const styleStringBeauty = `
     .spb-item.type_paragraph * {
         color: inherit !important;
     }
+    button.spb-item {
+        cursor: pointer;
+    }
     .spb-item.type_button {
         padding: 10px 20px;
         cursor: pointer;

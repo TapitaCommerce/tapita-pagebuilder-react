@@ -12,6 +12,7 @@ export const buttonTypeFieldName = 'button-type';
 
 export const formSubmitMethod = 'form-submit-method';
 export const formSubmitTarget = 'form-submit-url';
+export const formSubmitOnSubmit = 'form-submit-onSubmit';
 
 const PbContent = (props) => {
 	const {
@@ -63,7 +64,6 @@ const PbContent = (props) => {
 		const styles = prepareStyle(item, parent);
 		item.stylesParsed = JSON.parse(JSON.stringify(styles));
 
-
 		if (itemType === 'dropdown') {
 			/**
 			 * Dropdown padding is for dropdown title
@@ -74,7 +74,7 @@ const PbContent = (props) => {
 			styles.paddingBottom = 0;
 			styles.paddingLeft = 0;
 			styles.paddingRight = 0;
-		} else if (itemType === 'text_input') {
+		} else if (itemType === 'text_input' || itemType === 'textarea_input') {
 			styles.padding = 0;
 			styles.overflow = 'hidden';
 		}
@@ -91,8 +91,7 @@ const PbContent = (props) => {
 			} else if (item.dataParsed) {
 				try {
 					data = item.dataParsed;
-				} catch (err) {
-				}
+				} catch (err) {}
 			}
 
 			const _size = (data ? data.size : null) || null;
@@ -192,6 +191,11 @@ const PbContent = (props) => {
 					key={itemProps.key}
 					className='form-builder-artifact'
 					action={formURL}
+					onSubmit={() => {
+						try {
+							eval(item.dataParsed[formSubmitOnSubmit]);
+						} catch (err) {}
+					}}
 					method={formMethod}
 				>
 					<div {...itemProps}>{innerContent}</div>
@@ -269,6 +273,17 @@ const PbContent = (props) => {
 				<LazyLoad {...itemProps} placeholder={lazyloadPlaceHolder}>
 					{innerContent}
 				</LazyLoad>
+			);
+		} else if (item.type === 'hidden_input') {
+			if (!item.dataParsed) return '';
+			return (
+				<input
+					key={item.entity_id}
+					type='hidden'
+					name={item.dataParsed.name}
+					id={item.dataParsed.input_id}
+					value={item.dataParsed.default_value}
+				/>
 			);
 		}
 

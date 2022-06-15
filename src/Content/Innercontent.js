@@ -246,7 +246,7 @@ const Innercontent = (props) => {
 			return <i className={customIconValue} style={shadowStyle} />;
 		}
 		if (data.icon && icons[data.icon]) return icons[data.icon];
-	} else if (item.type === 'text_input') {
+	} else if (item.type === 'text_input' || item.type === 'textarea_input') {
 		const placeholder = data ? data.placeholder : '';
 		const applicableStyleAttr = [
 			'padding',
@@ -289,12 +289,23 @@ const Innercontent = (props) => {
 			miniStyle.height = miniStyle.heightPixel;
 		}
 		miniStyle.border = 'none';
-		return (
-			<input
-				type='text'
+
+		return item.type === 'textarea_input' ? (
+			<textarea
 				placeholder={placeholder}
 				style={{ ...miniStyle, height: '100%' }}
 				name={nameSpace}
+				id={data.input_id}
+				defaultValue={data.default_value}
+			/>
+		) : (
+			<input
+				type='text'
+				placeholder={placeholder}
+				id={data.input_id}
+				style={{ ...miniStyle, height: '100%' }}
+				name={nameSpace}
+				defaultValue={data.default_value}
 			/>
 		);
 	}
