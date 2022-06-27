@@ -30,6 +30,8 @@ export const listToTree = (list) => {
 		node.status = parseInt(node.status);
 		try {
 			node.dataParsed = JSON.parse(node.data);
+		} catch (err) {}
+		try {
 			node.stylesParsed = JSON.parse(node.styles);
 		} catch (err) {}
 		if (node.status) {
