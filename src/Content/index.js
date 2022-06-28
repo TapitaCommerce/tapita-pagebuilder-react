@@ -152,6 +152,7 @@ const PbContent = (props) => {
 		};
 
 		if (item.dataParsed && item.dataParsed.scrollTo) {
+			styles.cursor = 'pointer';
 			itemProps.onClick = () => {
 				const elmnt = document.getElementsByClassName(item.dataParsed.scrollTo);
 				if (elmnt && elmnt.length) elmnt[0].scrollIntoView();
