@@ -28,10 +28,8 @@ export const PartialSlider = (props) => {
 			const elements = document.querySelector(
 				`.${unqId}.partial-slider-child-container`,
 			).children;
-			let target = elements.item(index);
+			const target = elements.item(index);
 			try {
-				const targetId = target.id;
-				target = document.getElementById(targetId);
 				target.scrollIntoView({ block: 'nearest', inline: 'start' });
 			} catch (err) {
 				console.warn(err);

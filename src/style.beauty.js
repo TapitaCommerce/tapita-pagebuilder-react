@@ -434,9 +434,9 @@ const styleStringBeauty = `
         scroll-behavior: smooth;
         scrollbar-width: none;
         -ms-overflow-style: none;
-        ::-webkit-scrollbar {
-            display: none;
-        }
+    }
+    .spb-item .partial-slider-child-container::-webkit-scrollbar {
+        display: none;
     }
     .spb-item.type_partial_slider .partial-slider-navic {
         position: absolute;
