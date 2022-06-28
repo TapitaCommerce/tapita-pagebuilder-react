@@ -1,6 +1,12 @@
 import { useLayoutEffect, useState } from 'react';
 
 export const useWindowSize = () => {
+	if (!window.smpbWindowWidth) {
+		window.smpbWindowWidth = Math.max(
+			document.documentElement.clientWidth || 0,
+			window.innerWidth || 0,
+		);
+	}
 	const [size, setSize] = useState({
 		width:
 			typeof window !== 'undefined'
