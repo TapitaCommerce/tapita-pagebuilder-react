@@ -27,9 +27,34 @@ const styleStringBeauty = `
         background-color: white;
         padding: 0;
     }
-    .spb-item.type_paragraph * {
-        color: inherit !important;
+
+    .spb-item.type_paragraph {
+        color: #000;
     }
+
+    .spb-item.type_paragraph * {
+        color: inherit;
+    }
+
+    .spb-item.type_paragraph div,
+    .spb-item.type_paragraph span,
+    .spb-item.type_paragraph u,
+    .spb-item.type_paragraph ul,
+    .spb-item.type_paragraph li,
+    .spb-item.type_paragraph a,
+    .spb-item.type_paragraph b,
+    .spb-item.type_paragraph em,
+    .spb-item.type_paragraph del,
+    .spb-item.type_paragraph ins,
+    .spb-item.type_paragraph base,
+    .spb-item.type_paragraph td,
+    .spb-item.type_paragraph tr,
+    .spb-item.type_paragraph th,
+    .spb-item.type_paragraph thead,
+    .spb-item.type_paragraph p {
+        color: inherit;
+    }
+
     button.spb-item {
         cursor: pointer;
     }
