@@ -52,7 +52,7 @@ export const _YoutubeVideo = (props) => {
 				<iframe
 					height={currentVideoHeight || 'auto'}
 					width='100%'
-					allowFullScreen=''
+					allowFullScreen
 					frameBorder='0'
 					src={
 						changeShareURLToEmbedded(videoURL) +
