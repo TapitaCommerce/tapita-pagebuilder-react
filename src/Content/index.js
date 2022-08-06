@@ -178,11 +178,28 @@ const PbContent = (props) => {
 			};
 		}
 
-		const innerContent = renderInnerContent(item, children, parent);
+		let innerContent = renderInnerContent(item, children, parent);
 
 		if (overRender) {
 			const overRendered = overRender(item, itemProps, innerContent);
-			if (overRendered) return overRendered;
+			if (overRendered) {
+				if (typeof overRendered === 'object' && overRendered.innerString) {
+					innerContent = (
+						<div
+							dangerouslySetInnerHTML={{ __html: overRendered.innerString }}
+						/>
+					);
+				} else if (
+					typeof overRendered === 'object' &&
+					overRendered.fullString
+				) {
+					return (
+						<div
+							dangerouslySetInnerHTML={{ __html: overRendered.fullString }}
+						/>
+					);
+				} else return overRendered;
+			}
 		}
 		if (item.type === 'form_group') {
 			const formMethod = item.dataParsed[formSubmitMethod] || 'GET';
