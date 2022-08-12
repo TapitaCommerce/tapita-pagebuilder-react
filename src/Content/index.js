@@ -29,7 +29,7 @@ const PbContent = (props) => {
 		overRender,
 		layoutFilter,
 		filterRootChildrenOnly,
-		translateParagraph
+		translateParagraph,
 	} = props;
 
 	const deviceFilterKey = useDeviceWidthPrefix();

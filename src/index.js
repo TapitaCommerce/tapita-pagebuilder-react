@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 // uncomment this to build standalone package
-// import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
 import { sendRequest } from './Network/GraphQl';
 import Content from './Content';
 import { Helmet } from 'react-helmet';
@@ -102,7 +102,7 @@ export const PageBuilderComponent = (props) => {
 		overRender,
 		layoutFilter = null,
 		filterRootChildrenOnly = true,
-		_translateParagraph = false
+		_translateParagraph = false,
 	} = props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items
@@ -303,6 +303,9 @@ export const usePbFinder = (props) => {
 
 export { TreeDataProductDetailMarkerEnum } from './Helper/treeDataUtils';
 // uncomment this to build standalone package
-// export const renderForIdWithProps = (elId, pbProps) => {
-// 	ReactDOM.render(<PageBuilderComponent {...pbProps} />, document.getElementById(elId));
-// }
+export const renderForIdWithProps = (elId, pbProps) => {
+	ReactDOM.render(
+		<PageBuilderComponent {...pbProps} />,
+		document.getElementById(elId),
+	);
+};
