@@ -29,6 +29,7 @@ const PbContent = (props) => {
 		overRender,
 		layoutFilter,
 		filterRootChildrenOnly,
+		translateParagraph
 	} = props;
 
 	const deviceFilterKey = useDeviceWidthPrefix();
@@ -358,6 +359,7 @@ const PbContent = (props) => {
 					ProductScroll={ProductScroll}
 					CategoryScroll={CategoryScroll}
 					deviceFilterKey={deviceFilterKey}
+					translateParagraph={translateParagraph}
 				/>
 				{children.length ? children : ''}
 			</React.Fragment>

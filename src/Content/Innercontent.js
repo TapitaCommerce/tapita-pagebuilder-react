@@ -1,15 +1,15 @@
-import React, { Fragment, useRef } from 'react';
-import { HtmlVideo } from './HTMLVideo/HTMLVideo';
-import { YoutubeVideo } from './YoutubeVideo/YoutubeVideo';
-import { Tab } from './Tab';
-import { LikeShareGeneric } from './LikeAndShare/LikeShare/LikeShareGeneric';
-import { Instagram } from './Instagram';
-import { icons } from './icons/icons.js';
-import { randomString } from '../Helper/Data';
-import { Dropdown } from './Dropdown';
-import { FacebookPagePlugin } from './FacebookPagePlugin';
-import { convertBoxShadowToTextShadow } from '../Helper/convertBoxShadowToTextShadow';
-import { tryParseJSON } from '../Helper/tryParseJSON';
+import React, {Fragment, useRef} from 'react';
+import {HtmlVideo} from './HTMLVideo/HTMLVideo';
+import {YoutubeVideo} from './YoutubeVideo/YoutubeVideo';
+import {Tab} from './Tab';
+import {LikeShareGeneric} from './LikeAndShare/LikeShare/LikeShareGeneric';
+import {Instagram} from './Instagram';
+import {icons} from './icons/icons.js';
+import {randomString} from '../Helper/Data';
+import {Dropdown} from './Dropdown';
+import {FacebookPagePlugin} from './FacebookPagePlugin';
+import {convertBoxShadowToTextShadow} from '../Helper/convertBoxShadowToTextShadow';
+import {tryParseJSON} from '../Helper/tryParseJSON';
 
 export const customIconDefKey = 'is-custom-icon';
 export const customIcon = 'custom-icon';
@@ -25,15 +25,16 @@ const Innercontent = (props) => {
 		ProductScroll,
 		CategoryScroll,
 		deviceFilterKey,
+		translateParagraph
 	} = props;
 
 	if (!item || !item.entity_id) return '';
 
 	let data = {};
 	if (item.data && typeof item.data === 'object') {
-		data = { ...item.data };
+		data = {...item.data};
 	} else if (item.dataParsed) {
-		data = { ...item.dataParsed };
+		data = {...item.dataParsed};
 	}
 	Object.keys(data).forEach((key) => {
 		if (key.includes(deviceFilterKey)) {
@@ -47,7 +48,7 @@ const Innercontent = (props) => {
 
 	if (item.type === 'text') {
 		const textValue = item.name ? item.name : 'Your Text Go Here';
-		const translatedText = formatMessage({ val: textValue });
+		const translatedText = formatMessage({val: textValue});
 		if (item.dataParsed && item.dataParsed.textTag) {
 			const TextTag = item.dataParsed.textTag;
 			const textStyle = {};
@@ -77,9 +78,9 @@ const Innercontent = (props) => {
 		}
 		return translatedText;
 	} else if (item.type === 'tabs') {
-		return <Tab item={item} />;
+		return <Tab item={item}/>;
 	} else if (item.type === 'dropdown') {
-		return <Dropdown item={item} formatMessage={formatMessage} />;
+		return <Dropdown item={item} formatMessage={formatMessage}/>;
 	} else if (item.type === 'image') {
 		if (data.image) {
 			const alt = formatMessage({
@@ -162,14 +163,15 @@ const Innercontent = (props) => {
 	} else if (item.type === 'paragraph') {
 		const wrapperStyle = item.stylesParsed.boxShadow
 			? {
-					textShadow: convertBoxShadowToTextShadow(item.stylesParsed.boxShadow),
-			  }
+				textShadow: convertBoxShadowToTextShadow(item.stylesParsed.boxShadow),
+			}
 			: null;
 
 		if (data.paragraphContent) {
+			const content = translateParagraph ? formatMessage({val: data.paragraphContent}) : data.paragraphContent
 			return (
 				<div
-					dangerouslySetInnerHTML={{ __html: data.paragraphContent }}
+					dangerouslySetInnerHTML={{__html: content}}
 					style={wrapperStyle}
 				/>
 			);
@@ -183,8 +185,8 @@ const Innercontent = (props) => {
 			data && data.showControl !== undefined ? data.showControl : true;
 		const shadowStyle = item.stylesParsed.boxShadow
 			? {
-					boxShadow: item.stylesParsed.boxShadow,
-			  }
+				boxShadow: item.stylesParsed.boxShadow,
+			}
 			: null;
 
 		if (item.type === 'html_video') {
@@ -215,21 +217,21 @@ const Innercontent = (props) => {
 			);
 		}
 	} else if (item.type === 'share_button') {
-		return <LikeShareGeneric item={item} formatMessage={formatMessage} />;
+		return <LikeShareGeneric item={item} formatMessage={formatMessage}/>;
 	} else if (item.type === 'facebook_page_plugin') {
-		return <FacebookPagePlugin item={item} formatMessage={formatMessage} />;
+		return <FacebookPagePlugin item={item} formatMessage={formatMessage}/>;
 	} else if (item.type === 'instagram') {
-		return <Instagram item={item} formatMessage={formatMessage} />;
+		return <Instagram item={item} formatMessage={formatMessage}/>;
 	} else if (item.type === 'custom_html') {
 		if (data.htmlContent) {
 			const shadowStyle = item.stylesParsed.boxShadow
 				? {
-						boxShadow: item.stylesParsed.boxShadow,
-				  }
+					boxShadow: item.stylesParsed.boxShadow,
+				}
 				: null;
 			return (
 				<div
-					dangerouslySetInnerHTML={{ __html: data.htmlContent }}
+					dangerouslySetInnerHTML={{__html: data.htmlContent}}
 					style={shadowStyle}
 				/>
 			);
@@ -239,11 +241,11 @@ const Innercontent = (props) => {
 		const customIconValue = data[customIcon] || '';
 		const shadowStyle = item.stylesParsed.boxShadow
 			? {
-					boxShadow: item.stylesParsed.boxShadow,
-			  }
+				boxShadow: item.stylesParsed.boxShadow,
+			}
 			: null;
 		if (shouldUseCustomIcon) {
-			return <i className={customIconValue} style={shadowStyle} />;
+			return <i className={customIconValue} style={shadowStyle}/>;
 		}
 		if (data.icon && icons[data.icon]) return icons[data.icon];
 	} else if (item.type === 'text_input' || item.type === 'textarea_input') {
@@ -293,7 +295,7 @@ const Innercontent = (props) => {
 		return item.type === 'textarea_input' ? (
 			<textarea
 				placeholder={placeholder}
-				style={{ ...miniStyle, height: '100%' }}
+				style={{...miniStyle, height: '100%'}}
 				name={nameSpace}
 				id={data.input_id}
 				defaultValue={data.default_value}
@@ -303,7 +305,7 @@ const Innercontent = (props) => {
 				type='text'
 				placeholder={placeholder}
 				id={data.input_id}
-				style={{ ...miniStyle, height: '100%' }}
+				style={{...miniStyle, height: '100%'}}
 				name={nameSpace}
 				defaultValue={data.default_value}
 			/>

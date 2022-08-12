@@ -102,6 +102,7 @@ export const PageBuilderComponent = (props) => {
 		overRender,
 		layoutFilter = null,
 		filterRootChildrenOnly = true,
+		_translateParagraph = false
 	} = props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items
@@ -217,6 +218,7 @@ export const PageBuilderComponent = (props) => {
 					overRender={overRender}
 					layoutFilter={layoutFilter}
 					filterRootChildrenOnly={filterRootChildrenOnly}
+					translateParagraph={_translateParagraph}
 				/>
 			</React.Fragment>
 		);
