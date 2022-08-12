@@ -26,6 +26,7 @@ const Innercontent = (props) => {
 		CategoryScroll,
 		deviceFilterKey,
 		translateParagraph,
+		translatePlaceholder,
 	} = props;
 
 	if (!item || !item.entity_id) return '';
@@ -251,7 +252,11 @@ const Innercontent = (props) => {
 		}
 		if (data.icon && icons[data.icon]) return icons[data.icon];
 	} else if (item.type === 'text_input' || item.type === 'textarea_input') {
-		const placeholder = data ? data.placeholder : '';
+		const placeholder = data
+			? formatMessage && translatePlaceholder
+				? formatMessage({ val: data.placeholder })
+				: data.placeholder
+			: '';
 		const applicableStyleAttr = [
 			'padding',
 			'paddingTop',

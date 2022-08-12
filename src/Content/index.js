@@ -30,6 +30,7 @@ const PbContent = (props) => {
 		layoutFilter,
 		filterRootChildrenOnly,
 		translateParagraph,
+		translatePlaceholder,
 	} = props;
 
 	const deviceFilterKey = useDeviceWidthPrefix();
@@ -360,6 +361,7 @@ const PbContent = (props) => {
 					CategoryScroll={CategoryScroll}
 					deviceFilterKey={deviceFilterKey}
 					translateParagraph={translateParagraph}
+					translatePlaceholder={translatePlaceholder}
 				/>
 				{children.length ? children : ''}
 			</React.Fragment>
