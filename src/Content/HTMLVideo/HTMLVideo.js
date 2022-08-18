@@ -3,7 +3,8 @@ import React, { Fragment } from 'react';
 const NO_SUPPORT = 'Your browser does not support the video tag.';
 
 export const _HtmlVideo = (props) => {
-	const { width, size, showControl, imgCover, videoURL, formatMessage, style } = props;
+	const { width, size, showControl, imgCover, videoURL, formatMessage, style } =
+		props;
 
 	if (!videoURL) {
 		return '';
@@ -33,8 +34,10 @@ export const _HtmlVideo = (props) => {
 };
 
 export const HtmlVideo = React.memo(_HtmlVideo, (prevProps, nextProps) => {
-	const { width, size, showControl, videoURL, imgCover, style } = prevProps || {};
-	const { width1, size1, showControl1, videoURL1, imgCover1, style1 } = nextProps || {};
+	const { width, size, showControl, videoURL, imgCover, style } =
+		prevProps || {};
+	const { width1, size1, showControl1, videoURL1, imgCover1, style1 } =
+		nextProps || {};
 
 	return (
 		width === width1 &&

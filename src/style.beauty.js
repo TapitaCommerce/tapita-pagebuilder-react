@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* after changed content here, use https://www.toptal.com/developers/cssminifier/ to minify the css and paste it to style.css.js */
 const styleStringBeauty = `
     .spb-item {
