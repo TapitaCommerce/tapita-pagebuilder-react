@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { randomString } from '../../Helper/Data';
 
 export const Tab = (props) => {
-	const { item } = props;
+	const { item, formatMessage } = props;
 	const [selectedTab, setSelectedTab] = useState(0);
 	const navId = 'tab_nav_ctn_' + randomString(10);
 	const itemChildren =
@@ -43,6 +43,10 @@ export const Tab = (props) => {
 			}`}
 		>
 			{itemChildren.map((childItem, childIndx) => {
+				const content =
+					formatMessage && childItem.name
+						? formatMessage({ val: childItem.name })
+						: childItem.name;
 				return (
 					<div
 						key={childItem.entity_id}
@@ -51,7 +55,7 @@ export const Tab = (props) => {
 						}`}
 						onClick={(e) => setSelectedTab(childIndx)}
 					>
-						{childItem.name}
+						{content}
 					</div>
 				);
 			})}

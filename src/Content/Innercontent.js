@@ -25,6 +25,8 @@ const Innercontent = (props) => {
 		ProductScroll,
 		CategoryScroll,
 		deviceFilterKey,
+		translateParagraph,
+		translatePlaceholder,
 	} = props;
 
 	if (!item || !item.entity_id) return '';
@@ -77,7 +79,7 @@ const Innercontent = (props) => {
 		}
 		return translatedText;
 	} else if (item.type === 'tabs') {
-		return <Tab item={item} />;
+		return <Tab item={item} formatMessage={formatMessage} />;
 	} else if (item.type === 'dropdown') {
 		return <Dropdown item={item} formatMessage={formatMessage} />;
 	} else if (item.type === 'image') {
@@ -162,14 +164,17 @@ const Innercontent = (props) => {
 	} else if (item.type === 'paragraph') {
 		const wrapperStyle = item.stylesParsed.boxShadow
 			? {
-					textShadow: convertBoxShadowToTextShadow(item.stylesParsed.boxShadow),
+				textShadow: convertBoxShadowToTextShadow(item.stylesParsed.boxShadow),
 			  }
 			: null;
 
 		if (data.paragraphContent) {
+			const content = translateParagraph
+				? formatMessage({ val: data.paragraphContent })
+				: data.paragraphContent;
 			return (
 				<div
-					dangerouslySetInnerHTML={{ __html: data.paragraphContent }}
+					dangerouslySetInnerHTML={{ __html: content }}
 					style={wrapperStyle}
 				/>
 			);
@@ -183,7 +188,7 @@ const Innercontent = (props) => {
 			data && data.showControl !== undefined ? data.showControl : true;
 		const shadowStyle = item.stylesParsed.boxShadow
 			? {
-					boxShadow: item.stylesParsed.boxShadow,
+				boxShadow: item.stylesParsed.boxShadow,
 			  }
 			: null;
 
@@ -224,7 +229,7 @@ const Innercontent = (props) => {
 		if (data.htmlContent) {
 			const shadowStyle = item.stylesParsed.boxShadow
 				? {
-						boxShadow: item.stylesParsed.boxShadow,
+					boxShadow: item.stylesParsed.boxShadow,
 				  }
 				: null;
 			return (
@@ -239,7 +244,7 @@ const Innercontent = (props) => {
 		const customIconValue = data[customIcon] || '';
 		const shadowStyle = item.stylesParsed.boxShadow
 			? {
-					boxShadow: item.stylesParsed.boxShadow,
+				boxShadow: item.stylesParsed.boxShadow,
 			  }
 			: null;
 		if (shouldUseCustomIcon) {
@@ -247,7 +252,11 @@ const Innercontent = (props) => {
 		}
 		if (data.icon && icons[data.icon]) return icons[data.icon];
 	} else if (item.type === 'text_input' || item.type === 'textarea_input') {
-		const placeholder = data ? data.placeholder : '';
+		const placeholder = data
+			? formatMessage && translatePlaceholder
+				? formatMessage({ val: data.placeholder })
+				: data.placeholder
+			: '';
 		const applicableStyleAttr = [
 			'padding',
 			'paddingTop',
