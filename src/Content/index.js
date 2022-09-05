@@ -481,7 +481,6 @@ const PbContent = (props) => {
 			if (hash) {
 				try {
 					const el = selfRef.current.querySelector(hash);
-					console.log(el);
 					if (el) {
 						setImmediate(() => {
 							el.scrollIntoView();
