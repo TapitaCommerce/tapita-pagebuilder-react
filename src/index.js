@@ -264,15 +264,54 @@ export const usePbFinder = (props) => {
 	if (pbUrl.indexOf('?') !== -1)
 		pbUrl += '&integrationToken=' + integrationToken;
 	else pbUrl += '?integrationToken=' + integrationToken;
-	const findPage = (pathName) => {
+
+	const findPage = (pathName, minimized = false, args = {}) => {
 		setPathFoFind(pathName);
 		if (typeof window !== 'undefined' && window.smPbPagesByToken) {
 			setPbData(window.smPbPagesByToken);
 		} else {
 			if (!loading) {
 				setLoading(true);
+				const extraHint = (function (basePath) {
+					try {
+						if (minimized) {
+							// if (basePath === '' || basePath === '/') {
+							// 	return '/'
+							// }
+							if (args.hint) {
+								return args.hint;
+							}
+							if (basePath.startsWith('/')) {
+								return basePath.slice(1);
+							}
+						}
+						return null;
+					} catch (e) {
+						return null;
+					}
+				})(pathName);
+
+				const extraScope = (function (basePath) {
+					try {
+						if (minimized) {
+							if (args.scope) {
+								return args.scope;
+							}
+							if (basePath === '' || basePath === '/') {
+								return 'home';
+							}
+						}
+						return null;
+					} catch (e) {
+						return null;
+					}
+				})(pathName);
+
+				const minimizedPbUrl = `${pbUrl}${
+					extraHint ? `&hint=${extraHint}` : ''
+				}${extraScope ? `&scope=${extraScope}` : ''}`;
 				sendRequest(
-					pbUrl,
+					minimizedPbUrl,
 					(result) => {
 						setLoading(false);
 						if (

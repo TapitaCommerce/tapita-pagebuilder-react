@@ -24,7 +24,7 @@ const AppWithRouter = () => {
 	useEffect(() => {
 		if (location && location.pathname) {
 			if (!pageMaskedId || location.pathname !== pathToFind)
-				findPage(location.pathname);
+				findPage(location.pathname, true);
 		}
 	}, [location, pageMaskedId, pathToFind, findPage]);
 
