@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, {useLayoutEffect, useRef, useState} from 'react';
 
 const defaultVideoLink = 'OrzMIhLpVps';
 
@@ -23,13 +23,13 @@ const changeShareURLToEmbedded = (shareURL) => {
 };
 
 export const _YoutubeVideo = (props) => {
-	const { width, size, showControl, videoURL, formatMessage, style } = props;
+	const {width, size, showControl, videoURL, formatMessage, style, autoplay, loop} = props;
 	const [currentVideoHeight, setCurrentVideoHeight] = useState(null);
 	const containerRef = useRef(null);
 
 	useLayoutEffect(() => {
 		if (containerRef.current) {
-			const { width } = containerRef.current.getBoundingClientRect();
+			const {width} = containerRef.current.getBoundingClientRect();
 			setCurrentVideoHeight((width * 2) / 3);
 		}
 	}, []);
@@ -37,6 +37,21 @@ export const _YoutubeVideo = (props) => {
 	if (!videoURL) {
 		return '';
 	}
+	const customControlArgs = {
+		controls: showControl ? 1 : 0,
+		autoplay: autoplay ? 1 : 0,
+		mute: autoplay ? 1 : 0,
+		loop: loop ? 1 : 0,
+		playlist: loop ? extractVideoId(videoURL) : null,
+	};
+
+	const urlObj = new URL(changeShareURLToEmbedded(videoURL));
+	Object.keys(customControlArgs).forEach(function (key) {
+		const v = customControlArgs[key];
+		if (v !== null) {
+			urlObj.searchParams.set(key, v);
+		}
+	});
 
 	return (
 		<React.Fragment>
@@ -54,10 +69,7 @@ export const _YoutubeVideo = (props) => {
 					width='100%'
 					allowFullScreen
 					frameBorder='0'
-					src={
-						changeShareURLToEmbedded(videoURL) +
-						`?controls=${showControl ? 1 : 0}`
-					}
+					src={urlObj.toString()}
 					ref={containerRef}
 					style={style}
 				/>
@@ -69,10 +81,10 @@ export const _YoutubeVideo = (props) => {
 export const YoutubeVideo = React.memo(
 	_YoutubeVideo,
 	(prevProps, nextProps) => {
-		const { width, size, showControl, videoURL, imgCover, style } =
-			prevProps || {};
-		const { width1, size1, showControl1, videoURL1, imgCover1, style1 } =
-			nextProps || {};
+		const {width, size, showControl, videoURL, imgCover, style} =
+		prevProps || {};
+		const {width1, size1, showControl1, videoURL1, imgCover1, style1} =
+		nextProps || {};
 
 		return (
 			width === width1 &&

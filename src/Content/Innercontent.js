@@ -186,6 +186,10 @@ const Innercontent = (props) => {
 		const videoURL = (data ? data.videoURL : null) || '';
 		const showControl =
 			data && data.showControl !== undefined ? data.showControl : true;
+		const enableAutoplay =
+			data && data.autoplay !== undefined ? data.autoplay : false;
+		const enableLoop =
+			data && data.loop !== undefined ? data.loop : false;
 		const shadowStyle = item.stylesParsed.boxShadow
 			? {
 				boxShadow: item.stylesParsed.boxShadow,
@@ -216,6 +220,8 @@ const Innercontent = (props) => {
 					videoURL={videoURL}
 					formatMessage={formatMessage}
 					style={shadowStyle}
+					autoplay={enableAutoplay}
+					loop={enableLoop}
 				/>
 			);
 		}
