@@ -34,6 +34,7 @@ const AppWithRouter = () => {
 			history: history,
 			endPoint,
 			lazyloadPlaceHolder: <div />,
+			pageData
 		};
 
 		return (
