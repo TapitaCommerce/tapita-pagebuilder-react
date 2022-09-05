@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Innercontent from './Innercontent';
 import { Carousel } from 'react-responsive-carousel';
 import Button from './Button';
@@ -33,6 +33,7 @@ const PbContent = (props) => {
 		translatePlaceholder,
 	} = props;
 
+	const selfRef = useRef(null);
 	const deviceFilterKey = useDeviceWidthPrefix();
 	const pageData =
 		spb_page && spb_page.items && spb_page.items[0] ? spb_page.items[0] : false;
@@ -467,8 +468,35 @@ const PbContent = (props) => {
 	}
 	newTree = listToTree(newTree);
 	rootItem.children = newTree;
+
+	useEffect(() => {
+		if (
+			selfRef.current &&
+			globalThis.window &&
+			globalThis.URL &&
+			window.location
+		) {
+			const url = new globalThis.URL(globalThis.window.location);
+			const hash = url.hash;
+			if (hash) {
+				try {
+					const el = selfRef.current.querySelector(hash);
+					console.log(el);
+					if (el) {
+						setImmediate(() => {
+							el.scrollIntoView();
+						});
+					}
+				} catch (e) {
+					console.warn(e);
+				}
+			}
+		}
+	}, []);
+
 	return (
 		<div
+			ref={selfRef}
 			className='smpb-container'
 			style={{ direction: isRtl ? 'rtl' : 'ltr' }}
 		>
