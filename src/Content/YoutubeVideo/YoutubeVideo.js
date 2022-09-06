@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useRef, useState} from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 
 const defaultVideoLink = 'OrzMIhLpVps';
 
@@ -23,13 +23,22 @@ const changeShareURLToEmbedded = (shareURL) => {
 };
 
 export const _YoutubeVideo = (props) => {
-	const {width, size, showControl, videoURL, formatMessage, style, autoplay, loop} = props;
+	const {
+		width,
+		size,
+		showControl,
+		videoURL,
+		formatMessage,
+		style,
+		autoplay,
+		loop,
+	} = props;
 	const [currentVideoHeight, setCurrentVideoHeight] = useState(null);
 	const containerRef = useRef(null);
 
 	useLayoutEffect(() => {
 		if (containerRef.current) {
-			const {width} = containerRef.current.getBoundingClientRect();
+			const { width } = containerRef.current.getBoundingClientRect();
 			setCurrentVideoHeight((width * 2) / 3);
 		}
 	}, []);
@@ -81,10 +90,10 @@ export const _YoutubeVideo = (props) => {
 export const YoutubeVideo = React.memo(
 	_YoutubeVideo,
 	(prevProps, nextProps) => {
-		const {width, size, showControl, videoURL, imgCover, style} =
-		prevProps || {};
-		const {width1, size1, showControl1, videoURL1, imgCover1, style1} =
-		nextProps || {};
+		const { width, size, showControl, videoURL, imgCover, style } =
+			prevProps || {};
+		const { width1, size1, showControl1, videoURL1, imgCover1, style1 } =
+			nextProps || {};
 
 		return (
 			width === width1 &&

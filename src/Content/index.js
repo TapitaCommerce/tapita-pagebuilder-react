@@ -65,7 +65,9 @@ const PbContent = (props) => {
 		}
 		const itemType = item.type;
 		const styles = prepareStyle(item, parent);
+		const devicelessData = prepareData(item);
 		item.stylesParsed = JSON.parse(JSON.stringify(styles));
+		item.dataParsed = devicelessData;
 
 		if (itemType === 'dropdown') {
 			/**
@@ -88,17 +90,8 @@ const PbContent = (props) => {
 		}
 
 		if (item && ['html_video', 'youtube_video'].includes(item.type)) {
-			let data = {};
-			if (item.data && typeof item.data === 'object') {
-				data = item.data;
-			} else if (item.dataParsed) {
-				try {
-					data = item.dataParsed;
-				} catch (err) {}
-			}
-
-			const _size = (data ? data.size : null) || null;
-			const _width = (data ? data.width : null) || null;
+			const _size = (item.dataParsed ? item.dataParsed.size : null) || null;
+			const _width = (item.dataParsed ? item.dataParsed.width : null) || null;
 			const height = 'auto';
 			const width = _size || _width || '100%';
 			styles.width = width;
@@ -436,6 +429,21 @@ const PbContent = (props) => {
 		return style;
 	};
 
+	const prepareData = (item) => {
+		let data = {};
+		if (item.data && typeof item.data === 'object') {
+			data = { ...item.data };
+		} else if (item.dataParsed) {
+			data = { ...item.dataParsed };
+		}
+		Object.keys(data).forEach((key) => {
+			if (key.includes(deviceFilterKey)) {
+				const styleKey = key.replace(deviceFilterKey, '');
+				data[styleKey] = data[key];
+			}
+		});
+		return data;
+	};
 	/*
     Recursive render
     */

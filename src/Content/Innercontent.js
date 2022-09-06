@@ -188,8 +188,7 @@ const Innercontent = (props) => {
 			data && data.showControl !== undefined ? data.showControl : true;
 		const enableAutoplay =
 			data && data.autoplay !== undefined ? data.autoplay : false;
-		const enableLoop =
-			data && data.loop !== undefined ? data.loop : false;
+		const enableLoop = data && data.loop !== undefined ? data.loop : false;
 		const shadowStyle = item.stylesParsed.boxShadow
 			? {
 				boxShadow: item.stylesParsed.boxShadow,
