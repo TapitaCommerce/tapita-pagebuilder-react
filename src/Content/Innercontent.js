@@ -102,6 +102,10 @@ const Innercontent = (props) => {
 							item.stylesParsed && item.stylesParsed.objectFit
 								? item.stylesParsed.objectFit
 								: 'cover',
+						objectPosition:
+							item.stylesParsed && item.stylesParsed.objectPosition
+								? item.stylesParsed.objectPosition
+								: 'unset',
 					}}
 				/>
 			);
