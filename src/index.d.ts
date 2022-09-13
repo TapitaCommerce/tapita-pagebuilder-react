@@ -113,9 +113,9 @@ declare function usePbFinder(props: PbFinderProps): PbFinderOutput;
 
 declare function PageBuilderComponent(props: PBComponentProps): JSX.Element;
 
-declare function renderForIdWithProps(
-	elId: string,
-	pbProps: PBComponentProps,
-): void;
+// declare function renderForIdWithProps(
+// 	elId: string,
+// 	pbProps: PBComponentProps,
+// ): void;
 
-export { usePbFinder, PageBuilderComponent, renderForIdWithProps };
+export { usePbFinder, PageBuilderComponent };
