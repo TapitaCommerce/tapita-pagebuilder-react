@@ -79,7 +79,13 @@ const Innercontent = (props) => {
 		}
 		return translatedText;
 	} else if (item.type === 'tabs') {
-		return <Tab item={item} formatMessage={formatMessage} />;
+		return (
+			<Tab
+				item={item}
+				formatMessage={formatMessage}
+				deviceFilterKey={deviceFilterKey}
+			/>
+		);
 	} else if (item.type === 'dropdown') {
 		return <Dropdown item={item} formatMessage={formatMessage} />;
 	} else if (item.type === 'image') {
@@ -168,7 +174,7 @@ const Innercontent = (props) => {
 	} else if (item.type === 'paragraph') {
 		const wrapperStyle = item.stylesParsed.boxShadow
 			? {
-				textShadow: convertBoxShadowToTextShadow(item.stylesParsed.boxShadow),
+					textShadow: convertBoxShadowToTextShadow(item.stylesParsed.boxShadow),
 			  }
 			: null;
 
@@ -195,7 +201,7 @@ const Innercontent = (props) => {
 		const enableLoop = data && data.loop !== undefined ? data.loop : false;
 		const shadowStyle = item.stylesParsed.boxShadow
 			? {
-				boxShadow: item.stylesParsed.boxShadow,
+					boxShadow: item.stylesParsed.boxShadow,
 			  }
 			: null;
 
@@ -238,7 +244,7 @@ const Innercontent = (props) => {
 		if (data.htmlContent) {
 			const shadowStyle = item.stylesParsed.boxShadow
 				? {
-					boxShadow: item.stylesParsed.boxShadow,
+						boxShadow: item.stylesParsed.boxShadow,
 				  }
 				: null;
 			return (
@@ -253,7 +259,7 @@ const Innercontent = (props) => {
 		const customIconValue = data[customIcon] || '';
 		const shadowStyle = item.stylesParsed.boxShadow
 			? {
-				boxShadow: item.stylesParsed.boxShadow,
+					boxShadow: item.stylesParsed.boxShadow,
 			  }
 			: null;
 		if (shouldUseCustomIcon) {

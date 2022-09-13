@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { randomString } from '../../Helper/Data';
 
 export const Tab = (props) => {
-	const { item, formatMessage } = props;
+	const { item, formatMessage, deviceFilterKey } = props;
 	const [selectedTab, setSelectedTab] = useState(0);
 	const navId = 'tab_nav_ctn_' + randomString(10);
 	const itemChildren =
@@ -43,6 +43,28 @@ export const Tab = (props) => {
 			}`}
 		>
 			{itemChildren.map((childItem, childIndx) => {
+				const itemStyle = childItem.stylesParsed || {};
+				// add device styles
+				Object.keys(itemStyle).forEach((key) => {
+					if (key.includes(deviceFilterKey)) {
+						const styleKey = key.replace(deviceFilterKey, '');
+						itemStyle[styleKey] = itemStyle[key];
+					}
+				});
+				const isActiveTab = selectedTab === childIndx;
+				const tabStyle = {};
+				if (itemStyle.color) {
+					tabStyle.color = itemStyle.color;
+				}
+				if (isActiveTab) {
+					if (itemStyle.backgroundColor) {
+						tabStyle.backgroundColor = itemStyle.backgroundColor;
+					}
+				} else {
+					if (itemStyle.fontWeight) {
+						tabStyle.fontWeight = itemStyle.fontWeight;
+					}
+				}
 				const content =
 					formatMessage && childItem.name
 						? formatMessage({ val: childItem.name })
@@ -51,8 +73,9 @@ export const Tab = (props) => {
 					<div
 						key={childItem.entity_id}
 						className={`spbitem-tab-nav-item ${
-							selectedTab === childIndx ? 'active' : 'inactive'
+							isActiveTab ? 'active' : 'inactive'
 						}`}
+						style={tabStyle}
 						onClick={(e) => setSelectedTab(childIndx)}
 					>
 						{content}
