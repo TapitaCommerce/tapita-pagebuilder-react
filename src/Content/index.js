@@ -414,7 +414,12 @@ const PbContent = (props) => {
 				// style.overflowY = 'hidden';
 			}
 		}
-		if (item && item.type !== 'image' && item.type !== 'category') {
+		if (
+			item &&
+			item.type !== 'image' &&
+			item.type !== 'category' &&
+			item.type !== 'custom_html'
+		) {
 			if (item.dataParsed) {
 				const itemData = item.dataParsed;
 				if (itemData && itemData.image) {
