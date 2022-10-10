@@ -70,6 +70,31 @@ const PbContent = (props) => {
 		const devicelessData = prepareData(item);
 		item.stylesParsed = JSON.parse(JSON.stringify(styles));
 		item.dataParsed = devicelessData;
+		let aHref;
+		if (
+			item.dataParsed &&
+			(item.dataParsed.openUrl ||
+				item.dataParsed.sendEmail ||
+				item.dataParsed.callNumber)
+		) {
+			aHref = item.dataParsed.openUrl;
+			if (item.dataParsed.sendEmail)
+				aHref = 'mailto: ' + item.dataParsed.sendEmail;
+			else if (item.dataParsed.callNumber)
+				aHref = 'tel:' + item.dataParsed.callNumber;
+			else if (mode === 'shopify' && window.Shopify && !isAbsolutePath(aHref)) {
+				const locale = window.Shopify.locale;
+				const root =
+					(window.Shopify.routes ? window.Shopify.routes.root : '/') || '/';
+				if (root !== '/') {
+					aHref =
+						root +
+						(item.dataParsed.openUrl.charAt(0) === '/'
+							? item.dataParsed.openUrl.slice(1)
+							: item.dataParsed.openUrl);
+				}
+			}
+		}
 
 		if (itemType === 'dropdown') {
 			/**
@@ -156,7 +181,7 @@ const PbContent = (props) => {
 				if (elmnt && elmnt.length) elmnt[0].scrollIntoView();
 			};
 		}
-		if (item.dataParsed && item.dataParsed.openUrl && item.type !== 'text') {
+		if (aHref && item.type !== 'text') {
 			const openUrlInNewTab = parseInt(item.dataParsed.openUrlInNewTab) === 1;
 			itemProps.onClick = () => {
 				if (
@@ -164,13 +189,10 @@ const PbContent = (props) => {
 					!openUrlInNewTab &&
 					item.dataParsed.openUrl.indexOf('http') === -1
 				)
-					history.push(item.dataParsed.openUrl);
+					history.push(aHref);
 				else {
 					if (typeof window !== 'undefined') {
-						window.open(
-							item.dataParsed.openUrl,
-							openUrlInNewTab ? '_blank' : '_self',
-						);
+						window.open(aHref, openUrlInNewTab ? '_blank' : '_self');
 					}
 				}
 			};
@@ -201,12 +223,7 @@ const PbContent = (props) => {
 				</form>
 			);
 		}
-		if (
-			item.dataParsed &&
-			(item.dataParsed.openUrl ||
-				item.dataParsed.sendEmail ||
-				item.dataParsed.callNumber)
-		) {
+		if (aHref) {
 			if (
 				item.type === 'text' ||
 				item.type === 'button' ||
@@ -235,27 +252,6 @@ const PbContent = (props) => {
 							{innerContent}
 						</Link>
 					);
-				}
-				let aHref = item.dataParsed.openUrl;
-				if (item.dataParsed.sendEmail)
-					aHref = 'mailto: ' + item.dataParsed.sendEmail;
-				else if (item.dataParsed.callNumber)
-					aHref = 'tel:' + item.dataParsed.callNumber;
-				else if (
-					mode === 'shopify' &&
-					window.Shopify &&
-					!isAbsolutePath(aHref)
-				) {
-					const locale = window.Shopify.locale;
-					const root =
-						(window.Shopify.routes ? window.Shopify.routes.root : '/') || '/';
-					if (root !== '/') {
-						aHref =
-							root +
-							(item.dataParsed.openUrl.charAt(0) === '/'
-								? item.dataParsed.openUrl.slice(1)
-								: item.dataParsed.openUrl);
-					}
 				}
 				return (
 					<a
