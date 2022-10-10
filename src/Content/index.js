@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { isAbsolutePath } from '../Helper/isAbsolutePath.js';
 import Innercontent from './Innercontent';
 import { Carousel } from 'react-responsive-carousel';
 import Button from './Button';
@@ -31,6 +32,7 @@ const PbContent = (props) => {
 		filterRootChildrenOnly,
 		translateParagraph,
 		translatePlaceholder,
+		mode,
 	} = props;
 
 	const selfRef = useRef(null);
@@ -239,6 +241,22 @@ const PbContent = (props) => {
 					aHref = 'mailto: ' + item.dataParsed.sendEmail;
 				else if (item.dataParsed.callNumber)
 					aHref = 'tel:' + item.dataParsed.callNumber;
+				else if (
+					mode === 'shopify' &&
+					window.Shopify &&
+					!isAbsolutePath(aHref)
+				) {
+					const locale = window.Shopify.locale;
+					const root =
+						(window.Shopify.routes ? window.Shopify.routes.root : '/') || '/';
+					if (root !== '/') {
+						aHref =
+							root +
+							(item.dataParsed.openUrl.charAt(0) === '/'
+								? item.dataParsed.openUrl.slice(1)
+								: item.dataParsed.openUrl);
+					}
+				}
 				return (
 					<a
 						href={aHref}
