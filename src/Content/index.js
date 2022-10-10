@@ -245,7 +245,7 @@ const PbContent = (props) => {
 				) {
 					return (
 						<Link
-							to={item.dataParsed.openUrl}
+							to={aHref}
 							target={openUrlInNewTab ? '_blank' : '_self'}
 							{...itemProps}
 						>
