@@ -105,6 +105,7 @@ export const PageBuilderComponent = (props) => {
 		_translateParagraph = false,
 		_translatePlaceholder = false,
 		_translateSEO = false,
+		mode = 'default',
 	} = props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items
@@ -244,6 +245,7 @@ export const PageBuilderComponent = (props) => {
 					filterRootChildrenOnly={filterRootChildrenOnly}
 					translateParagraph={_translateParagraph}
 					translatePlaceholder={_translatePlaceholder}
+					mode={mode}
 				/>
 			</React.Fragment>
 		);
