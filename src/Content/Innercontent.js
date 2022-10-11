@@ -37,6 +37,8 @@ const Innercontent = (props) => {
 		data = { ...item.data };
 	} else if (item.dataParsed) {
 		data = { ...item.dataParsed };
+	} else if (typeof item.data === 'string' && item.data) {
+		data = JSON.parse(item.data)
 	}
 	Object.keys(data).forEach((key) => {
 		if (key.includes(deviceFilterKey)) {
@@ -333,7 +335,7 @@ const Innercontent = (props) => {
 				defaultValue={data.default_value}
 			/>
 		);
-	} else if(item.type === 'actual_statement' && toPreview){
+	} else if(item.type === 'actual_statement'){
 		const img = (data.displayImg) || '';
 		if (img) {
 			return (
@@ -349,6 +351,7 @@ const Innercontent = (props) => {
 				/>
 			);
 		}
+		return ''
 	}
 	return '';
 };
