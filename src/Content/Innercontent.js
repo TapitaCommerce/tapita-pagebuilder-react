@@ -27,6 +27,7 @@ const Innercontent = (props) => {
 		deviceFilterKey,
 		translateParagraph,
 		translatePlaceholder,
+		toPreview
 	} = props;
 
 	if (!item || !item.entity_id) return '';
@@ -332,6 +333,22 @@ const Innercontent = (props) => {
 				defaultValue={data.default_value}
 			/>
 		);
+	} else if(item.type === 'actual_statement' && toPreview){
+		const img = (data.displayImg) || '';
+		if (img) {
+			return (
+				<img
+					src={img}
+					alt={''}
+					style={{
+						width: '100%',
+						height: '100%',
+						objectFit: 'cover',
+						objectPosition: 'unset'
+					}}
+				/>
+			);
+		}
 	}
 	return '';
 };

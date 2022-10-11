@@ -33,6 +33,7 @@ const PbContent = (props) => {
 		translateParagraph,
 		translatePlaceholder,
 		mode,
+		toPreview
 	} = props;
 
 	const selfRef = useRef(null);
@@ -370,6 +371,7 @@ const PbContent = (props) => {
 					deviceFilterKey={deviceFilterKey}
 					translateParagraph={translateParagraph}
 					translatePlaceholder={translatePlaceholder}
+					toPreview={toPreview}
 				/>
 				{children.length ? children : ''}
 			</React.Fragment>

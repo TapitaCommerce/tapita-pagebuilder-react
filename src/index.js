@@ -246,6 +246,7 @@ export const PageBuilderComponent = (props) => {
 					translateParagraph={_translateParagraph}
 					translatePlaceholder={_translatePlaceholder}
 					mode={mode}
+					toPreview={toPreview}
 				/>
 			</React.Fragment>
 		);
