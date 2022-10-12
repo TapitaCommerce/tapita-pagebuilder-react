@@ -1,4 +1,5 @@
 import React, { Fragment, useRef } from 'react';
+import { isAbsolutePath } from '../Helper/isAbsolutePath.js';
 import { HtmlVideo } from './HTMLVideo/HTMLVideo';
 import { YoutubeVideo } from './YoutubeVideo/YoutubeVideo';
 import { Tab } from './Tab';
@@ -27,7 +28,8 @@ const Innercontent = (props) => {
 		deviceFilterKey,
 		translateParagraph,
 		translatePlaceholder,
-		toPreview
+		mode,
+		toPreview,
 	} = props;
 
 	if (!item || !item.entity_id) return '';
@@ -38,7 +40,7 @@ const Innercontent = (props) => {
 	} else if (item.dataParsed) {
 		data = { ...item.dataParsed };
 	} else if (typeof item.data === 'string' && item.data) {
-		data = JSON.parse(item.data)
+		data = JSON.parse(item.data);
 	}
 	Object.keys(data).forEach((key) => {
 		if (key.includes(deviceFilterKey)) {
@@ -177,14 +179,45 @@ const Innercontent = (props) => {
 	} else if (item.type === 'paragraph') {
 		const wrapperStyle = item.stylesParsed.boxShadow
 			? {
-					textShadow: convertBoxShadowToTextShadow(item.stylesParsed.boxShadow),
+				textShadow: convertBoxShadowToTextShadow(item.stylesParsed.boxShadow),
 			  }
 			: null;
 
 		if (data.paragraphContent) {
-			const content = translateParagraph
-				? formatMessage({ val: data.paragraphContent })
-				: data.paragraphContent;
+			let content =
+				(translateParagraph
+					? formatMessage({ val: data.paragraphContent })
+					: data.paragraphContent) || '';
+			if (mode === 'shopify') {
+				const linkPattern =
+					'<a[\\s\\w="\'-:\\/]*(href=["\']([\\w\\/:.-]*)["\'])[\\s\\w="\'-:\\/]*>';
+				const matchedStrs = content.match(RegExp(linkPattern, 'g'));
+				const rplcMap = {};
+				if (matchedStrs) {
+					for (const str of matchedStrs) {
+						const matched = str.match(RegExp(linkPattern));
+						if (matched && matched.length >= 3) {
+							let linkUrl = matched[2];
+							if (!isAbsolutePath(linkUrl)) {
+								const root =
+									(window.Shopify.routes ? window.Shopify.routes.root : '/') ||
+									'/';
+								if (root !== '/') {
+									linkUrl =
+										root +
+										(linkUrl.charAt(0) === '/' ? linkUrl.slice(1) : linkUrl);
+								}
+								rplcMap[matched[0]] = [matched[2], linkUrl];
+							}
+						}
+					}
+				}
+				Object.entries(rplcMap).forEach(([str, pair]) => {
+					const [r1, r2] = pair;
+					const targetStr = str.replaceAll(r1, r2);
+					content = content.replaceAll(str, targetStr);
+				});
+			}
 			return (
 				<div
 					dangerouslySetInnerHTML={{ __html: content }}
@@ -204,7 +237,7 @@ const Innercontent = (props) => {
 		const enableLoop = data && data.loop !== undefined ? data.loop : false;
 		const shadowStyle = item.stylesParsed.boxShadow
 			? {
-					boxShadow: item.stylesParsed.boxShadow,
+				boxShadow: item.stylesParsed.boxShadow,
 			  }
 			: null;
 
@@ -247,7 +280,7 @@ const Innercontent = (props) => {
 		if (data.htmlContent) {
 			const shadowStyle = item.stylesParsed.boxShadow
 				? {
-						boxShadow: item.stylesParsed.boxShadow,
+					boxShadow: item.stylesParsed.boxShadow,
 				  }
 				: null;
 			return (
@@ -262,7 +295,7 @@ const Innercontent = (props) => {
 		const customIconValue = data[customIcon] || '';
 		const shadowStyle = item.stylesParsed.boxShadow
 			? {
-					boxShadow: item.stylesParsed.boxShadow,
+				boxShadow: item.stylesParsed.boxShadow,
 			  }
 			: null;
 		if (shouldUseCustomIcon) {
@@ -335,23 +368,23 @@ const Innercontent = (props) => {
 				defaultValue={data.default_value}
 			/>
 		);
-	} else if(item.type === 'actual_statement'){
-		const img = (data.displayImg) || '';
+	} else if (item.type === 'actual_statement') {
+		const img = data.displayImg || '';
 		if (img) {
 			return (
 				<img
 					src={img}
-					alt={''}
+					alt=''
 					style={{
 						width: '100%',
 						height: '100%',
 						objectFit: 'cover',
-						objectPosition: 'unset'
+						objectPosition: 'unset',
 					}}
 				/>
 			);
 		}
-		return ''
+		return '';
 	}
 	return '';
 };
