@@ -1,3 +1,5 @@
+import {DOMElement} from "react";
+
 export enum TreeDataProductDetailMarkerEnum {
 	PAGE_COMPONENT = 0,
 	TOP = 1,
@@ -116,6 +118,7 @@ declare function PageBuilderComponent(props: PBComponentProps): JSX.Element;
 // declare function renderForIdWithProps(
 // 	elId: string,
 // 	pbProps: PBComponentProps,
+// 	rootFinder: { 'getElementById': (id)=>DOMElement<any, any>}
 // ): void;
 
 export { usePbFinder, PageBuilderComponent };
