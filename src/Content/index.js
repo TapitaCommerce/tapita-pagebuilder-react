@@ -281,7 +281,7 @@ const PbContent = (props) => {
 			!item.dataParsed.scrollTo
 		) {
 			return (
-				<LazyLoad {...itemProps} placeholder={lazyloadPlaceHolder} offset={100}>
+				<LazyLoad {...itemProps} placeholder={lazyloadPlaceHolder} offset={532}>
 					{innerContent}
 				</LazyLoad>
 			);
