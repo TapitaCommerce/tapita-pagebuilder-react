@@ -318,6 +318,9 @@ const PbContent = (props) => {
 				transitionTime: parseInt(dataParsed.sliderTransitionTime)
 					? dataParsed.sliderTransitionTime
 					: 350,
+				interval: parseInt(dataParsed.sliderInterval)
+					? dataParsed.sliderInterval
+					: 3000,
 			};
 			if (isRtl) {
 				slideSettings.selectedItem = children.length - 1;
