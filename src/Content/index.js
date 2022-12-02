@@ -315,7 +315,7 @@ const PbContent = (props) => {
 				showStatus: false,
 				infiniteLoop: parseInt(dataParsed.sliderInfiniteLoop) !== 0,
 				lazyLoad: true,
-				transitionTime: !parseInt(dataParsed.sliderTransitionTime)
+				transitionTime: parseInt(dataParsed.sliderTransitionTime)
 					? dataParsed.sliderTransitionTime
 					: 350,
 			};
