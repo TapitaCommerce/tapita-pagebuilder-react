@@ -16,6 +16,8 @@ export type PageMaskIdType = string;
 export type PageMaskIdUndeterminedType = 'notfound' | PageMaskIdType;
 type PbScopeLV1 = 'page' | 'catalog';
 type PbScopeLV2 = 'home' | 'n_page' | 'product' | 'collection' | 'blog';
+export type PageBuilderMode = 'default' | 'shopify' | 'magento';
+export type PageBuilderPlacement = 'default' | 'section' | 'half-screen';
 export type PbScope = PbScopeLV1 | PbScopeLV2;
 
 export interface FindPageAdditionalParameters {
@@ -106,6 +108,8 @@ export interface PBComponentProps {
 	overRender?: any;
 	layoutFilter?: TreeDataProductDetailMarkerEnum;
 	filterRootChildrenOnly?: boolean;
+	mode: PageBuilderMode;
+	type: PageBuilderPlacement;
 	_translateParagraph?: boolean;
 	_translatePlaceholder?: boolean;
 	_translateSEO?: boolean;

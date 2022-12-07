@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 // uncomment this to build standalone package
 // import ReactDOM from 'react-dom';
-import { sendRequest } from './Network/GraphQl';
+import {sendRequest} from './Network/GraphQl';
 import Content from './Content';
-import { Helmet } from 'react-helmet';
-import { styleString } from './style.css';
+import {Helmet} from 'react-helmet';
+import {styleString} from './style.css';
 
 const itemFields = `
     entity_id
@@ -81,6 +81,13 @@ const GET_ITEM_QUERY = `
                 publish_items
             }
         }
+        spb_section(pageMaskedId: $pageMaskedId){
+        	total_count
+            items {
+                ${pageFields}
+                publish_items
+            }
+        }
     }
 `;
 
@@ -106,23 +113,27 @@ export const PageBuilderComponent = (props) => {
 		_translatePlaceholder = false,
 		_translateSEO = false,
 		mode = 'default',
+		type = 'default'
 	} = props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items
-			? { data: { spb_page: { items: [pageData] } } }
+			? {data: {spb_page: {items: [pageData]}}}
 			: false,
 	);
 
-	const formatMessage = ({ id, val, defaultMessage }) => {
+	const formatMessage = ({id, val, defaultMessage}) => {
 		const msg = id || val || defaultMessage;
 		if (!_formatMessage || !msg) {
 			return val;
 		} else {
-			return _formatMessage({ id: msg, defaultMessage: val });
+			return _formatMessage({id: msg, defaultMessage: val});
 		}
 	};
 
 	if (!data) {
+		const variables = {}
+		variables['pageMaskedId'] = maskedId
+
 		sendRequest(
 			endPoint,
 			(result) => {
@@ -131,7 +142,7 @@ export const PageBuilderComponent = (props) => {
 			toPreview && (!pageData || !pageData.publish_items)
 				? PREVIEW_ITEM_QUERY
 				: GET_ITEM_QUERY,
-			{ pageMaskedId: maskedId },
+			variables,
 			'getPbItem',
 		);
 	}
@@ -158,6 +169,18 @@ export const PageBuilderComponent = (props) => {
 		contentData = {
 			spb_page: data.data.catalog_builder_page,
 			spb_item: data.data.catalog_builder_item,
+		};
+	} else if (
+		data &&
+		data.data &&
+		data.data.spb_section &&
+		data.data.spb_section.items &&
+		data.data.spb_section.items[0] &&
+		data.data.spb_section.items[0].publish_items
+	) {
+		spgData = data.data.spb_section.items[0];
+		contentData = {
+			spb_page: data.data.spb_section,
 		};
 	}
 
@@ -198,7 +221,7 @@ export const PageBuilderComponent = (props) => {
 					{spgData.title ? (
 						<title>
 							{_translateSEO
-								? formatMessage({ val: spgData.title })
+								? formatMessage({val: spgData.title})
 								: spgData.title}
 						</title>
 					) : (
@@ -209,7 +232,7 @@ export const PageBuilderComponent = (props) => {
 							name='description'
 							content={
 								_translateSEO
-									? formatMessage({ val: spgData.desc })
+									? formatMessage({val: spgData.desc})
 									: spgData.desc
 							}
 						/>
@@ -221,7 +244,7 @@ export const PageBuilderComponent = (props) => {
 							name='keywords'
 							content={
 								_translateSEO
-									? formatMessage({ val: spgData.keywords })
+									? formatMessage({val: spgData.keywords})
 									: spgData.keywords
 							}
 						/>
@@ -255,7 +278,7 @@ export const PageBuilderComponent = (props) => {
 
 // comment this to build standalone package
 export const usePbFinder = (props) => {
-	const { endPoint, integrationToken, storeCode } = props;
+	const {endPoint, integrationToken, storeCode} = props;
 	const [pbData, setPbData] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [pathToFind, setPathFoFind] = useState(false);
@@ -323,7 +346,7 @@ export const usePbFinder = (props) => {
 						setPbData(result);
 					},
 					'',
-					{ integrationToken },
+					{integrationToken},
 					'getPbPage',
 				);
 			}
@@ -332,7 +355,7 @@ export const usePbFinder = (props) => {
 
 	if (pbData && pbData.data) {
 		if (pathToFind && pbData.data.spb_page) {
-			const { spb_page } = pbData.data;
+			const {spb_page} = pbData.data;
 			pageMaskedId = 'notfound';
 			if (spb_page.items && spb_page.items.length) {
 				const pbPages = JSON.parse(JSON.stringify(spb_page.items));
@@ -364,7 +387,7 @@ export const usePbFinder = (props) => {
 	};
 };
 
-export { TreeDataProductDetailMarkerEnum } from './Helper/treeDataUtils';
+export {TreeDataProductDetailMarkerEnum} from './Helper/treeDataUtils';
 // uncomment this to build standalone package
 // export const renderForIdWithProps = (elId, pbProps, rootFinder=document) => {
 // 	ReactDOM.render(
