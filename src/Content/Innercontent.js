@@ -322,6 +322,21 @@ const Innercontent = (props) => {
 				id={data.input_id}
 				defaultValue={data.default_value}
 				required={data && data.isRequired ? data.isRequired : false}
+				data-validation-matches-match={
+					data && data.dataValidationMatchesMatch
+						? data.dataValidationMatchesMatch
+						: false
+				}
+				data-validation-matches-message={
+					data && data.dataValidationMatchesMessage
+						? data.dataValidationMatchesMessage
+						: false
+				}
+				data-validation-required-message={
+					data && data.dataValidationRequiredMessage
+						? data.dataValidationRequiredMessage
+						: false
+				}
 			/>
 		) : (
 			<input
@@ -332,6 +347,21 @@ const Innercontent = (props) => {
 				name={nameSpace}
 				defaultValue={data.default_value}
 				required={data && data.isRequired ? data.isRequired : false}
+				data-validation-matches-match={
+					data && data.dataValidationMatchesMatch
+						? data.dataValidationMatchesMatch
+						: false
+				}
+				data-validation-matches-message={
+					data && data.dataValidationMatchesMessage
+						? data.dataValidationMatchesMessage
+						: false
+				}
+				data-validation-required-message={
+					data && data.dataValidationRequiredMessage
+						? data.dataValidationRequiredMessage
+						: false
+				}
 			/>
 		);
 	}
