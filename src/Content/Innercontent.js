@@ -315,54 +315,60 @@ const Innercontent = (props) => {
 		miniStyle.border = 'none';
 
 		return item.type === 'textarea_input' ? (
-			<textarea
-				placeholder={placeholder}
-				style={{ ...miniStyle, height: '100%' }}
-				name={nameSpace}
-				id={data.input_id}
-				defaultValue={data.default_value}
-				required={data && data.isRequired ? data.isRequired : false}
-				data-validation-matches-match={
-					data && data.dataValidationMatchesMatch
-						? data.dataValidationMatchesMatch
-						: false
-				}
-				data-validation-matches-message={
-					data && data.dataValidationMatchesMessage
-						? data.dataValidationMatchesMessage
-						: false
-				}
-				data-validation-required-message={
-					data && data.dataValidationRequiredMessage
-						? data.dataValidationRequiredMessage
-						: false
-				}
-			/>
+			<>
+				<textarea
+					placeholder={placeholder}
+					style={{ ...miniStyle, height: '100%' }}
+					name={nameSpace}
+					id={data.input_id}
+					defaultValue={data.default_value}
+					required={data && data.isRequired ? data.isRequired : false}
+					data-validation-matches-match={
+						data && data.dataValidationMatchesMatch
+							? data.dataValidationMatchesMatch
+							: false
+					}
+					data-validation-matches-message={
+						data && data.dataValidationMatchesMessage
+							? data.dataValidationMatchesMessage
+							: false
+					}
+					data-validation-required-message={
+						data && data.dataValidationRequiredMessage
+							? data.dataValidationRequiredMessage
+							: false
+					}
+				/>
+				<p className='help-block' />
+			</>
 		) : (
-			<input
-				type='text'
-				placeholder={placeholder}
-				id={data.input_id}
-				style={{ ...miniStyle, height: '100%' }}
-				name={nameSpace}
-				defaultValue={data.default_value}
-				required={data && data.isRequired ? data.isRequired : false}
-				data-validation-matches-match={
-					data && data.dataValidationMatchesMatch
-						? data.dataValidationMatchesMatch
-						: false
-				}
-				data-validation-matches-message={
-					data && data.dataValidationMatchesMessage
-						? data.dataValidationMatchesMessage
-						: false
-				}
-				data-validation-required-message={
-					data && data.dataValidationRequiredMessage
-						? data.dataValidationRequiredMessage
-						: false
-				}
-			/>
+			<>
+				<input
+					type={data && data.inputType ? data.inputType : 'text'}
+					placeholder={placeholder}
+					id={data.input_id}
+					style={{ ...miniStyle, height: '100%' }}
+					name={nameSpace}
+					defaultValue={data.default_value}
+					required={data && data.isRequired ? data.isRequired : false}
+					data-validation-matches-match={
+						data && data.dataValidationMatchesMatch
+							? data.dataValidationMatchesMatch
+							: false
+					}
+					data-validation-matches-message={
+						data && data.dataValidationMatchesMessage
+							? data.dataValidationMatchesMessage
+							: false
+					}
+					data-validation-required-message={
+						data && data.dataValidationRequiredMessage
+							? data.dataValidationRequiredMessage
+							: false
+					}
+				/>
+				<p className='help-block' />
+			</>
 		);
 	}
 	return '';
