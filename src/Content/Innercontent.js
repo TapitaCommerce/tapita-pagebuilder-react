@@ -321,6 +321,7 @@ const Innercontent = (props) => {
 				name={nameSpace}
 				id={data.input_id}
 				defaultValue={data.default_value}
+				required={data && data.isRequired ? data.isRequired : false}
 			/>
 		) : (
 			<input
@@ -330,6 +331,7 @@ const Innercontent = (props) => {
 				style={{ ...miniStyle, height: '100%' }}
 				name={nameSpace}
 				defaultValue={data.default_value}
+				required={data && data.isRequired ? data.isRequired : false}
 			/>
 		);
 	}
