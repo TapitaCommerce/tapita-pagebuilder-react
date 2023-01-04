@@ -1,4 +1,4 @@
-import React, { Component, useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { ReactComponent as ChevronBack } from '../images/icons/chevron-back-sharp.svg';
 import { ReactComponent as ChevronForward } from '../images/icons/chevron-forward-sharp.svg';
 
