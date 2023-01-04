@@ -199,6 +199,7 @@ const Innercontent = (props) => {
 		const enableAutoplay =
 			data && data.autoplay !== undefined ? data.autoplay : false;
 		const enableLoop = data && data.loop !== undefined ? data.loop : false;
+		const enableLazy = data && data.lazy !== undefined ? data.lazy : false;
 		const shadowStyle = item.stylesParsed.boxShadow
 			? {
 					boxShadow: item.stylesParsed.boxShadow,
@@ -231,6 +232,7 @@ const Innercontent = (props) => {
 					style={shadowStyle}
 					autoplay={enableAutoplay}
 					loop={enableLoop}
+					lazy={enableLazy}
 				/>
 			);
 		}
