@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom';
 
 const endPoint = 'https://tapita.io/pb/graphql';
-const integrationToken = '14FJiubdB8n3Byig2IkpfM6OiS6RTO801622446444';
+const integrationToken = '3844V6rujCkeijQMq696HiHSiS1kIlhxq31658743735';
 
 const AppWithRouter = () => {
 	const location = useLocation();
