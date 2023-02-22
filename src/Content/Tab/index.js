@@ -1,36 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { randomString } from '../../Helper/Data';
 
 export const Tab = (props) => {
 	const { item, formatMessage, deviceFilterKey } = props;
-	const [selectedTab, setSelectedTab] = useState(0);
 	const navId = 'tab_nav_ctn_' + randomString(10);
 	const itemChildren =
 		item && item.children && item.children.length ? item.children : [];
-	useEffect(() => {
-		try {
-			const children = Array.from(
-				document.getElementById(navId).parentElement.children,
-			);
-			children.map((childNode, childNodeIndx) => {
-				if (childNodeIndx === 0) {
-					// itself
-				} else if (childNodeIndx - 1 !== selectedTab) {
-					childNode.style.display = 'none';
-				} else {
-					const childItem = itemChildren[selectedTab];
-					let newDisplayStyle = 'flex';
-					if (
-						childItem &&
-						childItem.stylesParsed &&
-						childItem.stylesParsed.display
-					)
-						newDisplayStyle = childItem.stylesParsed.display;
-					childNode.style.display = newDisplayStyle;
+	const handleSwitchTab = (selectedTab) => {
+		const currentNavItem = document.getElementById(navId);
+		const tabNavtrs = Array.from(currentNavItem.children);
+		tabNavtrs.map((childNode, childNodeIndx) => {
+			const childItem = itemChildren[childNodeIndx];
+			const itemStyle =
+				childItem && childItem.stylesParsed ? childItem.stylesParsed : {};
+			// add device styles
+			Object.keys(itemStyle).forEach((key) => {
+				if (key.includes(deviceFilterKey)) {
+					const styleKey = key.replace(deviceFilterKey, '');
+					itemStyle[styleKey] = itemStyle[key];
 				}
 			});
-		} catch (err) {}
-	}, [item, selectedTab]);
+
+			if (childNodeIndx !== selectedTab) {
+				childNode.classList.remove('active');
+				childNode.classList.add('inactive');
+				childNode.style.backgroundColor = 'initial';
+				childNode.style.fontWeight = itemStyle.fontWeight;
+			} else {
+				childNode.classList.remove('inactive');
+				childNode.classList.add('active');
+
+				childNode.style.fontWeight = 'initial';
+				childNode.style.backgroundColor = itemStyle.backgroundColor;
+			}
+		});
+		const children = Array.from(currentNavItem.parentElement.children);
+		children.map((childNode, childNodeIndx) => {
+			if (childNodeIndx === 0) {
+				// itself
+			} else if (childNodeIndx - 1 !== selectedTab) {
+				childNode.style.display = 'none';
+			} else {
+				const childItem = itemChildren[selectedTab];
+				let newDisplayStyle = 'flex';
+				if (
+					childItem &&
+					childItem.stylesParsed &&
+					childItem.stylesParsed.display
+				)
+					newDisplayStyle = childItem.stylesParsed.display;
+				childNode.style.display = newDisplayStyle;
+			}
+		});
+	};
+
 	return (
 		<div
 			id={navId}
@@ -51,20 +74,11 @@ export const Tab = (props) => {
 						itemStyle[styleKey] = itemStyle[key];
 					}
 				});
-				const isActiveTab = selectedTab === childIndx;
 				const tabStyle = {};
 				if (itemStyle.color) {
 					tabStyle.color = itemStyle.color;
 				}
-				if (isActiveTab) {
-					if (itemStyle.backgroundColor) {
-						tabStyle.backgroundColor = itemStyle.backgroundColor;
-					}
-				} else {
-					if (itemStyle.fontWeight) {
-						tabStyle.fontWeight = itemStyle.fontWeight;
-					}
-				}
+
 				const content =
 					formatMessage && childItem.name
 						? formatMessage({ val: childItem.name })
@@ -73,10 +87,10 @@ export const Tab = (props) => {
 					<div
 						key={childItem.entity_id}
 						className={`spbitem-tab-nav-item ${
-							isActiveTab ? 'active' : 'inactive'
+							childIndx === 0 ? 'active' : 'inactive'
 						}`}
 						style={tabStyle}
-						onClick={(e) => setSelectedTab(childIndx)}
+						onClick={(e) => handleSwitchTab(childIndx)}
 					>
 						{content}
 					</div>
