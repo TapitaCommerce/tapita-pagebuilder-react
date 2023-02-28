@@ -301,8 +301,6 @@ const PbContent = (props) => {
     const renderInnerContent = (item, children, parent) => {
         const dataParsed = item.dataParsed ? item.dataParsed : {};
         if (item.type === 'slider') {
-            console.log('isRtl', isRtl)
-            console.log('isRtl', dataParsed)
             const slideSettings = {
                 type: parseInt(dataParsed.sliderInfiniteLoop) !== 0 ? 'loop' : 'slide',
                 autoplay: parseInt(dataParsed.sliderAutoSlide) === 1,
@@ -326,8 +324,17 @@ const PbContent = (props) => {
             }
             let cChild = children.filter((itm) => itm !== '');
             cChild = isRtl ? cChild.reverse() : cChild;
-            console.log(slideSettings)
             slideSettings.pagination = true;
+            try {
+                if (dataParsed && dataParsed.customSplideConf) {
+                    const customSplideConf = JSON.parse(dataParsed.customSplideConf)
+                    if (customSplideConf) {
+                        slideSettings = { ...slideSettings, ...customSplideConf }
+                    }
+                }
+            } catch (err) {
+
+            }
             return (
                 <Splide options={slideSettings}>
                     {cChild.map((cChil) => (
@@ -353,8 +360,18 @@ const PbContent = (props) => {
                 perMove
             };
             if (isRtl) {
-                slideSettings.direction = 'rtl';
-                slideSettings.paginationDirection = 'rtl';
+                partialSSettings.direction = 'rtl';
+                partialSSettings.paginationDirection = 'rtl';
+            }
+            try {
+                if (dataParsed && dataParsed.customSplideConf) {
+                    const customSplideConf = JSON.parse(dataParsed.customSplideConf)
+                    if (customSplideConf) {
+                        partialSSettings = { ...partialSSettings, ...customSplideConf }
+                    }
+                }
+            } catch (err) {
+
             }
             let cChild = children.filter((itm) => itm !== '');
             cChild = isRtl ? cChild.reverse() : cChild;
