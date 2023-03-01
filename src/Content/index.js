@@ -303,7 +303,7 @@ const PbContent = (props) => {
 	const renderInnerContent = (item, children, parent) => {
 		const dataParsed = item.dataParsed ? item.dataParsed : {};
 		if (item.type === 'slider') {
-			const slideSettings = {
+			let slideSettings = {
 				type: parseInt(dataParsed.sliderInfiniteLoop) !== 0 ? 'loop' : 'slide',
 				autoplay: parseInt(dataParsed.sliderAutoSlide) === 1,
 				arrows: parseInt(dataParsed.showSliderNavBtn) !== 0,
@@ -335,10 +335,11 @@ const PbContent = (props) => {
 					}
 				}
 			} catch (err) {}
+			const arrowPath = dataParsed.sliderArrowPath || null;
 			return (
-				<Splide options={slideSettings}>
-					{cChild.map((cChil) => (
-						<SplideSlide>{cChil}</SplideSlide>
+				<Splide options={slideSettings} arrowPath={arrowPath}>
+					{cChild.map((cChil, indx) => (
+						<SplideSlide key={indx}>{cChil}</SplideSlide>
 					))}
 				</Splide>
 			);
@@ -352,7 +353,7 @@ const PbContent = (props) => {
 			const perPage = parseInt(dataParsed.partialPerPage) || 3;
 			const perMove = parseInt(dataParsed.partialPerMove) || 1;
 
-			const partialSSettings = {
+			let partialSSettings = {
 				type: 'slide',
 				pagination: showIndicators,
 				arrows: showArrow,
@@ -373,10 +374,11 @@ const PbContent = (props) => {
 			} catch (err) {}
 			let cChild = children.filter((itm) => itm !== '');
 			cChild = isRtl ? cChild.reverse() : cChild;
+			const arrowPath = dataParsed.sliderArrowPath || null;
 			return (
-				<Splide options={partialSSettings}>
-					{cChild.map((cChil) => (
-						<SplideSlide>{cChil}</SplideSlide>
+				<Splide options={partialSSettings} arrowPath={arrowPath}>
+					{cChild.map((cChil, indx) => (
+						<SplideSlide key={indx}>{cChil}</SplideSlide>
 					))}
 				</Splide>
 			);
