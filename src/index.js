@@ -5,6 +5,7 @@ import { sendRequest } from './Network/GraphQl';
 import Content from './Content';
 import { Helmet } from 'react-helmet';
 import { styleString } from './style.css';
+import AOS from 'aos';
 
 const itemFields = `
     entity_id
@@ -208,6 +209,11 @@ export const PageBuilderComponent = (props) => {
 			spb_page: data.data.spb_section,
 		};
 	}
+	useEffect(() => {
+		if (spgData) {
+			AOS.init();
+		}
+	});
 
 	if (spgData && (spgData.status || toPreview) && !preventRender) {
 		return (

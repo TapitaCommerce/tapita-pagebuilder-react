@@ -172,7 +172,19 @@ const PbContent = (props) => {
 				item.entity_id ? 'spb-item-id_' + item.entity_id : ''
 			} ${!noShadow ? 'spb-shadowed' : ''}`,
 		};
-
+if (item.entity_id == 68401) {
+    console.log(item)
+}
+		if (item.dataParsed && item.dataParsed.customProps) {
+			try {
+				const customProps = JSON.parse(item.dataParsed.customProps);
+				if (customProps) {
+					Object.keys(customProps).map((name) => {
+						itemProps[name] = customProps[name];
+					});
+				}
+			} catch (err) {}
+		}
 		if (item.dataParsed && item.dataParsed.scrollTo) {
 			styles.cursor = 'pointer';
 			itemProps.onClick = () => {
@@ -211,10 +223,11 @@ const PbContent = (props) => {
 					key={itemProps.key}
 					className='form-builder-artifact'
 					action={formURL}
-					onSubmit={() => {
+					onSubmit={(e) => {
 						try {
 							eval(item.dataParsed[formSubmitOnSubmit]);
 						} catch (err) {}
+						if (item.dataParsed.preventFormSubmit) e.preventDefault();
 					}}
 					method={formMethod}
 				>
@@ -335,9 +348,8 @@ const PbContent = (props) => {
 					}
 				}
 			} catch (err) {}
-			const arrowPath = dataParsed.sliderArrowPath || null;
 			return (
-				<Splide options={slideSettings} arrowPath={arrowPath}>
+				<Splide options={slideSettings}>
 					{cChild.map((cChil, indx) => (
 						<SplideSlide key={indx}>{cChil}</SplideSlide>
 					))}
@@ -374,9 +386,8 @@ const PbContent = (props) => {
 			} catch (err) {}
 			let cChild = children.filter((itm) => itm !== '');
 			cChild = isRtl ? cChild.reverse() : cChild;
-			const arrowPath = dataParsed.sliderArrowPath || null;
 			return (
-				<Splide options={partialSSettings} arrowPath={arrowPath}>
+				<Splide options={partialSSettings}>
 					{cChild.map((cChil, indx) => (
 						<SplideSlide key={indx}>{cChil}</SplideSlide>
 					))}
