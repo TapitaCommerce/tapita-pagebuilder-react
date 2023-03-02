@@ -172,9 +172,7 @@ const PbContent = (props) => {
 				item.entity_id ? 'spb-item-id_' + item.entity_id : ''
 			} ${!noShadow ? 'spb-shadowed' : ''}`,
 		};
-if (item.entity_id == 68401) {
-    console.log(item)
-}
+
 		if (item.dataParsed && item.dataParsed.customProps) {
 			try {
 				const customProps = JSON.parse(item.dataParsed.customProps);
