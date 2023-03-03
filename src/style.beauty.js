@@ -1,5 +1,5 @@
 /* eslint-disable */
-/* after changed content here, use https://www.toptal.com/developers/cssminifier/ to minify the css and paste it to style.css.js */
+/* after changed content here, use https://www.cleancss.com/css-minify/ to minify the css and paste it to style.css.js */
 const styleStringBeauty = `
     .spb-item {
         overflow: auto;
@@ -164,5 +164,8 @@ const styleStringBeauty = `
     }
     .spb-item .splide:not(.is-overflow) .splide__pagination {
         display: flex;
+    }
+    .spb-item .splide {
+        max-width: 100%;
     }
 `;
