@@ -472,11 +472,7 @@ const PbContent = (props) => {
 				style.height = parseInt(parentSliderHeight) + 'px';
 				// style.overflowY = 'hidden';
 			}
-		} else if (
-			parent &&
-			parent.type === 'partial_slider' &&
-			style.width === '30%'
-		) {
+		} else if (parent && parent.type === 'partial_slider') {
 			style.width = 'unset';
 		}
 		if (
