@@ -6,6 +6,7 @@ export const Tab = (props) => {
 	const navId = 'tab_nav_ctn_' + randomString(10);
 	const itemChildren =
 		item && item.children && item.children.length ? item.children : [];
+
 	const handleSwitchTab = (selectedTab) => {
 		const currentNavItem = document.getElementById(navId);
 		const tabNavtrs = Array.from(currentNavItem.children);
@@ -53,6 +54,11 @@ export const Tab = (props) => {
 			}
 		});
 	};
+	React.useEffect(() => {
+		try {
+			handleSwitchTab(0);
+		} catch (err) {}
+	}, []);
 
 	return (
 		<div
