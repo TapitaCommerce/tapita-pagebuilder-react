@@ -44,6 +44,23 @@ const Innercontent = (props) => {
 		}
 	});
 	const styles = tryParseJSON(item.styles) || {};
+	// fill border style
+	if (item.stylesParsed && !item.stylesParsed.borderStyle) {
+		const hasBorderProperty = Object.keys(item.stylesParsed).some((key) => {
+			return key.toLowerCase().includes('border');
+		});
+		if (hasBorderProperty) {
+			item.stylesParsed.borderStyle = 'solid';
+		}
+	}
+	if (styles && !styles.borderStyle) {
+		const hasBorderProperty = Object.keys(styles).some((key) => {
+			return key.toLowerCase().includes('border');
+		});
+		if (hasBorderProperty) {
+			styles.borderStyle = 'solid';
+		}
+	}
 	const dataParsed = item.dataParsed || {};
 	const nameSpace = useRef(dataParsed.name || randomString(5)).current;
 

@@ -68,6 +68,22 @@ const PbContent = (props) => {
 		const styles = prepareStyle(item, parent);
 		const devicelessData = prepareData(item);
 		item.stylesParsed = JSON.parse(JSON.stringify(styles));
+		if (item.stylesParsed && !item.stylesParsed.borderStyle) {
+			const hasBorderProperty = Object.keys(item.stylesParsed).some((key) => {
+				return key.toLowerCase().includes('border');
+			});
+			if (hasBorderProperty) {
+				item.stylesParsed.borderStyle = 'solid';
+			}
+		}
+		if (styles && !styles.borderStyle) {
+			const hasBorderProperty = Object.keys(styles).some((key) => {
+				return key.toLowerCase().includes('border');
+			});
+			if (hasBorderProperty) {
+				styles.borderStyle = 'solid';
+			}
+		}
 		item.dataParsed = devicelessData;
 		let aHref;
 		if (
