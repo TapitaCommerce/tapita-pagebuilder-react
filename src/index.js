@@ -158,7 +158,7 @@ export const PageBuilderComponent = (props) => {
 
 	if (!data) {
 		const variables = {};
-		variables['pageMaskedId'] = maskedId;
+		variables.pageMaskedId = maskedId;
 
 		sendRequest(
 			endPoint,
