@@ -346,6 +346,9 @@ const PbContent = (props) => {
 				interval: parseInt(dataParsed.sliderInterval)
 					? dataParsed.sliderInterval
 					: 3000,
+				pauseOnHover: dataParsed.sliderPauseOnHover
+					? dataParsed.sliderPauseOnHover
+					: false,
 			};
 			if (isRtl) {
 				slideSettings.direction = 'rtl';
