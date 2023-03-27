@@ -319,6 +319,7 @@ const PbContent = (props) => {
 				autoplay: parseInt(dataParsed.sliderAutoSlide) === 1,
 				arrows: parseInt(dataParsed.showSliderNavBtn) !== 0,
 				lazyLoad: lazyloadPlaceHolder ? 'nearby' : false,
+				// rewind: 'true',
 				pagination:
 					parseInt(dataParsed.showSliderIndicator) === 0
 						? false
@@ -330,7 +331,12 @@ const PbContent = (props) => {
 				interval: parseInt(dataParsed.sliderInterval)
 					? dataParsed.sliderInterval
 					: 3000,
+				pauseOnHover: dataParsed.sliderPauseOnHover
+					? dataParsed.sliderPauseOnHover
+					: false,
+				// interval: 3000,
 			};
+			// console.log('item', item);
 			if (isRtl) {
 				slideSettings.direction = 'rtl';
 				slideSettings.paginationDirection = 'rtl';
