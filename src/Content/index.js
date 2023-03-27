@@ -357,6 +357,7 @@ const PbContent = (props) => {
 			let cChild = children.filter((itm) => itm !== '');
 			cChild = isRtl ? cChild.reverse() : cChild;
 			slideSettings.pagination = true;
+			slideSettings.clones = cChild.length;
 			try {
 				if (dataParsed && dataParsed.customSplideConf) {
 					const customSplideConf = JSON.parse(dataParsed.customSplideConf);
