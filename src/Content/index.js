@@ -70,7 +70,7 @@ const PbContent = (props) => {
 		item.stylesParsed = JSON.parse(JSON.stringify(styles));
 		if (item.stylesParsed && !item.stylesParsed.borderStyle) {
 			const hasBorderProperty = Object.keys(item.stylesParsed).some((key) => {
-				return key.toLowerCase().includes('border');
+				return key.includes('borderWidth');
 			});
 			if (hasBorderProperty) {
 				item.stylesParsed.borderStyle = 'solid';
@@ -78,7 +78,7 @@ const PbContent = (props) => {
 		}
 		if (styles && !styles.borderStyle) {
 			const hasBorderProperty = Object.keys(styles).some((key) => {
-				return key.toLowerCase().includes('border');
+				return key.includes('borderWidth');
 			});
 			if (hasBorderProperty) {
 				styles.borderStyle = 'solid';
