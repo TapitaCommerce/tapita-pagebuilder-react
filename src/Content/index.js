@@ -304,7 +304,8 @@ const PbContent = (props) => {
 			lazyloadPlaceHolder &&
 			item.dataParsed &&
 			!item.dataParsed.openUrl &&
-			!item.dataParsed.scrollTo
+			!item.dataParsed.scrollTo &&
+			(!parent || parent.type !== 'slider') // slider already lazy load
 		) {
 			return (
 				<LazyLoad {...itemProps} placeholder={lazyloadPlaceHolder} offset={532}>
@@ -487,9 +488,16 @@ const PbContent = (props) => {
 			const parentSliderHeight =
 				parent.stylesParsed &&
 				(parent.stylesParsed[deviceFilterKey + 'heightPixel'] ||
-					parent.stylesParsed.heightPixel);
+					parent.stylesParsed.heightPixel ||
+					parent.stylesParsed[deviceFilterKey + 'height'] ||
+					parent.stylesParsed.height);
 			if (parentSliderHeight) {
-				style.height = parseInt(parentSliderHeight) + 'px';
+				if (
+					parentSliderHeight.includes('vw') ||
+					parentSliderHeight.includes('vh')
+				)
+					style.height = parentSliderHeight;
+				else style.height = parseInt(parentSliderHeight) + 'px';
 				// style.overflowY = 'hidden';
 			}
 		} else if (parent && parent.type === 'partial_slider') {
