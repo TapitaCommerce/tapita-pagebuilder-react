@@ -11,8 +11,6 @@ import {
 
 const endPoint = 'https://tapita.io/pb/graphql';
 const integrationToken = '3844V6rujCkeijQMq696HiHSiS1kIlhxq31658743735';
-// const endPoint = 'https://tapitaio.pwa-commerce.com/pb/graphql';
-// const integrationToken = '228EAej34FSd85WyIOZqgpqafIf9zoZiv1642218428';
 
 const AppWithRouter = () => {
 	const location = useLocation();
@@ -37,8 +35,7 @@ const AppWithRouter = () => {
 			history: history,
 			endPoint,
 			lazyloadPlaceHolder: <div />,
-			pageData,
-			maskedId: '11146tiNuq4EsPbsis7gy2U0S1679866203',
+			pageData
 		};
 
 		return (
