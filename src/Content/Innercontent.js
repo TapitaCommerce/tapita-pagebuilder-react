@@ -96,6 +96,9 @@ const Innercontent = (props) => {
 			const title = formatMessage({
 				val: (data.title !== undefined ? data.title : '') || '',
 			});
+			if (item.entity_id == 66037) {
+				console.log('item.stylesParsed.objectFit', item.stylesParsed);
+			}
 			return (
 				<img
 					src={data.image}
@@ -175,6 +178,7 @@ const Innercontent = (props) => {
 		const wrapperStyle = item.stylesParsed.boxShadow
 			? {
 					textShadow: convertBoxShadowToTextShadow(item.stylesParsed.boxShadow),
+					letterSpacing: 'inherit',
 			  }
 			: null;
 

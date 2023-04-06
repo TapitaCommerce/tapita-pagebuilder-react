@@ -41,6 +41,7 @@ const PbContent = (props) => {
 	const isRtl = pageData && pageData.is_rtl;
 
 	const renderItem = (item, children, parent) => {
+		// console.log('item1111', item);
 		if (layoutFilter !== null) {
 			if (filterRootChildrenOnly) {
 				if (
@@ -310,13 +311,15 @@ const PbContent = (props) => {
 
 		return <div {...itemProps}>{innerContent}</div>;
 	};
-
 	const renderInnerContent = (item, children, parent) => {
 		const dataParsed = item.dataParsed ? item.dataParsed : {};
 		if (item.type === 'slider') {
 			let slideSettings = {
 				type: parseInt(dataParsed.sliderInfiniteLoop) !== 0 ? 'loop' : 'slide',
-				autoplay: parseInt(dataParsed.sliderAutoSlide) === 1,
+
+				// autoplay: parseInt(dataParsed.sliderAutoSlide) === 1,
+				autoplay: true,
+
 				arrows: parseInt(dataParsed.showSliderNavBtn) !== 0,
 				lazyLoad: lazyloadPlaceHolder ? 'nearby' : false,
 				pagination:

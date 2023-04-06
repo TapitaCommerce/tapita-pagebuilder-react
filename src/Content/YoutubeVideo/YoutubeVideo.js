@@ -32,7 +32,7 @@ export const _YoutubeVideo = (props) => {
 		style,
 		autoplay,
 		loop,
-		lazy
+		lazy,
 	} = props;
 	const [currentVideoHeight, setCurrentVideoHeight] = useState(null);
 	const containerRef = useRef(null);
@@ -75,7 +75,7 @@ export const _YoutubeVideo = (props) => {
 				className={`magic-yt-video-container-${size || width || '100%'}`}
 			>
 				<iframe
-					loading={lazy?"lazy":"eager"}
+					loading={lazy ? 'lazy' : 'eager'}
 					height={currentVideoHeight || 'auto'}
 					width='100%'
 					allowFullScreen
