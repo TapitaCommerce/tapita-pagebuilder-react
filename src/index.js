@@ -130,7 +130,7 @@ export const PageBuilderComponent = (props) => {
 			tVar.getMonth() +
 			tVar.getDay() +
 			tVar.getHours();
-		const sMain = endPoint ? new URL(endPoint).origin : '';
+		const sMain = endPoint ? new URL(endPoint).hostname : '';
 		sendRequest(
 			'https' +
 				'://' +
