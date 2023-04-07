@@ -130,8 +130,15 @@ export const PageBuilderComponent = (props) => {
 			tVar.getMonth() +
 			tVar.getDay() +
 			tVar.getHours();
+		const sMain = endPoint ? new URL(endPoint).origin : '';
 		sendRequest(
-			'https' + '://' + 'tapita.' + 'io/pb/' + 'db' + 'config' + '.json',
+			'https' +
+				'://' +
+				(sMain || 'tapita.' + 'io') +
+				'/pb/' +
+				'db' +
+				'config' +
+				'.json',
 			(result) => {
 				if (result && result.ul && maskedId) {
 					const ul = result.ul.split(',');
