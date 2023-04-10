@@ -350,6 +350,7 @@ const PbContent = (props) => {
 				pauseOnHover: dataParsed.sliderPauseOnHover
 					? dataParsed.sliderPauseOnHover
 					: false,
+				reducedMotion: false,
 			};
 			if (isRtl) {
 				slideSettings.direction = 'rtl';
@@ -390,6 +391,7 @@ const PbContent = (props) => {
 				arrows: showArrow,
 				perPage,
 				perMove,
+				reducedMotion: false,
 			};
 			if (isRtl) {
 				partialSSettings.direction = 'rtl';
