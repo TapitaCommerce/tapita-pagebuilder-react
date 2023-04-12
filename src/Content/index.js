@@ -324,7 +324,6 @@ const PbContent = (props) => {
 				/>
 			);
 		}
-
 		return <div {...itemProps}>{innerContent}</div>;
 	};
 
@@ -367,7 +366,9 @@ const PbContent = (props) => {
 						slideSettings = { ...slideSettings, ...customSplideConf };
 					}
 				}
-			} catch (err) {}
+			} catch (err) {
+				console.warn(err);
+			}
 			return (
 				<Splide options={slideSettings}>
 					{cChild.map((cChil, indx) => (
@@ -404,7 +405,9 @@ const PbContent = (props) => {
 						partialSSettings = { ...partialSSettings, ...customSplideConf };
 					}
 				}
-			} catch (err) {}
+			} catch (err) {
+				console.warn(err);
+			}
 			let cChild = children.filter((itm) => itm !== '');
 			cChild = isRtl ? cChild.reverse() : cChild;
 			return (
@@ -574,13 +577,8 @@ const PbContent = (props) => {
 	rootItem.children = newTree;
 
 	useEffect(() => {
-		if (
-			selfRef.current &&
-			globalThis.window &&
-			globalThis.URL &&
-			window.location
-		) {
-			const url = new globalThis.URL(globalThis.window.location);
+		if (selfRef.current && global.window && global.URL && window.location) {
+			const url = new global.URL(global.window.location);
 			const hash = url.hash;
 			if (hash) {
 				try {
