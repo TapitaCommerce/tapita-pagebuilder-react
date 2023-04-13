@@ -78,6 +78,7 @@ const Innercontent = (props) => {
 					fontWeight,
 					fontFamily,
 					lineHeight,
+					letterSpacing,
 					boxShadow,
 					color,
 				},
@@ -88,6 +89,7 @@ const Innercontent = (props) => {
 			if (textDecoration) textStyle.textDecoration = textDecoration;
 			if (fontWeight) textStyle.fontWeight = fontWeight;
 			if (fontFamily) textStyle.fontFamily = fontFamily;
+			if (letterSpacing) textStyle.letterSpacing = letterSpacing;
 			if (lineHeight) textStyle.lineHeight = lineHeight;
 			if (color) textStyle.color = color;
 			if (boxShadow)
