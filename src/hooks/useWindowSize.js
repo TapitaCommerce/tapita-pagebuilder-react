@@ -12,8 +12,8 @@ export const useWindowSize = () => {
 			typeof window !== 'undefined'
 				? window.smpbWindowWidth ||
 				  Math.max(
-						document.documentElement.clientWidth || 0,
-						window.innerWidth || 0,
+				  	document.documentElement.clientWidth || 0,
+				  	window.innerWidth || 0,
 				  )
 				: 1440,
 		height:
@@ -21,24 +21,24 @@ export const useWindowSize = () => {
 				? window.smpbWindowHeight || window.innerHeight
 				: 1440,
 	});
+
 	useLayoutEffect(() => {
-		function updateSize() {
+		const updateSize = () => {
 			if (typeof window !== 'undefined') {
 				const newWidth = Math.max(
 					document.documentElement.clientWidth || 0,
 					window.innerWidth || 0,
 				);
 				const newHeight = window.innerHeight;
-				if (newWidth !== window.smpbWindowWidth) {
-					window.smpbWindowWidth = newWidth;
-					window.smpbWindowHeight = newHeight;
-					setSize({
-						width: newWidth,
-						height: newHeight,
-					});
-				}
+				window.smpbWindowWidth = newWidth;
+				window.smpbWindowHeight = newHeight;
+				setSize({
+					width: newWidth,
+					height: newHeight,
+				});
 			}
-		}
+		};
+
 		if (typeof window !== 'undefined') {
 			window.addEventListener('resize', updateSize);
 		}
@@ -48,5 +48,6 @@ export const useWindowSize = () => {
 			}
 		};
 	}, []);
+
 	return size;
 };

@@ -16,6 +16,8 @@ const messagesInJP = {
 
 ReactDOM.render(
 	<IntlProvider messages={messagesInJP} locale="fr" defaultLocale="en">
-		<App />
+        <div style={{backgroundColor: '#eaeaea'}}>
+		    <App />
+        </div>
 	</IntlProvider>
 	, document.getElementById('root'))

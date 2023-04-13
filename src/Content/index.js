@@ -68,6 +68,22 @@ const PbContent = (props) => {
 		const styles = prepareStyle(item, parent);
 		const devicelessData = prepareData(item);
 		item.stylesParsed = JSON.parse(JSON.stringify(styles));
+		if (item.stylesParsed && !item.stylesParsed.borderStyle) {
+			const hasBorderProperty = Object.keys(item.stylesParsed).some((key) => {
+				return key.includes('borderWidth');
+			});
+			if (hasBorderProperty) {
+				item.stylesParsed.borderStyle = 'solid';
+			}
+		}
+		if (styles && !styles.borderStyle) {
+			const hasBorderProperty = Object.keys(styles).some((key) => {
+				return key.includes('borderWidth');
+			});
+			if (hasBorderProperty) {
+				styles.borderStyle = 'solid';
+			}
+		}
 		item.dataParsed = devicelessData;
 		let aHref;
 		if (
@@ -288,7 +304,8 @@ const PbContent = (props) => {
 			lazyloadPlaceHolder &&
 			item.dataParsed &&
 			!item.dataParsed.openUrl &&
-			!item.dataParsed.scrollTo
+			!item.dataParsed.scrollTo &&
+			(!parent || parent.type !== 'slider') // slider already lazy load
 		) {
 			return (
 				<LazyLoad {...itemProps} placeholder={lazyloadPlaceHolder} offset={532}>
@@ -307,7 +324,6 @@ const PbContent = (props) => {
 				/>
 			);
 		}
-
 		return <div {...itemProps}>{innerContent}</div>;
 	};
 	const renderInnerContent = (item, children, parent) => {
@@ -332,6 +348,7 @@ const PbContent = (props) => {
 				pauseOnHover: dataParsed.sliderPauseOnHover
 					? dataParsed.sliderPauseOnHover
 					: false,
+				reducedMotion: false,
 			};
 			if (isRtl) {
 				slideSettings.direction = 'rtl';
@@ -340,6 +357,7 @@ const PbContent = (props) => {
 			let cChild = children.filter((itm) => itm !== '');
 			cChild = isRtl ? cChild.reverse() : cChild;
 			slideSettings.pagination = true;
+			slideSettings.clones = cChild.length;
 			try {
 				if (dataParsed && dataParsed.customSplideConf) {
 					const customSplideConf = JSON.parse(dataParsed.customSplideConf);
@@ -347,7 +365,9 @@ const PbContent = (props) => {
 						slideSettings = { ...slideSettings, ...customSplideConf };
 					}
 				}
-			} catch (err) {}
+			} catch (err) {
+				console.warn(err);
+			}
 			return (
 				<Splide options={slideSettings}>
 					{cChild.map((cChil, indx) => (
@@ -371,6 +391,7 @@ const PbContent = (props) => {
 				arrows: showArrow,
 				perPage,
 				perMove,
+				reducedMotion: false,
 			};
 			if (isRtl) {
 				partialSSettings.direction = 'rtl';
@@ -383,7 +404,9 @@ const PbContent = (props) => {
 						partialSSettings = { ...partialSSettings, ...customSplideConf };
 					}
 				}
-			} catch (err) {}
+			} catch (err) {
+				console.warn(err);
+			}
 			let cChild = children.filter((itm) => itm !== '');
 			cChild = isRtl ? cChild.reverse() : cChild;
 			return (
@@ -469,9 +492,16 @@ const PbContent = (props) => {
 			const parentSliderHeight =
 				parent.stylesParsed &&
 				(parent.stylesParsed[deviceFilterKey + 'heightPixel'] ||
-					parent.stylesParsed.heightPixel);
-			if (parentSliderHeight) {
-				style.height = parseInt(parentSliderHeight) + 'px';
+					parent.stylesParsed.heightPixel ||
+					parent.stylesParsed[deviceFilterKey + 'height'] ||
+					parent.stylesParsed.height);
+			if (parentSliderHeight && parentSliderHeight.includes) {
+				if (
+					parentSliderHeight.includes('vw') ||
+					parentSliderHeight.includes('vh')
+				)
+					style.height = parentSliderHeight;
+				else style.height = parseInt(parentSliderHeight) + 'px';
 				// style.overflowY = 'hidden';
 			}
 		} else if (parent && parent.type === 'partial_slider') {
@@ -546,13 +576,8 @@ const PbContent = (props) => {
 	rootItem.children = newTree;
 
 	useEffect(() => {
-		if (
-			selfRef.current &&
-			globalThis.window &&
-			globalThis.URL &&
-			window.location
-		) {
-			const url = new globalThis.URL(globalThis.window.location);
+		if (selfRef.current && global.window && global.URL && window.location) {
+			const url = new global.URL(global.window.location);
 			const hash = url.hash;
 			if (hash) {
 				try {

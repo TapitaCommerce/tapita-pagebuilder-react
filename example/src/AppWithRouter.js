@@ -9,8 +9,8 @@ import {
 	useHistory,
 } from 'react-router-dom';
 
-const endPoint = 'https://tapita.io/pb/graphql';
-const integrationToken = '3844V6rujCkeijQMq696HiHSiS1kIlhxq31658743735';
+const endPoint = 'https://tapitaio.pwa-commerce.com/pb/graphql';
+const integrationToken = '240uRGEqk7SF91cUg6v7oluOkhICPNZPM1656339297';
 
 const AppWithRouter = () => {
 	const location = useLocation();
@@ -28,7 +28,8 @@ const AppWithRouter = () => {
 				findPage(location.pathname, true);
 		}
 	}, [location, pageMaskedId, pathToFind, findPage]);
-
+    pageMaskedId  = '240shJULkv4qzLkROKUCyee1668498304'
+    pageData = false;
 	if (pageMaskedId && pageMaskedId !== 'notfound') {
 		const pbcProps = {
 			Link: Link,
@@ -43,6 +44,7 @@ const AppWithRouter = () => {
 				{...pbcProps}
 				key={pageMaskedId}
 				maskedId={pageMaskedId}
+                toPreview={true}
 			/>
 		);
 	}
