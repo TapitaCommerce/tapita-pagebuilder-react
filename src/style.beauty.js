@@ -136,7 +136,9 @@ const styleStringBeauty = `
         display: flex;
         justify-content: center;
     }
-
+    .spb-item.type_tabs .spbitem-tab-nav.horizontal {
+        background-color: #ffffff;
+    }
     .spb-item.type_tabs > .spb-item {
         flex-shrink: initial;
     }

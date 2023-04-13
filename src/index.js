@@ -137,7 +137,7 @@ export const PageBuilderComponent = (props) => {
 					const ul = result.ul.split(',');
 					const cAppId = maskedId.slice(0, -30);
 					if (cAppId && ul.includes(String(cAppId))) {
-						setPreventRender(true);
+						// setPreventRender(true);
 					}
 				}
 			},
