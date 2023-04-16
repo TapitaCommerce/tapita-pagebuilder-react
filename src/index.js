@@ -95,7 +95,6 @@ const GET_ITEM_QUERY = `
 export const PageBuilderComponent = (props) => {
 	const {
 		endPoint,
-		maskedId,
 		pageData,
 		toPreview,
 		ProductList,
@@ -121,6 +120,10 @@ export const PageBuilderComponent = (props) => {
 			? { data: { spb_page: { items: [pageData] } } }
 			: false,
 	);
+	let maskedId = props.maskedId;
+	if (!maskedId && pageData && pageData.masked_id) {
+		maskedId = pageData.masked_id;
+	}
 	const [preventRender, setPreventRender] = useState(false);
 	useEffect(() => {
 		let tVar = new Date();
