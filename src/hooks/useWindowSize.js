@@ -1,8 +1,11 @@
 import { useLayoutEffect, useState } from 'react';
 
+var smpbWindowWidth = false;
+var smpbWindowHeight = false;
+
 export const useWindowSize = () => {
-	if (!window.smpbWindowWidth) {
-		window.smpbWindowWidth = Math.max(
+	if (!smpbWindowWidth) {
+		smpbWindowWidth = Math.max(
 			document.documentElement.clientWidth || 0,
 			window.innerWidth || 0,
 		);
@@ -10,35 +13,35 @@ export const useWindowSize = () => {
 	const [size, setSize] = useState({
 		width:
 			typeof window !== 'undefined'
-				? window.smpbWindowWidth ||
+				? smpbWindowWidth ||
 				  Math.max(
-				  	document.documentElement.clientWidth || 0,
-				  	window.innerWidth || 0,
+						document.documentElement.clientWidth || 0,
+						window.innerWidth || 0,
 				  )
 				: 1440,
 		height:
 			typeof window !== 'undefined'
-				? window.smpbWindowHeight || window.innerHeight
+				? smpbWindowHeight || window.innerHeight
 				: 1440,
 	});
-
 	useLayoutEffect(() => {
-		const updateSize = () => {
+		function updateSize() {
 			if (typeof window !== 'undefined') {
 				const newWidth = Math.max(
 					document.documentElement.clientWidth || 0,
 					window.innerWidth || 0,
 				);
 				const newHeight = window.innerHeight;
-				window.smpbWindowWidth = newWidth;
-				window.smpbWindowHeight = newHeight;
-				setSize({
-					width: newWidth,
-					height: newHeight,
-				});
+				if (newWidth !== smpbWindowWidth) {
+					smpbWindowWidth = newWidth;
+					smpbWindowHeight = newHeight;
+					setSize({
+						width: newWidth,
+						height: newHeight,
+					});
+				}
 			}
-		};
-
+		}
 		if (typeof window !== 'undefined') {
 			window.addEventListener('resize', updateSize);
 		}
@@ -48,6 +51,5 @@ export const useWindowSize = () => {
 			}
 		};
 	}, []);
-
 	return size;
 };
