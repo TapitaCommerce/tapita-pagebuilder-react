@@ -496,10 +496,11 @@ const PbContent = (props) => {
 					parent.stylesParsed.heightPixel ||
 					parent.stylesParsed[deviceFilterKey + 'height'] ||
 					parent.stylesParsed.height);
-			if (parentSliderHeight && parentSliderHeight.includes) {
+			if (parentSliderHeight) {
 				if (
-					parentSliderHeight.includes('vw') ||
-					parentSliderHeight.includes('vh')
+					parentSliderHeight.includes &&
+					(parentSliderHeight.includes('vw') ||
+						parentSliderHeight.includes('vh'))
 				)
 					style.height = parentSliderHeight;
 				else style.height = parseInt(parentSliderHeight) + 'px';
