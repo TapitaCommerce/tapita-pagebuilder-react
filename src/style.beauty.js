@@ -1,6 +1,5 @@
 /* eslint-disable */
-/* after changed content here, use https://www.cleancss.com/css-minify/ to minify the css and paste it to style.css.js */
-const styleStringBeauty = `
+export const styleStringBeauty = `
     .spb-item {
         overflow: auto;
         transition: transform 0.3s ease;
@@ -13,30 +12,24 @@ const styleStringBeauty = `
         box-sizing: border-box;
     }
     .spb-item.spb-shadowed {
-    	overflow: visible;
+        overflow: visible;
     }
     .type_slider .carousel-root {
         max-width: 100%;
     }
-
     .spb-item-root {
         align-items: center;
         padding: 0px;
     }
-
     .spb-item .type_slider {
-        background-color: white;
         padding: 0;
     }
-
     .spb-item.type_paragraph {
         color: #000;
     }
-
     .spb-item.type_paragraph * {
         color: inherit;
     }
-
     .spb-item.type_paragraph div,
     .spb-item.type_paragraph span,
     .spb-item.type_paragraph u,
@@ -55,7 +48,6 @@ const styleStringBeauty = `
     .spb-item.type_paragraph p {
         color: inherit;
     }
-
     button.spb-item {
         cursor: pointer;
     }
@@ -65,11 +57,9 @@ const styleStringBeauty = `
         border: none;
         background-color: #ffffff;
     }
-
     .spb-item.type_button:hover {
         opacity: 0.8;
     }
-
     .spb-item.type_image {
         padding: 0;
     }
@@ -82,13 +72,11 @@ const styleStringBeauty = `
         padding: 15px;
         justify-content: space-between;
     }
-
     .spb-item.type_dropdown .smpb-dropdown-title svg,
     .spb-item.type_dropdown .smpb-dropdown-title img {
         width: 21px;
         height: 21px;
     }
-
     .spb-item > h1,
     .spb-item > h2,
     .spb-item > h3,
@@ -118,7 +106,6 @@ const styleStringBeauty = `
     .spb-item > h6 {
         font-size: 0.875rem;
     }
-
     .spb-item.type_instagram .simipb-insta-item {
         display: block;
     }
@@ -128,35 +115,38 @@ const styleStringBeauty = `
         height: 100%;
         object-fit: cover;
     }
-
-    /*tab*/
     .spb-item.type_tabs .spbitem-tab-nav {
         direction: ltr;
         padding: 0px 15px;
         display: flex;
         justify-content: center;
     }
-
+    @media (max-width: 1023px) {
+        .spb-item.type_tabs .spbitem-tab-nav {
+            justify-content: start;
+            overflow-x: auto;
+        }
+    }
     .spb-item.type_tabs > .spb-item {
         flex-shrink: initial;
     }
-
     .spb-item.type_tabs .spbitem-tab-nav .spbitem-tab-nav-item {
         cursor: pointer;
         margin-inline-end: 10px;
         padding: 10px 15px;
     }
+    .spb-item.type_tabs .spbitem-tab-nav.horizontal .spbitem-tab-nav-item {
+        white-space: nowrap;
+    }
     .spb-item.type_tabs .spbitem-tab-nav .spbitem-tab-nav-item.active {
         background-color: #ffffff;
         font-weight: 600;
     }
-
     .spb-item.type_tabs .spbitem-tab-nav.vertical {
         display: inline-block;
         flex-shrink: inherit;
         padding: 0;
     }
-
     .spb-item.type_tabs .spbitem-tab-nav.vertical .spbitem-tab-nav-item {
         width: 100%;
         margin-bottom: 5px;
@@ -167,5 +157,12 @@ const styleStringBeauty = `
     }
     .spb-item .splide {
         max-width: 100%;
+        height: 100%;
+    }
+    .spb-item.type_paragraph .fr-emoticon.fr-emoticon-img {
+        min-width: 20px;
+        min-height: 20px;
+        display: inline-block;
+        background-repeat: no-repeat !important;
     }
 `;
