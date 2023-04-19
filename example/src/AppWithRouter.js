@@ -9,8 +9,8 @@ import {
 	useHistory,
 } from 'react-router-dom';
 
-const endPoint = 'https://tapitaio.pwa-commerce.com/pb/graphql';
-const integrationToken = '228EAej34FSd85WyIOZqgpqafIf9zoZiv1642218428';
+const endPoint = 'https://tapita.io/pb/graphql';
+const integrationToken = '3844V6rujCkeijQMq696HiHSiS1kIlhxq31658743735';
 
 const AppWithRouter = () => {
 	const location = useLocation();
