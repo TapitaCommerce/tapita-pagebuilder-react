@@ -366,8 +366,25 @@ const PbContent = (props) => {
 				parseInt(dataParsed.showSliderIndicator) === 0
 					? false
 					: !!(children.length && children.length !== 1);
-			const perPage = parseInt(dataParsed.partialPerPage) || 3;
-			const perMove = parseInt(dataParsed.partialPerMove) || 1;
+
+			let perPage = 3;
+			if(deviceFilterKey == 'l_'){
+				perPage = parseInt(dataParsed.partialPerPageOnLaptop) || 6;
+			}
+			if(deviceFilterKey == 't_'){
+				perPage = parseInt(dataParsed.partialPerPageOnTablet) || 3;
+			}
+			if(deviceFilterKey == 'm_'){
+				perPage = parseInt(dataParsed.partialPerPageOnMobile) || 1;
+			}
+			let perMove = parseInt(dataParsed.partialPerMove) || 1;
+
+			let cChild = children.filter((itm) => itm !== '');
+			cChild = isRtl ? cChild.reverse() : cChild;
+			const imageNumber = cChild.length;
+			if(imageNumber < perPage + perMove){
+				perMove = imageNumber - perPage;
+			}
 
 			let partialSSettings = {
 				type: 'slide',
@@ -388,8 +405,6 @@ const PbContent = (props) => {
 					}
 				}
 			} catch (err) {}
-			let cChild = children.filter((itm) => itm !== '');
-			cChild = isRtl ? cChild.reverse() : cChild;
 			return (
 				<Splide options={partialSSettings}>
 					{cChild.map((cChil, indx) => (
