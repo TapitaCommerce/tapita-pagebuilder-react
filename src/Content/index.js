@@ -350,6 +350,7 @@ const PbContent = (props) => {
 					? dataParsed.sliderPauseOnHover
 					: false,
 				reducedMotion: false,
+				arrowPath: dataParsed.arrowPath || false,
 			};
 			if (isRtl) {
 				slideSettings.direction = 'rtl';
@@ -383,9 +384,27 @@ const PbContent = (props) => {
 				parseInt(dataParsed.showSliderIndicator) === 0
 					? false
 					: !!(children.length && children.length !== 1);
-			const perPage = parseInt(dataParsed.partialPerPage) || 3;
-			const perMove = parseInt(dataParsed.partialPerMove) || 1;
+			let perPage = 3;
+			let perMove = 1;
+			if (dataParsed) {
+				if (dataParsed[deviceFilterKey + 'partialPerPage']) {
+					perPage = parseInt(dataParsed[deviceFilterKey + 'partialPerPage']);
+				} else if (dataParsed.partialPerPage) {
+					perPage = parseInt(dataParsed.partialPerPage);
+				}
+				if (dataParsed[deviceFilterKey + 'partialPerMove']) {
+					perMove = parseInt(dataParsed[deviceFilterKey + 'partialPerMove']);
+				} else if (dataParsed.partialPerMove) {
+					perMove = parseInt(dataParsed.partialPerMove);
+				}
+			}
 
+			let cChild = children.filter((itm) => itm !== '');
+			cChild = isRtl ? cChild.reverse() : cChild;
+			const imageNumber = cChild.length;
+			if (imageNumber < perPage + perMove) {
+				perMove = imageNumber - perPage;
+			}
 			let partialSSettings = {
 				type: 'slide',
 				pagination: showIndicators,
@@ -393,6 +412,7 @@ const PbContent = (props) => {
 				perPage,
 				perMove,
 				reducedMotion: false,
+				arrowPath: dataParsed.arrowPath || false,
 			};
 			if (isRtl) {
 				partialSSettings.direction = 'rtl';
@@ -408,8 +428,6 @@ const PbContent = (props) => {
 			} catch (err) {
 				console.warn(err);
 			}
-			let cChild = children.filter((itm) => itm !== '');
-			cChild = isRtl ? cChild.reverse() : cChild;
 			return (
 				<Splide options={partialSSettings}>
 					{cChild.map((cChil, indx) => (
