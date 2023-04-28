@@ -63,6 +63,21 @@ const PbContent = (props) => {
 				return '';
 			else if (deviceFilterKey === 'l_' && item.dataParsed.hideOnDesktop)
 				return '';
+			if (
+				item.dataParsed.showOnLocale &&
+				item.dataParsed.showOnLocale !== 'false' &&
+				item.dataParsed.showOnLocale.split
+			) {
+				const currentLange = document.documentElement.lang;
+				const localeToShow = item.dataParsed.showOnLocale.split(',');
+				if (
+					localeToShow &&
+					localeToShow.includes &&
+					!localeToShow.includes(currentLange)
+				) {
+					return '';
+				}
+			}
 		}
 		const itemType = item.type;
 		const styles = prepareStyle(item, parent);
