@@ -115,11 +115,14 @@ const Innercontent = (props) => {
 			const title = formatMessage({
 				val: (data.title !== undefined ? data.title : '') || '',
 			});
+			const loadStrategy = data && data.loadStrategy;
+			const offhandImgOptimizationConfig = (data && data.optimization) || {};
 			return (
 				<img
 					src={data.image}
 					alt={alt}
 					title={title}
+					loading={loadStrategy}
 					style={{
 						width: data.width || '100%',
 						height: data.height || '100%',
@@ -132,6 +135,7 @@ const Innercontent = (props) => {
 								? item.stylesParsed.objectPosition
 								: 'unset',
 					}}
+					{...offhandImgOptimizationConfig}
 				/>
 			);
 		}
