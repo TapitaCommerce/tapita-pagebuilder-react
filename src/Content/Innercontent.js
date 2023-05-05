@@ -1,4 +1,4 @@
-import React, { Fragment, useRef } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 import { HtmlVideo } from './HTMLVideo/HTMLVideo';
 import { YoutubeVideo } from './YoutubeVideo/YoutubeVideo';
 import { Tab } from './Tab';
@@ -29,8 +29,74 @@ const Innercontent = (props) => {
 		translatePlaceholder,
 	} = props;
 
+	useEffect(() => {
+		if (!window.tapitaBackupHtmlElements) {
+			window.tapitaBackupHtmlElements = {};
+		}
+
+		if (
+			item &&
+			item.entity_id &&
+			item.type &&
+			(item.type === 'custom_html' || item.type === 'actual_statement')
+		) {
+			if (
+				item &&
+				item.entity_id &&
+				window.tapitaBackupHtmlElements &&
+				window.tapitaBackupHtmlElements[item.entity_id]
+			) {
+				const ourElRep = document.getElementById('pbitm-id-' + item.entity_id);
+				if (
+					ourElRep &&
+					(!ourElRep.innerHTML || ourElRep.innerHTML.length < 10)
+				) {
+					// 0 maybe?
+					window.tapitaBackupHtmlElements[item.entity_id].forEach((savedEl) => {
+						ourElRep.appendChild(savedEl);
+					});
+				}
+			}
+		}
+	}, []);
+
+	if (
+		item &&
+		item.entity_id &&
+		window.tapitaBackupHtmlElements &&
+		window.tapitaBackupHtmlElements[item.entity_id]
+	) {
+		return '';
+	}
 	if (!item || !item.entity_id) return '';
 
+	const backupHtml = () => {
+		// this is the first time rendering, back it up if unmount
+
+		if (
+			item &&
+			item.entity_id &&
+			item.type &&
+			(item.type === 'custom_html' || item.type === 'actual_statement')
+		) {
+			const ourElNow = document.getElementById('pbitm-id-' + item.entity_id);
+			if (ourElNow) {
+				NodeList.prototype.forEach = Array.prototype.forEach;
+				let children = ourElNow.children;
+				children = Array.from(children);
+				const backupChildNodes = [];
+				children.forEach(function (item) {
+					backupChildNodes.push(item);
+				});
+				if (backupChildNodes.length)
+					window.tapitaBackupHtmlElements[item.entity_id] = backupChildNodes;
+			}
+		}
+	};
+	[100, 1000, 3000, 5000].forEach((calval) => {
+		// call it sometimes to make sure with some provider that take time
+		setTimeout(backupHtml, calval);
+	});
 	let data = {};
 	if (item.data && typeof item.data === 'object') {
 		data = { ...item.data };
