@@ -1,5 +1,5 @@
 /* eslint-disable */
-export const styleStringBeauty = `
+export const styleStringBeauty = process.env.TARGET_ENV !== 'shopify'?`
     .spb-item {
         overflow: auto;
         transition: transform 0.3s ease;
@@ -165,4 +165,4 @@ export const styleStringBeauty = `
         display: inline-block;
         background-repeat: no-repeat !important;
     }
-`;
+`:'';

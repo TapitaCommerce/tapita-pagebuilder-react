@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // uncomment this to build standalone package
-// import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom';
 import { sendRequest } from './Network/GraphQl';
 import Content from './Content';
 import { Helmet } from 'react-helmet';
@@ -230,13 +230,15 @@ export const PageBuilderComponent = (props) => {
 	if (spgData && (spgData.status || toPreview) && !preventRender) {
 		return (
 			<React.Fragment>
-				<Helmet
-					style={[
-						{
-							cssText: styleString,
-						},
-					]}
-				/>
+				{styleString && (
+					<Helmet
+						style={[
+							{
+								cssText: styleString,
+							},
+						]}
+					/>
+				)}
 				{spgData && spgData.custom_css ? (
 					<Helmet
 						style={[
@@ -432,9 +434,9 @@ export const usePbFinder = (props) => {
 
 export { TreeDataProductDetailMarkerEnum } from './Helper/treeDataUtils';
 // uncomment this to build standalone package
-// export const renderForIdWithProps = (elId, pbProps, rootFinder = document) => {
-// 	ReactDOM.render(
-// 		<PageBuilderComponent {...pbProps} />,
-// 		rootFinder.getElementById(elId),
-// 	);
-// };
+export const renderForIdWithProps = (elId, pbProps, rootFinder = document) => {
+	ReactDOM.render(
+		<PageBuilderComponent {...pbProps} />,
+		rootFinder.getElementById(elId),
+	);
+};

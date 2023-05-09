@@ -25,3 +25,5 @@ dist
 log
 src/playground
 umd/*.umd.js
+analyze
+!analyze/analyze.sh
