@@ -7,6 +7,7 @@ import { Helmet } from 'react-helmet';
 import { styleString } from './style.css';
 import AOS from 'aos';
 
+// 2kb
 const itemFields = `
     entity_id
     page_id
@@ -125,6 +126,7 @@ export const PageBuilderComponent = (props) => {
 		maskedId = pageData.masked_id;
 	}
 	const [preventRender, setPreventRender] = useState(false);
+
 	useEffect(() => {
 		let tVar = new Date();
 		tVar =

@@ -13,7 +13,8 @@
 		"node": ">=10"
 	},
 	"scripts": {
-		"build": "microbundle-crl --no-compress --format modern,cjs && cp 'src/index.d.ts' 'dist/'",
+		"analyze": "yarn source-map-explorer 'dist/index.js'",
+		"build": "NODE_ENV=production microbundle-crl --sourcemap --no-compress --format modern,cjs && cp 'src/index.d.ts' 'dist/'",
 		"start": "microbundle-crl watch --no-compress --format modern,cjs && cp 'src/index.d.ts' 'dist/'",
 		"prepare": "run-s build",
 		"test": "run-s test:unit test:lint test:build",
@@ -55,7 +56,9 @@
 		"prettier": "^2.0.4",
 		"react": "^17.0.1",
 		"react-dom": "^17.0.1",
-		"react-scripts": "^3.4.1"
+		"react-scripts": "^3.4.1",
+		"source-map-explorer": "^2.5.3",
+		"uglifyify": "^5.0.2"
 	},
 	"files": [
 		"dist"
