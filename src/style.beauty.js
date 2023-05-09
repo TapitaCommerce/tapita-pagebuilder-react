@@ -158,6 +158,7 @@ export const styleStringBeauty = process.env.TARGET_ENV !== 'shopify'?`
     .spb-item .splide {
         max-width: 100%;
         height: 100%;
+        width: 100%;
     }
     .spb-item.type_paragraph .fr-emoticon.fr-emoticon-img {
         min-width: 20px;
