@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 var smpbWindowWidth = false;
 
@@ -33,9 +33,8 @@ export const useDeviceWidthPrefix = (props) => {
 				);
 				if (newWidth !== smpbWindowWidth) {
 					smpbWindowWidth = newWidth;
-					if (devicePref !== getPrefix(newWidth)) {
-						setDevicePref(getPrefix(newWidth));
-					}
+					const newPrev = getPrefix(newWidth);
+					setDevicePref(newPrev);
 				}
 			}
 		}
