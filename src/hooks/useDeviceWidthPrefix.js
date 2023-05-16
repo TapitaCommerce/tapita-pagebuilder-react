@@ -31,11 +31,11 @@ export const useDeviceWidthPrefix = (props) => {
 					document.documentElement.clientWidth || 0,
 					window.innerWidth || 0,
 				);
-				if (newWidth !== smpbWindowWidth) {
+				//if (newWidth !== smpbWindowWidth) {
 					smpbWindowWidth = newWidth;
 					const newPrev = getPrefix(newWidth);
 					setDevicePref(newPrev);
-				}
+				//}
 			}
 		}
 		if (typeof window !== 'undefined') {
