@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 var smpbWindowWidth = false;
 
@@ -31,12 +31,11 @@ export const useDeviceWidthPrefix = (props) => {
 					document.documentElement.clientWidth || 0,
 					window.innerWidth || 0,
 				);
-				if (newWidth !== smpbWindowWidth) {
+				//if (newWidth !== smpbWindowWidth) {
 					smpbWindowWidth = newWidth;
-					if (devicePref !== getPrefix(newWidth)) {
-						setDevicePref(getPrefix(newWidth));
-					}
-				}
+					const newPrev = getPrefix(newWidth);
+					setDevicePref(newPrev);
+				//}
 			}
 		}
 		if (typeof window !== 'undefined') {
