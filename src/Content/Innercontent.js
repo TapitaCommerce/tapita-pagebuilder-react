@@ -306,8 +306,8 @@ const Innercontent = (props) => {
 						videoURL={videoURL}
 						formatMessage={formatMessage}
 						style={shadowStyle}
-                        autoplay={enableAutoplay}
-                        loop={enableLoop}
+						autoplay={enableAutoplay}
+						loop={enableLoop}
 					/>
 				</Fragment>
 			);

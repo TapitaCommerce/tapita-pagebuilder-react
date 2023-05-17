@@ -57,14 +57,7 @@
 			2,
 			"single"
 		],
-		"no-unused-vars": [
-			1,
-			{
-				"vars": "all",
-				"args": "after-used",
-				"ignoreRestSiblings": false
-			}
-		],
+		"no-unused-vars": 0,
 		"camelcase": 1,
 		"prefer-const": 1,
 		"react/jsx-no-bind": 1,

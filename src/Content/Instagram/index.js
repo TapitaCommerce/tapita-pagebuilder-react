@@ -50,9 +50,9 @@ export const Instagram = (props) => {
 						href={insItem.permalink}
 					>
 						{insItem.media_type === 'IMAGE' ? (
-							<img src={insItem.media_url} />
+							<img src={insItem.media_url} loading='lazy' />
 						) : (
-							<video src={insItem.media_url} />
+							<video src={insItem.media_url} preload='none' />
 						)}
 					</a>,
 				);

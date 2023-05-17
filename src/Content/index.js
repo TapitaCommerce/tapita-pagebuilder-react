@@ -7,6 +7,8 @@ import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
 import LazyLoad from 'react-lazyload';
 import { TreeDataProductDetailUtils } from '../Helper/treeDataUtils';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
+import { SurroundLink } from './SurroundLink';
+import { Container } from './Container';
 
 export const buttonTypeFieldName = 'button-type';
 
@@ -272,36 +274,16 @@ const PbContent = (props) => {
 				item.type === 'form_button' ||
 				item.type === 'image'
 			) {
-				const openUrlInNewTab = parseInt(item.dataParsed.openUrlInNewTab) === 1;
-				if (!itemProps.style.textDecoration)
-					itemProps.style.textDecoration = 'none';
-				if (!itemProps.style.color) itemProps.style.color = 'initial';
-				delete itemProps.onClick;
-				if (item.dataParsed && item.dataParsed.nofollow)
-					itemProps.rel = 'nofollow';
-				if (
-					Link &&
-					item.dataParsed.openUrl &&
-					item.dataParsed.openUrl.indexOf('http') === -1
-				) {
-					return (
-						<Link
-							to={aHref}
-							target={openUrlInNewTab ? '_blank' : '_self'}
-							{...itemProps}
-						>
-							{innerContent}
-						</Link>
-					);
-				}
 				return (
-					<a
-						href={aHref}
-						target={openUrlInNewTab ? '_blank' : '_self'}
-						{...itemProps}
+					<SurroundLink
+						key={item.entity_id}
+						item={item}
+						itemProps={itemProps}
+						aHref={aHref}
+						Link={Link}
 					>
 						{innerContent}
-					</a>
+					</SurroundLink>
 				);
 			}
 		}
@@ -310,7 +292,7 @@ const PbContent = (props) => {
 				? item.dataParsed[buttonTypeFieldName]
 				: 'button';
 			return (
-				<button type={buttonType} {...itemProps}>
+				<button key={item.entity_id} type={buttonType} {...itemProps}>
 					{innerContent}
 				</button>
 			);
@@ -323,7 +305,12 @@ const PbContent = (props) => {
 			(!parent || parent.type !== 'slider') // slider already lazy load
 		) {
 			return (
-				<LazyLoad {...itemProps} placeholder={lazyloadPlaceHolder} offset={532}>
+				<LazyLoad
+					key={item.entity_id}
+					{...itemProps}
+					placeholder={lazyloadPlaceHolder}
+					offset={532}
+				>
 					{innerContent}
 				</LazyLoad>
 			);
@@ -339,7 +326,11 @@ const PbContent = (props) => {
 				/>
 			);
 		}
-		return <div {...itemProps}>{innerContent}</div>;
+		return (
+			<Container key={item.entity_id} itemProps={itemProps}>
+				{innerContent}
+			</Container>
+		);
 	};
 
 	const renderInnerContent = (item, children, parent) => {
@@ -374,7 +365,11 @@ const PbContent = (props) => {
 			let cChild = children.filter((itm) => itm !== '');
 			cChild = isRtl ? cChild.reverse() : cChild;
 			slideSettings.pagination = true;
-			slideSettings.clones = cChild.length;
+			if (slideSettings.type === 'loop') {
+				slideSettings.clones = 0;
+			} else {
+				slideSettings.clones = cChild.length;
+			}
 			try {
 				if (dataParsed && dataParsed.customSplideConf) {
 					const customSplideConf = JSON.parse(dataParsed.customSplideConf);
@@ -385,10 +380,13 @@ const PbContent = (props) => {
 			} catch (err) {
 				console.warn(err);
 			}
+
 			return (
 				<Splide options={slideSettings}>
 					{cChild.map((cChil, indx) => (
-						<SplideSlide key={indx}>{cChil}</SplideSlide>
+						<SplideSlide data-index={indx} key={indx}>
+							{cChil}
+						</SplideSlide>
 					))}
 				</Splide>
 			);
