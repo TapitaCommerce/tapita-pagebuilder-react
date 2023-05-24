@@ -15,6 +15,8 @@ export const formSubmitMethod = 'form-submit-method';
 export const formSubmitTarget = 'form-submit-url';
 export const formSubmitOnSubmit = 'form-submit-onSubmit';
 
+const HOVER_PREFIX = 'hover_';
+
 const LayoutItem = (props) => {
 	const {
 		item,
@@ -263,8 +265,13 @@ const LayoutItem = (props) => {
 						styleKey = key.replace(deviceFilterKey, '');
 						itemStyle[styleKey] = itemStyle[key];
 					}
-					if (hovered && itemStyle['hover_' + styleKey]) {
-						itemStyle[styleKey] = itemStyle['hover_' + styleKey];
+
+					if (hovered) {
+						if (itemStyle[HOVER_PREFIX + styleKey]) {
+							itemStyle[styleKey] = itemStyle[HOVER_PREFIX + styleKey];
+						} else if (styleKey.indexOf(HOVER_PREFIX) !== -1) {
+							itemStyle[styleKey.replace(HOVER_PREFIX, '')] = itemStyle[key];
+						}
 					}
 				});
 
