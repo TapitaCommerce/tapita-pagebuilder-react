@@ -59,7 +59,7 @@ const LayoutItem = (props) => {
 		return data;
 	};
 
-	const renderInnerContent = (item, children, parent) => {
+	const renderInnerContent = (item, children, parent, styles) => {
 		const dataParsed = item.dataParsed ? item.dataParsed : {};
 		if (item.type === 'slider') {
 			let slideSettings = {
@@ -188,7 +188,7 @@ const LayoutItem = (props) => {
 			<React.Fragment>
 				<Innercontent
 					item={item}
-					parent={parent}
+					parentStyles={styles}
 					formatMessage={formatMessage}
 					ProductList={ProductList}
 					ProductGrid={ProductGrid}
@@ -497,7 +497,7 @@ const LayoutItem = (props) => {
 		};
 	}
 
-	const innerContent = renderInnerContent(item, children, parent);
+	const innerContent = renderInnerContent(item, children, parent, styles);
 
 	if (overRender) {
 		const overRendered = overRender(item, itemProps, innerContent);

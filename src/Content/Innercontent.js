@@ -17,7 +17,6 @@ export const customIcon = 'custom-icon';
 const Innercontent = (props) => {
 	const {
 		item,
-		parent,
 		ProductList,
 		ProductGrid,
 		Category,
@@ -27,6 +26,7 @@ const Innercontent = (props) => {
 		deviceFilterKey,
 		translateParagraph,
 		translatePlaceholder,
+		parentStyles,
 	} = props;
 
 	useEffect(() => {
@@ -137,18 +137,16 @@ const Innercontent = (props) => {
 			const TextTag = item.dataParsed.textTag;
 			const textStyle = {};
 			const {
-				stylesParsed: {
-					fontSize,
-					fontStyle,
-					textDecoration,
-					fontWeight,
-					fontFamily,
-					lineHeight,
-					letterSpacing,
-					boxShadow,
-					color,
-				},
-			} = item;
+				fontSize,
+				fontStyle,
+				textDecoration,
+				fontWeight,
+				fontFamily,
+				lineHeight,
+				letterSpacing,
+				boxShadow,
+				color,
+			} = parentStyles;
 
 			if (fontSize) textStyle.fontSize = fontSize;
 			if (fontStyle) textStyle.fontStyle = fontStyle;
