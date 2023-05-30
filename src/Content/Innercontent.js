@@ -109,14 +109,14 @@ const Innercontent = (props) => {
 			data[styleKey] = data[key];
 		}
 	});
-	const styles = tryParseJSON(item.styles) || {};
+	const styles = tryParseJSON(parentStyles) || {};
 	// fill border style
-	if (item.stylesParsed && !item.stylesParsed.borderStyle) {
-		const hasBorderProperty = Object.keys(item.stylesParsed).some((key) => {
+	if (parentStyles && !parentStyles.borderStyle) {
+		const hasBorderProperty = Object.keys(parentStyles).some((key) => {
 			return key.includes('borderWidth');
 		});
 		if (hasBorderProperty) {
-			item.stylesParsed.borderStyle = 'solid';
+			parentStyles.borderStyle = 'solid';
 		}
 	}
 	if (styles && !styles.borderStyle) {
@@ -191,12 +191,12 @@ const Innercontent = (props) => {
 						width: data.width || '100%',
 						height: data.height || '100%',
 						objectFit:
-							item.stylesParsed && item.stylesParsed.objectFit
-								? item.stylesParsed.objectFit
+							parentStyles && parentStyles.objectFit
+								? parentStyles.objectFit
 								: 'cover',
 						objectPosition:
-							item.stylesParsed && item.stylesParsed.objectPosition
-								? item.stylesParsed.objectPosition
+							parentStyles && parentStyles.objectPosition
+								? parentStyles.objectPosition
 								: 'unset',
 					}}
 					{...offhandImgOptimizationConfig}
@@ -259,11 +259,12 @@ const Innercontent = (props) => {
 			);
 		else return '';
 	} else if (item.type === 'paragraph') {
-		const wrapperStyle = item.stylesParsed.boxShadow
-			? {
-					textShadow: convertBoxShadowToTextShadow(item.stylesParsed.boxShadow),
-			  }
-			: null;
+		const wrapperStyle =
+			parentStyles && parentStyles.boxShadow
+				? {
+						textShadow: convertBoxShadowToTextShadow(parentStyles.boxShadow),
+				  }
+				: null;
 
 		if (data.paragraphContent) {
 			const content = translateParagraph
@@ -287,11 +288,12 @@ const Innercontent = (props) => {
 			data && data.autoplay !== undefined ? data.autoplay : false;
 		const enableLoop = data && data.loop !== undefined ? data.loop : false;
 		const enableLazy = data && data.lazy !== undefined ? data.lazy : false;
-		const shadowStyle = item.stylesParsed.boxShadow
-			? {
-					boxShadow: item.stylesParsed.boxShadow,
-			  }
-			: null;
+		const shadowStyle =
+			parentStyles && parentStyles.boxShadow
+				? {
+						boxShadow: parentStyles.boxShadow,
+				  }
+				: null;
 
 		if (item.type === 'html_video') {
 			return (
@@ -333,11 +335,12 @@ const Innercontent = (props) => {
 		return <Instagram item={item} formatMessage={formatMessage} />;
 	} else if (item.type === 'custom_html') {
 		if (data.htmlContent) {
-			const shadowStyle = item.stylesParsed.boxShadow
-				? {
-						boxShadow: item.stylesParsed.boxShadow,
-				  }
-				: null;
+			const shadowStyle =
+				parentStyles && parentStyles.boxShadow
+					? {
+							boxShadow: parentStyles.boxShadow,
+					  }
+					: null;
 			return (
 				<div
 					dangerouslySetInnerHTML={{ __html: data.htmlContent }}
@@ -348,11 +351,12 @@ const Innercontent = (props) => {
 	} else if (item.type === 'icon') {
 		const shouldUseCustomIcon = data[customIconDefKey];
 		const customIconValue = data[customIcon] || '';
-		const shadowStyle = item.stylesParsed.boxShadow
-			? {
-					boxShadow: item.stylesParsed.boxShadow,
-			  }
-			: null;
+		const shadowStyle =
+			parentStyles && parentStyles.boxShadow
+				? {
+						boxShadow: parentStyles.boxShadow,
+				  }
+				: null;
 		if (shouldUseCustomIcon) {
 			return <i className={customIconValue} style={shadowStyle} />;
 		}
