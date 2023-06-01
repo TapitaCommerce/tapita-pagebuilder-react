@@ -1,4 +1,5 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useAttention } from "../../hooks/useAttention";
 
 const defaultVideoLink = 'OrzMIhLpVps';
 
@@ -37,12 +38,20 @@ export const _YoutubeVideo = (props) => {
 	const [currentVideoHeight, setCurrentVideoHeight] = useState(null);
 	const containerRef = useRef(null);
 
+	const { targetRef, hadAttention } = useAttention({
+		requireAttention: !!videoURL,
+	});
+
 	useLayoutEffect(() => {
 		if (containerRef.current) {
 			const { width } = containerRef.current.getBoundingClientRect();
 			setCurrentVideoHeight((width * 2) / 3);
 		}
 	}, []);
+
+	useEffect(()=>{
+		console.log('abc111def',videoURL, hadAttention);
+	},[videoURL, hadAttention])
 
 	if (!videoURL) {
 		return '';
@@ -63,6 +72,21 @@ export const _YoutubeVideo = (props) => {
 		}
 	});
 
+	const coreComponent = (!videoURL || !hadAttention)
+		?(<span/>)
+		:(
+			<iframe
+				loading={lazy ? 'lazy' : 'eager'}
+				height={currentVideoHeight || 'auto'}
+				width='100%'
+				allowFullScreen
+				frameBorder='0'
+				src={urlObj.toString()}
+				ref={containerRef}
+				style={style}
+			/>
+		)
+
 	return (
 		<React.Fragment>
 			<div
@@ -73,17 +97,9 @@ export const _YoutubeVideo = (props) => {
 					alignItems: 'center',
 				}}
 				className={`magic-yt-video-container-${size || width || '100%'}`}
+				ref={targetRef}
 			>
-				<iframe
-					loading={lazy ? 'lazy' : 'eager'}
-					height={currentVideoHeight || 'auto'}
-					width='100%'
-					allowFullScreen
-					frameBorder='0'
-					src={urlObj.toString()}
-					ref={containerRef}
-					style={style}
-				/>
+				{coreComponent}
 			</div>
 		</React.Fragment>
 	);
