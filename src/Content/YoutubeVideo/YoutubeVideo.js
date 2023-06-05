@@ -69,7 +69,7 @@ export const _YoutubeVideo = (props) => {
 	});
 
 	const coreComponent =
-		!videoURL || !hadAttention ? (
+		videoURL && !hadAttention ? (
 			<span />
 		) : (
 			<iframe
