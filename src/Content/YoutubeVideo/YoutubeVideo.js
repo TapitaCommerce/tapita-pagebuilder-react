@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useAttention } from "../../hooks/useAttention";
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useAttention } from '../../hooks/useAttention';
 
 const defaultVideoLink = 'OrzMIhLpVps';
 
@@ -47,11 +47,7 @@ export const _YoutubeVideo = (props) => {
 			const { width } = containerRef.current.getBoundingClientRect();
 			setCurrentVideoHeight((width * 2) / 3);
 		}
-	}, []);
-
-	useEffect(()=>{
-		console.log('abc111def',videoURL, hadAttention);
-	},[videoURL, hadAttention])
+	}, [containerRef.current, hadAttention, videoURL]);
 
 	if (!videoURL) {
 		return '';
@@ -72,9 +68,10 @@ export const _YoutubeVideo = (props) => {
 		}
 	});
 
-	const coreComponent = (!videoURL || !hadAttention)
-		?(<span/>)
-		:(
+	const coreComponent =
+		!videoURL || !hadAttention ? (
+			<span />
+		) : (
 			<iframe
 				loading={lazy ? 'lazy' : 'eager'}
 				height={currentVideoHeight || 'auto'}
@@ -85,7 +82,7 @@ export const _YoutubeVideo = (props) => {
 				ref={containerRef}
 				style={style}
 			/>
-		)
+		);
 
 	return (
 		<React.Fragment>
