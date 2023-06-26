@@ -35,6 +35,7 @@ const PbContent = (props) => {
 				item={item}
 				children={children}
 				parent={parent}
+                key={item.entity_id || 'noid'}
 				{...{
 					ProductList,
 					ProductGrid,

@@ -64,6 +64,18 @@ const PREVIEW_ITEM_QUERY = `
                 ${itemFields}
             }
         }
+        spb_section(pageMaskedId: $pageMaskedId) {
+            total_count
+            items {
+                ${pageFields}
+            }
+        }
+        spb_section_item: spb_item(sectionMaskedId: $pageMaskedId) {
+            total_count
+            items {
+                ${itemFields}
+            }
+        }
     }
 `;
 
@@ -214,11 +226,13 @@ export const PageBuilderComponent = (props) => {
 		data.data.spb_section &&
 		data.data.spb_section.items &&
 		data.data.spb_section.items[0] &&
-		data.data.spb_section.items[0].publish_items
+		(data.data.spb_section.items[0].publish_items ||
+			(data.data.spb_section_item && data.data.spb_section_item.items))
 	) {
 		spgData = data.data.spb_section.items[0];
 		contentData = {
 			spb_page: data.data.spb_section,
+			spb_item: data.data.catalog_builder_item,
 		};
 	}
 	useEffect(() => {

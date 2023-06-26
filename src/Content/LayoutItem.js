@@ -62,15 +62,16 @@ const LayoutItem = (props) => {
 	const renderInnerContent = (item, children, parent, styles) => {
 		const dataParsed = item.dataParsed ? item.dataParsed : {};
 		if (item.type === 'slider') {
+			const showIndicators =
+				parseInt(dataParsed.showSliderIndicator) === 0
+					? false
+					: !!(children.length && children.length !== 1);
 			let slideSettings = {
 				type: parseInt(dataParsed.sliderInfiniteLoop) !== 0 ? 'loop' : 'slide',
 				autoplay: parseInt(dataParsed.sliderAutoSlide) === 1,
 				arrows: parseInt(dataParsed.showSliderNavBtn) !== 0,
 				lazyLoad: lazyloadPlaceHolder ? 'nearby' : false,
-				pagination:
-					parseInt(dataParsed.showSliderIndicator) === 0
-						? false
-						: !!(children.length && children.length !== 1),
+				pagination: showIndicators,
 				paginationDirection: 'ltr',
 				speed: parseInt(dataParsed.sliderTransitionTime)
 					? dataParsed.sliderTransitionTime
@@ -90,7 +91,6 @@ const LayoutItem = (props) => {
 			}
 			let cChild = children.filter((itm) => itm !== '');
 			cChild = isRtl ? cChild.reverse() : cChild;
-			slideSettings.pagination = true;
 			if (slideSettings.type === 'loop') {
 				slideSettings.clones = 0;
 			} else {
