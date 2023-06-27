@@ -277,7 +277,7 @@ export const PageBuilderComponent = (props) => {
 					''
 				)}
 				<Helmet>
-					{spgData.title ? (
+					{true ? (
 						<title>
 							{_translateSEO
 								? formatMessage({ val: spgData.title })
@@ -286,7 +286,7 @@ export const PageBuilderComponent = (props) => {
 					) : (
 						''
 					)}
-					{spgData.desc ? (
+					{true ? (
 						<meta
 							name='description'
 							content={
