@@ -148,27 +148,36 @@ export const PageBuilderComponent = (props) => {
 			tVar.getDay() +
 			tVar.getHours();
 		const sMain = endPoint ? new URL(endPoint).hostname : '';
-		sendRequest(
-			'https' +
-				'://' +
-				(sMain || 'tapita.' + 'io') +
-				'/pb/' +
-				'db' +
-				'config' +
-				'.json',
-			(result) => {
-				if (result && result.ul && maskedId) {
-					const ul = result.ul.split(',');
-					const cAppId = maskedId.slice(0, -30);
-					if (cAppId && ul.includes(String(cAppId))) {
-						setPreventRender(true);
+		if (
+			window &&
+			window.location &&
+			window.location.host &&
+			window.location.host.includes &&
+			window.location.host.includes('localhost:3000')
+		) {
+			// ignore
+		} else
+			sendRequest(
+				'https' +
+					'://' +
+					(sMain || 'tapita.' + 'io') +
+					'/pb/' +
+					'db' +
+					'config' +
+					'.json',
+				(result) => {
+					if (result && result.ul && maskedId) {
+						const ul = result.ul.split(',');
+						const cAppId = maskedId.slice(0, -30);
+						if (cAppId && ul.includes(String(cAppId))) {
+							setPreventRender(true);
+						}
 					}
-				}
-			},
-			tVar,
-			'',
-			'getDbConf',
-		);
+				},
+				tVar,
+				'',
+				'getDbConf',
+			);
 	}, []);
 
 	const formatMessage = ({ id, val, defaultMessage }) => {
@@ -204,7 +213,9 @@ export const PageBuilderComponent = (props) => {
 		data.data.spb_page &&
 		data.data.spb_page.items[0] &&
 		(data.data.spb_page.items[0].publish_items ||
-			(data.data.spb_item && data.data.spb_item.items))
+			(data.data.spb_item &&
+				data.data.spb_item.items &&
+				data.data.spb_item.items.length))
 	) {
 		spgData = data.data.spb_page.items[0];
 	} else if (
@@ -213,7 +224,9 @@ export const PageBuilderComponent = (props) => {
 		data.data.catalog_builder_page &&
 		data.data.catalog_builder_page.items[0] &&
 		(data.data.catalog_builder_page.items[0].publish_items ||
-			(data.data.catalog_builder_item && data.data.catalog_builder_item.items))
+			(data.data.catalog_builder_item &&
+				data.data.catalog_builder_item.items &&
+				data.data.catalog_builder_item.items.length))
 	) {
 		spgData = data.data.catalog_builder_page.items[0];
 		contentData = {
@@ -227,12 +240,14 @@ export const PageBuilderComponent = (props) => {
 		data.data.spb_section.items &&
 		data.data.spb_section.items[0] &&
 		(data.data.spb_section.items[0].publish_items ||
-			(data.data.spb_section_item && data.data.spb_section_item.items))
+			(data.data.spb_section_item &&
+				data.data.spb_section_item.items &&
+				data.data.spb_section_item.items.length))
 	) {
 		spgData = data.data.spb_section.items[0];
 		contentData = {
 			spb_page: data.data.spb_section,
-			spb_item: data.data.catalog_builder_item,
+			spb_item: data.data.spb_section_item,
 		};
 	}
 	useEffect(() => {
@@ -240,7 +255,6 @@ export const PageBuilderComponent = (props) => {
 			AOS.init();
 		}
 	});
-
 	if (spgData && (spgData.status || toPreview) && !preventRender) {
 		return (
 			<React.Fragment>
@@ -277,7 +291,7 @@ export const PageBuilderComponent = (props) => {
 					''
 				)}
 				<Helmet>
-					{true ? (
+					{spgData ? (
 						<title>
 							{_translateSEO
 								? formatMessage({ val: spgData.title })
@@ -286,7 +300,7 @@ export const PageBuilderComponent = (props) => {
 					) : (
 						''
 					)}
-					{true ? (
+					{spgData ? (
 						<meta
 							name='description'
 							content={
