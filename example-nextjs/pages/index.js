@@ -1,4 +1,4 @@
-import { PageBuilderComponent } from 'simi-pagebuilder-react';
+import { PageBuilderComponent } from 'tapita-pagebuilder-reac';
 
 const endPoint = 'https://tapita.io/pb/graphql';
 const maskedId = '48mLip5LwVQpjX9ZJaIDan1631181384';

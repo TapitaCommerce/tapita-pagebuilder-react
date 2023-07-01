@@ -1,4 +1,5 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useAttention } from '../../hooks/useAttention';
 
 const defaultVideoLink = 'OrzMIhLpVps';
 
@@ -23,20 +24,65 @@ const changeShareURLToEmbedded = (shareURL) => {
 };
 
 export const _YoutubeVideo = (props) => {
-	const { width, size, showControl, videoURL, formatMessage, style } = props;
+	const {
+		width,
+		size,
+		showControl,
+		videoURL,
+		formatMessage,
+		style,
+		autoplay,
+		loop,
+		lazy,
+	} = props;
 	const [currentVideoHeight, setCurrentVideoHeight] = useState(null);
 	const containerRef = useRef(null);
+
+	const { targetRef, hadAttention } = useAttention({
+		requireAttention: !!videoURL,
+	});
 
 	useLayoutEffect(() => {
 		if (containerRef.current) {
 			const { width } = containerRef.current.getBoundingClientRect();
 			setCurrentVideoHeight((width * 2) / 3);
 		}
-	}, []);
+	}, [containerRef.current, hadAttention, videoURL]);
 
 	if (!videoURL) {
 		return '';
 	}
+	const customControlArgs = {
+		controls: showControl ? 1 : 0,
+		autoplay: autoplay ? 1 : 0,
+		mute: autoplay ? 1 : 0,
+		loop: loop ? 1 : 0,
+		playlist: loop ? extractVideoId(videoURL) : null,
+	};
+
+	const urlObj = new URL(changeShareURLToEmbedded(videoURL));
+	Object.keys(customControlArgs).forEach(function (key) {
+		const v = customControlArgs[key];
+		if (v !== null) {
+			urlObj.searchParams.set(key, v);
+		}
+	});
+
+	const coreComponent =
+		videoURL && !hadAttention ? (
+			<span />
+		) : (
+			<iframe
+				loading={lazy ? 'lazy' : 'eager'}
+				height={currentVideoHeight || 'auto'}
+				width='100%'
+				allowFullScreen
+				frameBorder='0'
+				src={urlObj.toString()}
+				ref={containerRef}
+				style={style}
+			/>
+		);
 
 	return (
 		<React.Fragment>
@@ -48,19 +94,9 @@ export const _YoutubeVideo = (props) => {
 					alignItems: 'center',
 				}}
 				className={`magic-yt-video-container-${size || width || '100%'}`}
+				ref={targetRef}
 			>
-				<iframe
-					height={currentVideoHeight || 'auto'}
-					width='100%'
-					allowFullScreen
-					frameBorder='0'
-					src={
-						changeShareURLToEmbedded(videoURL) +
-						`?controls=${showControl ? 1 : 0}`
-					}
-					ref={containerRef}
-					style={style}
-				/>
+				{coreComponent}
 			</div>
 		</React.Fragment>
 	);

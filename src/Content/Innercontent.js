@@ -1,4 +1,4 @@
-import React, { Fragment, useRef } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 import { HtmlVideo } from './HTMLVideo/HTMLVideo';
 import { YoutubeVideo } from './YoutubeVideo/YoutubeVideo';
 import { Tab } from './Tab';
@@ -17,7 +17,6 @@ export const customIcon = 'custom-icon';
 const Innercontent = (props) => {
 	const {
 		item,
-		parent,
 		ProductList,
 		ProductGrid,
 		Category,
@@ -27,10 +26,77 @@ const Innercontent = (props) => {
 		deviceFilterKey,
 		translateParagraph,
 		translatePlaceholder,
+		parentStyles,
 	} = props;
 
+	useEffect(() => {
+		if (!window.tapitaBackupHtmlElements) {
+			window.tapitaBackupHtmlElements = {};
+		}
+
+		if (
+			item &&
+			item.entity_id &&
+			item.type &&
+			(item.type === 'custom_html' || item.type === 'actual_statement')
+		) {
+			if (
+				item &&
+				item.entity_id &&
+				window.tapitaBackupHtmlElements &&
+				window.tapitaBackupHtmlElements[item.entity_id]
+			) {
+				const ourElRep = document.getElementById('pbitm-id-' + item.entity_id);
+				if (
+					ourElRep &&
+					(!ourElRep.innerHTML || ourElRep.innerHTML.length < 10)
+				) {
+					// 0 maybe?
+					window.tapitaBackupHtmlElements[item.entity_id].forEach((savedEl) => {
+						ourElRep.appendChild(savedEl);
+					});
+				}
+			}
+		}
+	}, []);
+
+	if (
+		item &&
+		item.entity_id &&
+		window.tapitaBackupHtmlElements &&
+		window.tapitaBackupHtmlElements[item.entity_id]
+	) {
+		return '';
+	}
 	if (!item || !item.entity_id) return '';
 
+	const backupHtml = () => {
+		// this is the first time rendering, back it up if unmount
+
+		if (
+			item &&
+			item.entity_id &&
+			item.type &&
+			(item.type === 'custom_html' || item.type === 'actual_statement')
+		) {
+			const ourElNow = document.getElementById('pbitm-id-' + item.entity_id);
+			if (ourElNow) {
+				NodeList.prototype.forEach = Array.prototype.forEach;
+				let children = ourElNow.children;
+				children = Array.from(children);
+				const backupChildNodes = [];
+				children.forEach(function (item) {
+					backupChildNodes.push(item);
+				});
+				if (backupChildNodes.length)
+					window.tapitaBackupHtmlElements[item.entity_id] = backupChildNodes;
+			}
+		}
+	};
+	[100, 1000, 3000, 5000].forEach((calval) => {
+		// call it sometimes to make sure with some provider that take time
+		setTimeout(backupHtml, calval);
+	});
 	let data = {};
 	if (item.data && typeof item.data === 'object') {
 		data = { ...item.data };
@@ -43,7 +109,24 @@ const Innercontent = (props) => {
 			data[styleKey] = data[key];
 		}
 	});
-	const styles = tryParseJSON(item.styles) || {};
+	const styles = tryParseJSON(parentStyles) || {};
+	// fill border style
+	if (parentStyles && !parentStyles.borderStyle) {
+		const hasBorderProperty = Object.keys(parentStyles).some((key) => {
+			return key.includes('borderWidth');
+		});
+		if (hasBorderProperty) {
+			parentStyles.borderStyle = 'solid';
+		}
+	}
+	if (styles && !styles.borderStyle) {
+		const hasBorderProperty = Object.keys(styles).some((key) => {
+			return key.includes('borderWidth');
+		});
+		if (hasBorderProperty) {
+			styles.borderStyle = 'solid';
+		}
+	}
 	const dataParsed = item.dataParsed || {};
 	const nameSpace = useRef(dataParsed.name || randomString(5)).current;
 
@@ -54,23 +137,23 @@ const Innercontent = (props) => {
 			const TextTag = item.dataParsed.textTag;
 			const textStyle = {};
 			const {
-				stylesParsed: {
-					fontSize,
-					fontStyle,
-					textDecoration,
-					fontWeight,
-					fontFamily,
-					lineHeight,
-					boxShadow,
-					color,
-				},
-			} = item;
+				fontSize,
+				fontStyle,
+				textDecoration,
+				fontWeight,
+				fontFamily,
+				lineHeight,
+				letterSpacing,
+				boxShadow,
+				color,
+			} = parentStyles;
 
 			if (fontSize) textStyle.fontSize = fontSize;
 			if (fontStyle) textStyle.fontStyle = fontStyle;
 			if (textDecoration) textStyle.textDecoration = textDecoration;
 			if (fontWeight) textStyle.fontWeight = fontWeight;
 			if (fontFamily) textStyle.fontFamily = fontFamily;
+			if (letterSpacing) textStyle.letterSpacing = letterSpacing;
 			if (lineHeight) textStyle.lineHeight = lineHeight;
 			if (color) textStyle.color = color;
 			if (boxShadow)
@@ -79,7 +162,13 @@ const Innercontent = (props) => {
 		}
 		return translatedText;
 	} else if (item.type === 'tabs') {
-		return <Tab item={item} formatMessage={formatMessage} />;
+		return (
+			<Tab
+				item={item}
+				formatMessage={formatMessage}
+				deviceFilterKey={deviceFilterKey}
+			/>
+		);
 	} else if (item.type === 'dropdown') {
 		return <Dropdown item={item} formatMessage={formatMessage} />;
 	} else if (item.type === 'image') {
@@ -90,19 +179,27 @@ const Innercontent = (props) => {
 			const title = formatMessage({
 				val: (data.title !== undefined ? data.title : '') || '',
 			});
+			const loadStrategy = data && data.loadStrategy;
+			const offhandImgOptimizationConfig = (data && data.optimization) || {};
 			return (
 				<img
 					src={data.image}
 					alt={alt}
 					title={title}
+					loading={loadStrategy}
 					style={{
 						width: data.width || '100%',
 						height: data.height || '100%',
 						objectFit:
-							item.stylesParsed && item.stylesParsed.objectFit
-								? item.stylesParsed.objectFit
+							parentStyles && parentStyles.objectFit
+								? parentStyles.objectFit
 								: 'cover',
+						objectPosition:
+							parentStyles && parentStyles.objectPosition
+								? parentStyles.objectPosition
+								: 'unset',
 					}}
+					{...offhandImgOptimizationConfig}
 				/>
 			);
 		}
@@ -162,11 +259,12 @@ const Innercontent = (props) => {
 			);
 		else return '';
 	} else if (item.type === 'paragraph') {
-		const wrapperStyle = item.stylesParsed.boxShadow
-			? {
-				textShadow: convertBoxShadowToTextShadow(item.stylesParsed.boxShadow),
-			  }
-			: null;
+		const wrapperStyle =
+			parentStyles && parentStyles.boxShadow
+				? {
+						textShadow: convertBoxShadowToTextShadow(parentStyles.boxShadow),
+				  }
+				: null;
 
 		if (data.paragraphContent) {
 			const content = translateParagraph
@@ -186,11 +284,16 @@ const Innercontent = (props) => {
 		const videoURL = (data ? data.videoURL : null) || '';
 		const showControl =
 			data && data.showControl !== undefined ? data.showControl : true;
-		const shadowStyle = item.stylesParsed.boxShadow
-			? {
-				boxShadow: item.stylesParsed.boxShadow,
-			  }
-			: null;
+		const enableAutoplay =
+			data && data.autoplay !== undefined ? data.autoplay : false;
+		const enableLoop = data && data.loop !== undefined ? data.loop : false;
+		const enableLazy = data && data.lazy !== undefined ? data.lazy : false;
+		const shadowStyle =
+			parentStyles && parentStyles.boxShadow
+				? {
+						boxShadow: parentStyles.boxShadow,
+				  }
+				: null;
 
 		if (item.type === 'html_video') {
 			return (
@@ -203,6 +306,8 @@ const Innercontent = (props) => {
 						videoURL={videoURL}
 						formatMessage={formatMessage}
 						style={shadowStyle}
+						autoplay={enableAutoplay}
+						loop={enableLoop}
 					/>
 				</Fragment>
 			);
@@ -216,6 +321,9 @@ const Innercontent = (props) => {
 					videoURL={videoURL}
 					formatMessage={formatMessage}
 					style={shadowStyle}
+					autoplay={enableAutoplay}
+					loop={enableLoop}
+					lazy={enableLazy}
 				/>
 			);
 		}
@@ -227,11 +335,12 @@ const Innercontent = (props) => {
 		return <Instagram item={item} formatMessage={formatMessage} />;
 	} else if (item.type === 'custom_html') {
 		if (data.htmlContent) {
-			const shadowStyle = item.stylesParsed.boxShadow
-				? {
-					boxShadow: item.stylesParsed.boxShadow,
-				  }
-				: null;
+			const shadowStyle =
+				parentStyles && parentStyles.boxShadow
+					? {
+							boxShadow: parentStyles.boxShadow,
+					  }
+					: null;
 			return (
 				<div
 					dangerouslySetInnerHTML={{ __html: data.htmlContent }}
@@ -242,11 +351,12 @@ const Innercontent = (props) => {
 	} else if (item.type === 'icon') {
 		const shouldUseCustomIcon = data[customIconDefKey];
 		const customIconValue = data[customIcon] || '';
-		const shadowStyle = item.stylesParsed.boxShadow
-			? {
-				boxShadow: item.stylesParsed.boxShadow,
-			  }
-			: null;
+		const shadowStyle =
+			parentStyles && parentStyles.boxShadow
+				? {
+						boxShadow: parentStyles.boxShadow,
+				  }
+				: null;
 		if (shouldUseCustomIcon) {
 			return <i className={customIconValue} style={shadowStyle} />;
 		}
@@ -300,22 +410,60 @@ const Innercontent = (props) => {
 		miniStyle.border = 'none';
 
 		return item.type === 'textarea_input' ? (
-			<textarea
-				placeholder={placeholder}
-				style={{ ...miniStyle, height: '100%' }}
-				name={nameSpace}
-				id={data.input_id}
-				defaultValue={data.default_value}
-			/>
+			<>
+				<textarea
+					placeholder={placeholder}
+					style={{ ...miniStyle, height: '100%' }}
+					name={nameSpace}
+					id={data.input_id}
+					defaultValue={data.default_value}
+					required={data && data.isRequired ? data.isRequired : false}
+					data-validation-matches-match={
+						data && data.dataValidationMatchesMatch
+							? data.dataValidationMatchesMatch
+							: false
+					}
+					data-validation-matches-message={
+						data && data.dataValidationMatchesMessage
+							? data.dataValidationMatchesMessage
+							: false
+					}
+					data-validation-required-message={
+						data && data.dataValidationRequiredMessage
+							? data.dataValidationRequiredMessage
+							: false
+					}
+				/>
+				<p className='help-block' />
+			</>
 		) : (
-			<input
-				type='text'
-				placeholder={placeholder}
-				id={data.input_id}
-				style={{ ...miniStyle, height: '100%' }}
-				name={nameSpace}
-				defaultValue={data.default_value}
-			/>
+			<>
+				<input
+					type={data && data.inputType ? data.inputType : 'text'}
+					placeholder={placeholder}
+					id={data.input_id}
+					style={{ ...miniStyle, height: '100%' }}
+					name={nameSpace}
+					defaultValue={data.default_value}
+					required={data && data.isRequired ? data.isRequired : false}
+					data-validation-matches-match={
+						data && data.dataValidationMatchesMatch
+							? data.dataValidationMatchesMatch
+							: false
+					}
+					data-validation-matches-message={
+						data && data.dataValidationMatchesMessage
+							? data.dataValidationMatchesMessage
+							: false
+					}
+					data-validation-required-message={
+						data && data.dataValidationRequiredMessage
+							? data.dataValidationRequiredMessage
+							: false
+					}
+				/>
+				<p className='help-block' />
+			</>
 		);
 	}
 	return '';
