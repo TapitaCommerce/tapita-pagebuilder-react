@@ -66,8 +66,14 @@ const LayoutItem = (props) => {
 				parseInt(dataParsed.showSliderIndicator) === 0
 					? false
 					: !!(children.length && children.length !== 1);
+			// const rewindMode = !!parseInt(dataParsed.rewind);
+			const rewindMode = true;
+
 			let slideSettings = {
-				type: parseInt(dataParsed.sliderInfiniteLoop) !== 0 ? 'loop' : 'slide',
+				type:
+					parseInt(dataParsed.sliderInfiniteLoop) !== 0 && !rewindMode
+						? 'loop'
+						: 'slide',
 				autoplay: parseInt(dataParsed.sliderAutoSlide) === 1,
 				arrows: parseInt(dataParsed.showSliderNavBtn) !== 0,
 				lazyLoad: lazyloadPlaceHolder ? 'nearby' : false,
@@ -85,16 +91,22 @@ const LayoutItem = (props) => {
 				reducedMotion: false,
 				arrowPath: dataParsed.arrowPath || false,
 			};
+
 			if (isRtl) {
 				slideSettings.direction = 'rtl';
 				slideSettings.paginationDirection = 'rtl';
 			}
 			let cChild = children.filter((itm) => itm !== '');
 			cChild = isRtl ? cChild.reverse() : cChild;
-			if (slideSettings.type === 'loop') {
+
+			if (slideSettings.type === 'loop' || rewindMode) {
 				slideSettings.clones = 0;
 			} else {
 				slideSettings.clones = cChild.length;
+			}
+			if (rewindMode) {
+				slideSettings.rewind = true;
+				slideSettings.rewindByDrag = true;
 			}
 			try {
 				if (dataParsed && dataParsed.customSplideConf) {
@@ -106,7 +118,6 @@ const LayoutItem = (props) => {
 			} catch (err) {
 				console.warn(err);
 			}
-
 			return (
 				<Splide options={slideSettings}>
 					{cChild.map((cChil, indx) => (
