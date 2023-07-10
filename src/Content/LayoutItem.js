@@ -66,8 +66,8 @@ const LayoutItem = (props) => {
 				parseInt(dataParsed.showSliderIndicator) === 0
 					? false
 					: !!(children.length && children.length !== 1);
-			// const rewindMode = !!parseInt(dataParsed.rewind);
-			const rewindMode = true;
+
+			const rewindMode = !!parseInt(dataParsed.rewind);
 
 			let slideSettings = {
 				type:
