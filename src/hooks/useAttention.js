@@ -25,14 +25,16 @@ export const useAttention = (props) => {
 			intersectionObserver = new IntersectionObserver((entries) => {
 				if (entries.length > 0 && entries[0].intersectionRatio > 0) {
 					setAttention(true);
-					intersectionObserver.unobserve(targetRef.current);
+					if (targetRef.current) {
+						intersectionObserver.unobserve(targetRef.current);
+					}
 					intersectionObserver = null;
 				}
 			}, options);
 			intersectionObserver.observe(targetRef.current);
 		}
 		return () => {
-			if (intersectionObserver) {
+			if (intersectionObserver && targetRef.current) {
 				intersectionObserver.unobserve(targetRef.current);
 			}
 		};
