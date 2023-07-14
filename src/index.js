@@ -256,6 +256,13 @@ export const PageBuilderComponent = (props) => {
 		}
 	});
 	if (spgData && (spgData.status || toPreview) && !preventRender) {
+		// helmet title and desc even empty: landing page and article
+		const preventTitle =
+			(!spgData.title && spgData.title !== '') || // undefined
+			(spgData.apply_to && spgData.type_id !== 2); // catalog and type = 2 -> blog
+		const preventDescription =
+			(!spgData.desc && spgData.desc !== '') || // undefined
+			(spgData.apply_to && spgData.type_id !== 2); // catalog and type = 2 -> blog
 		return (
 			<React.Fragment>
 				{styleString && (
@@ -291,7 +298,7 @@ export const PageBuilderComponent = (props) => {
 					''
 				)}
 				<Helmet>
-					{spgData ? (
+					{spgData && !preventTitle ? (
 						<title>
 							{_translateSEO
 								? formatMessage({ val: spgData.title })
@@ -300,7 +307,7 @@ export const PageBuilderComponent = (props) => {
 					) : (
 						''
 					)}
-					{spgData ? (
+					{spgData && !preventDescription ? (
 						<meta
 							name='description'
 							content={
