@@ -455,8 +455,12 @@ const LayoutItem = (props) => {
 		styles.overflow = 'visible';
 	}
 
+	const itemID =
+		(item && item.dataParsed && item.dataParsed.custom_id) ||
+		(item && item.entity_id ? `pbitm-id-${item.entity_id}` : null);
+
 	const itemProps = {
-		id: item && item.entity_id ? `pbitm-id-${item.entity_id}` : null,
+		id: itemID,
 		key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
 		style: styles,
 		className: `spb-item ${item.root ? 'spb-item-root' : ''} ${
