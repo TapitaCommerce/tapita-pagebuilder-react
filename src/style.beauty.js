@@ -57,7 +57,7 @@ export const styleStringBeauty = process.env.TARGET_ENV !== 'shopify'?`
         border: none;
         background-color: #ffffff;
     }
-    .spb-item.type_button:hover {
+    .smpb-container:not(.no-touch) .spb-item.type_button:hover {
         opacity: 0.8;
     }
     .spb-item.type_image {

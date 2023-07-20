@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { listToTree } from '../Helper/Data';
 import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
 import LayoutItem from './LayoutItem';
+import { isMobileIos } from '../Helper/isMobileIos';
 
 const PbContent = (props) => {
 	const {
@@ -91,6 +92,12 @@ const PbContent = (props) => {
 	newTree = listToTree(newTree);
 	rootItem.children = newTree;
 
+	const classNames = useMemo(() => {
+		return ['smpb-container', isMobileIos() ? 'no-touch' : '']
+			.filter(Boolean)
+			.join(' ');
+	}, []);
+
 	useEffect(() => {
 		if (selfRef.current && global.window && global.URL && window.location) {
 			const url = new global.URL(global.window.location);
@@ -113,7 +120,7 @@ const PbContent = (props) => {
 	return (
 		<div
 			ref={selfRef}
-			className='smpb-container'
+			className={classNames}
 			style={{ direction: isRtl ? 'rtl' : 'ltr' }}
 		>
 			{renderItems(rootItem)}
