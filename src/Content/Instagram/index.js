@@ -1,26 +1,41 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { tryParseJSON } from '../../Helper/tryParseJSON';
 import { sendRequest } from '../../Network/GraphQl';
+import { InstagramGrid } from './InstagramGrid';
+
+const STARTLE_URL =
+	'https://graph.instagram.com/me/media?fields=media_count,media_type,permalink,media_url,thumbnail_url';
 
 export const Instagram = (props) => {
 	const { item } = props;
 
 	const [data, setData] = useState(false);
-	let requestUrl =
-		'https://graph.instagram.com/me/media?fields=media_count,media_type,permalink,media_url&';
-	const parsedStyle = tryParseJSON(item.styles, {});
-	const type = parsedStyle.type;
+
 	const parsedData = item.dataParsed
 		? item.dataParsed
 		: tryParseJSON(item.data, {});
 
-	const { instaAccessToken, instaItemCount } = parsedData;
-	if (!instaAccessToken) {
-		return '';
-	} else {
-		requestUrl += '&access_token=' + instaAccessToken;
-	}
+	const {
+		instaAccessToken,
+		instaItemCount,
+		disabledTypes = [],
+		videoDisplayChoice,
+	} = parsedData;
+
 	const limit = instaItemCount ? parseInt(instaItemCount) : 10;
+
+	const requestUrl = useMemo(() => {
+		const urlObj = new URL(STARTLE_URL);
+		urlObj.searchParams.set('limit', limit);
+		if (instaAccessToken) {
+			urlObj.searchParams.set('access_token', instaAccessToken);
+		}
+		return urlObj.href;
+	}, [instaAccessToken, limit]);
+
+	if (!instaAccessToken) {
+		return null;
+	}
 
 	if (!data) {
 		sendRequest(
@@ -35,31 +50,14 @@ export const Instagram = (props) => {
 			'getInstaFeed',
 		);
 	}
-	if (data && data.length) {
-		const returnedItm = [];
-		data.map((insItem) => {
-			if (
-				limit > returnedItm.length &&
-				insItem &&
-				(insItem.media_type === 'IMAGE' || insItem.media_type === 'VIDEO')
-			) {
-				returnedItm.push(
-					<a
-						key={insItem.id}
-						className='simipb-insta-item'
-						href={insItem.permalink}
-					>
-						{insItem.media_type === 'IMAGE' ? (
-							<img src={insItem.media_url} loading='lazy' />
-						) : (
-							<video src={insItem.media_url} preload='none' />
-						)}
-					</a>,
-				);
-			}
-		});
-		return <React.Fragment>{returnedItm}</React.Fragment>;
-	}
 
-	return '';
+	return (
+		<InstagramGrid
+			token={instaAccessToken}
+			data={data}
+			limit={limit}
+			disabledTypes={disabledTypes}
+			videoDisplayChoice={videoDisplayChoice}
+		/>
+	);
 };
