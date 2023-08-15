@@ -459,15 +459,27 @@ const LayoutItem = (props) => {
 		(item && item.dataParsed && item.dataParsed.custom_id) ||
 		(item && item.entity_id ? `pbitm-id-${item.entity_id}` : null);
 
+	let itemClassName = `spb-item ${item.root ? 'spb-item-root' : ''} ${
+		item.class_name || ''
+	} ${'type_' + (item.type || '')} ${
+		item.entity_id ? 'spb-item-id_' + item.entity_id : ''
+	} ${!noShadow ? 'spb-shadowed' : ''}`;
+
+	const existingItem = document.getElementById(itemID);
+	// preserve existing element classname - for now for aos
+	if (
+		existingItem &&
+		existingItem.classList &&
+		existingItem.classList.contains
+	) {
+		if (existingItem.classList.contains('reveal')) itemClassName += ' reveal ';
+		if (existingItem.classList.contains('active')) itemClassName += ' active ';
+	}
 	const itemProps = {
 		id: itemID,
 		key: `${randomString(5)}${item.root ? 'root' : item.entity_id}`,
 		style: styles,
-		className: `spb-item ${item.root ? 'spb-item-root' : ''} ${
-			item.class_name || ''
-		} ${'type_' + (item.type || '')} ${
-			item.entity_id ? 'spb-item-id_' + item.entity_id : ''
-		} ${!noShadow ? 'spb-shadowed' : ''}`,
+		className: itemClassName,
 	};
 	if (['text', 'button', 'form_button'].includes(item.type)) {
 		itemProps.onMouseEnter = (e) => {
