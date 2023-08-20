@@ -1,10 +1,6 @@
 import React, { Fragment } from 'react';
 import { useAttention } from '../../hooks/useAttention';
-import { isMobileIos } from '../../Helper/isMobileIos';
-
-const sleep = (ms) => {
-	return new Promise((resolve) => setTimeout(resolve, ms));
-};
+import { isMobileIos, sleep } from '../../Helper/isMobileIos';
 
 export const SurroundLink = (props) => {
 	const { item, itemProps: _itemProps, aHref, Link, children } = props;

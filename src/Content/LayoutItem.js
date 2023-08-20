@@ -8,6 +8,7 @@ import { isAbsolutePath } from '../Helper/isAbsolutePath.js';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import Innercontent from './Innercontent';
 import Button from './Button';
+import { isMobileIos, sleep } from '../Helper/isMobileIos';
 
 export const buttonTypeFieldName = 'button-type';
 
@@ -481,13 +482,15 @@ const LayoutItem = (props) => {
 		style: styles,
 		className: itemClassName,
 	};
-	if (['text', 'button', 'form_button'].includes(item.type)) {
-		itemProps.onMouseEnter = (e) => {
-			if (!hovered) setHovered(true);
-		};
-		itemProps.onMouseLeave = (e) => {
-			if (hovered) setHovered(false);
-		};
+	if (!isMobileIos()) {
+		if (['text', 'button', 'form_button'].includes(item.type)) {
+			itemProps.onMouseEnter = (e) => {
+				if (!hovered) setHovered(true);
+			};
+			itemProps.onMouseLeave = (e) => {
+				if (hovered) setHovered(false);
+			};
+		}
 	}
 
 	if (item.dataParsed && item.dataParsed.customProps) {
@@ -506,6 +509,12 @@ const LayoutItem = (props) => {
 			const elmnt = document.getElementsByClassName(item.dataParsed.scrollTo);
 			if (elmnt && elmnt.length) elmnt[0].scrollIntoView();
 		};
+		// DONOT REMOVE - this is to fix ios problem when it requires touching twice
+		if (isMobileIos()) {
+			itemProps.onMouseEnter = async () => {
+				await sleep(150);
+			};
+		}
 	}
 	if (aHref && item.type !== 'text') {
 		const openUrlInNewTab = parseInt(item.dataParsed.openUrlInNewTab) === 1;

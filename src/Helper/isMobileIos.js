@@ -11,3 +11,7 @@ export const isMobileIos = () => {
 		(navigator.userAgent.includes('Mac') && 'ontouchend' in document)
 	);
 };
+
+export const sleep = (ms) => {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+};
