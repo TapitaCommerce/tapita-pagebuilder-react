@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { listToTree } from '../Helper/Data';
 import { useDeviceWidthPrefix } from '../hooks/useDeviceWidthPrefix';
 import LayoutItem from './LayoutItem';
-import { isMobileIos } from '../Helper/isMobileIos';
 
 const PbContent = (props) => {
 	const {
@@ -93,7 +92,7 @@ const PbContent = (props) => {
 	rootItem.children = newTree;
 
 	const classNames = useMemo(() => {
-		return ['smpb-container', isMobileIos() ? 'no-touch' : '']
+		return ['smpb-container']
 			.filter(Boolean)
 			.join(' ');
 	}, []);

@@ -1,5 +1,10 @@
 import React, { Fragment } from 'react';
 import { useAttention } from '../../hooks/useAttention';
+import { isMobileIos } from '../../Helper/isMobileIos';
+
+const sleep = (ms) => {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+};
 
 export const SurroundLink = (props) => {
 	const { item, itemProps: _itemProps, aHref, Link, children } = props;
@@ -12,6 +17,15 @@ export const SurroundLink = (props) => {
 		..._itemProps,
 		onClick: null,
 	};
+	try {
+		delete itemProps.onClick;
+		// DONOT REMOVE - this is to fix ios problem when it requires touching twice
+		if (isMobileIos() && aHref) {
+			itemProps.onMouseEnter = async () => {
+				await sleep(150);
+			};
+		}
+	} catch (err) {}
 	if (itemProps.style && itemProps.style.backgroundImage) {
 		if (!hadAttention) {
 			itemProps.style = { ...itemProps.style, backgroundImage: null };
