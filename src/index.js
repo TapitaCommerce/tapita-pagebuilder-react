@@ -127,6 +127,7 @@ export const PageBuilderComponent = (props) => {
 		_translateSEO = false,
 		mode = 'default',
 		type = 'default',
+		callback,
 	} = props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items
@@ -253,8 +254,30 @@ export const PageBuilderComponent = (props) => {
 	useEffect(() => {
 		if (spgData) {
 			AOS.init();
+
+			if (callback && callback.call) {
+				try {
+					callback();
+				} catch (e) {
+					console.error('Callback error', e);
+				}
+			}
+
+			if (window.CustomEvent && window.document && window.document.body) {
+				try {
+					const e = new CustomEvent('tpt_render', {
+						detail: {
+							name: 'Tapita',
+						},
+					});
+					window.document.body.dispatchEvent(e);
+				} catch (e) {
+					console.error('Dispatch event error', e);
+				}
+			}
 		}
 	});
+
 	if (spgData && (spgData.status || toPreview) && !preventRender) {
 		// helmet title and desc even empty: landing page and article
 		const preventTitle =
