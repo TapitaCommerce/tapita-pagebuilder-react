@@ -41,6 +41,7 @@ const LayoutItem = (props) => {
 		deviceFilterKey,
 		isRtl,
 		canLazyLoad,
+		index,
 	} = props;
 
 	const [hovered, setHovered] = useState(false);
@@ -218,6 +219,8 @@ const LayoutItem = (props) => {
 					translateParagraph={translateParagraph}
 					translatePlaceholder={translatePlaceholder}
 					canLazyLoad={canLazyLoad}
+					parent={parent}
+					index={index}
 				/>
 				{children.length ? children : ''}
 			</React.Fragment>

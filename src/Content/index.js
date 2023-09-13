@@ -29,7 +29,7 @@ const PbContent = (props) => {
 		spb_page && spb_page.items && spb_page.items[0] ? spb_page.items[0] : false;
 	const isRtl = pageData && pageData.is_rtl;
 
-	const renderItem = (item, children, parent, stats) => {
+	const renderItem = (item, children, parent, stats, index = 0) => {
 		const shouldEagerLoad = stats < 10;
 
 		return (
@@ -58,6 +58,7 @@ const PbContent = (props) => {
 					isRtl,
 				}}
 				canLazyLoad={!shouldEagerLoad}
+				index={index}
 			/>
 		);
 	};
@@ -71,7 +72,9 @@ const PbContent = (props) => {
 			childrenArray.map((item, index) => {
 				const individualStats = Math.min(1000, stats * 10 + index);
 				const children = recursiveRender(item.children, item, individualStats);
-				returnedItems.push(renderItem(item, children, parent, individualStats));
+				returnedItems.push(
+					renderItem(item, children, parent, individualStats, index),
+				);
 				return null;
 			});
 		}

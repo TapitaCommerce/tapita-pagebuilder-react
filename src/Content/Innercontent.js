@@ -28,6 +28,7 @@ const Innercontent = (props) => {
 		translatePlaceholder,
 		parentStyles,
 		canLazyLoad,
+		parent,
 	} = props;
 
 	useEffect(() => {
