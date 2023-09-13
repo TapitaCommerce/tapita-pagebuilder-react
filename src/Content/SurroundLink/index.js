@@ -15,7 +15,7 @@ export const SurroundLink = (props) => {
 	};
 	try {
 		delete itemProps.onClick;
-		// DONOT REMOVE - this is to fix ios problem when it requires touching twice
+		// DO NOT REMOVE - this is to fix ios problem when it requires touching twice
 		if (isMobileIos() && aHref) {
 			itemProps.onMouseEnter = async () => {
 				await sleep(150);

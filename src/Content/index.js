@@ -29,7 +29,9 @@ const PbContent = (props) => {
 		spb_page && spb_page.items && spb_page.items[0] ? spb_page.items[0] : false;
 	const isRtl = pageData && pageData.is_rtl;
 
-	const renderItem = (item, children, parent) => {
+	const renderItem = (item, children, parent, stats) => {
+		const shouldEagerLoad = stats < 10;
+
 		return (
 			<LayoutItem
 				item={item}
@@ -55,6 +57,7 @@ const PbContent = (props) => {
 					deviceFilterKey,
 					isRtl,
 				}}
+				canLazyLoad={!shouldEagerLoad}
 			/>
 		);
 	};
@@ -62,12 +65,13 @@ const PbContent = (props) => {
 	/*
     Recursive render
     */
-	const recursiveRender = (childrenArray, parent) => {
+	const recursiveRender = (childrenArray, parent, stats = 0) => {
 		const returnedItems = [];
 		if (childrenArray) {
-			childrenArray.map((item) => {
-				const children = recursiveRender(item.children, item);
-				returnedItems.push(renderItem(item, children, parent));
+			childrenArray.map((item, index) => {
+				const individualStats = Math.min(1000, stats * 10 + index);
+				const children = recursiveRender(item.children, item, individualStats);
+				returnedItems.push(renderItem(item, children, parent, individualStats));
 				return null;
 			});
 		}
@@ -75,8 +79,8 @@ const PbContent = (props) => {
 	};
 
 	const renderItems = (itemTree) => {
-		const children = recursiveRender(itemTree.children);
-		return renderItem({ root: true }, children);
+		const children = recursiveRender(itemTree.children, undefined, 0);
+		return renderItem({ root: true }, children, undefined, 0);
 	};
 
 	const rootItem = {
@@ -92,9 +96,7 @@ const PbContent = (props) => {
 	rootItem.children = newTree;
 
 	const classNames = useMemo(() => {
-		return ['smpb-container']
-			.filter(Boolean)
-			.join(' ');
+		return ['smpb-container'].filter(Boolean).join(' ');
 	}, []);
 
 	useEffect(() => {

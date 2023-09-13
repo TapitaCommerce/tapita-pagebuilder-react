@@ -27,6 +27,7 @@ const Innercontent = (props) => {
 		translateParagraph,
 		translatePlaceholder,
 		parentStyles,
+		canLazyLoad,
 	} = props;
 
 	useEffect(() => {
@@ -179,11 +180,18 @@ const Innercontent = (props) => {
 			const title = formatMessage({
 				val: (data.title !== undefined ? data.title : '') || '',
 			});
-			const loadStrategy = data && data.loadStrategy;
+			const loadStrategy =
+				data && data.loadStrategy
+					? data.loadStrategy
+					: canLazyLoad
+						? 'lazy'
+						: '';
 			const offhandImgOptimizationConfig = (data && data.optimization) || {};
+
 			return (
 				<img
 					src={data.image}
+					data-splide-lazy={data.image}
 					alt={alt}
 					title={title}
 					loading={loadStrategy}

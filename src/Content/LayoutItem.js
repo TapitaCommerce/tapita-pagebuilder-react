@@ -40,6 +40,7 @@ const LayoutItem = (props) => {
 		mode,
 		deviceFilterKey,
 		isRtl,
+		canLazyLoad,
 	} = props;
 
 	const [hovered, setHovered] = useState(false);
@@ -77,7 +78,13 @@ const LayoutItem = (props) => {
 						: 'slide',
 				autoplay: parseInt(dataParsed.sliderAutoSlide) === 1,
 				arrows: parseInt(dataParsed.showSliderNavBtn) !== 0,
-				lazyLoad: lazyloadPlaceHolder ? 'nearby' : false,
+				lazyLoad: lazyloadPlaceHolder ? (
+					'nearby'
+				) : canLazyLoad ? (
+					<div />
+				) : (
+					false
+				),
 				pagination: showIndicators,
 				paginationDirection: 'ltr',
 				speed: parseInt(dataParsed.sliderTransitionTime)
@@ -210,6 +217,7 @@ const LayoutItem = (props) => {
 					deviceFilterKey={deviceFilterKey}
 					translateParagraph={translateParagraph}
 					translatePlaceholder={translatePlaceholder}
+					canLazyLoad={canLazyLoad}
 				/>
 				{children.length ? children : ''}
 			</React.Fragment>
