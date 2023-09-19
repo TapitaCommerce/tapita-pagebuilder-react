@@ -281,9 +281,11 @@ export const PageBuilderComponent = (props) => {
 	if (spgData && (spgData.status || toPreview) && !preventRender) {
 		// helmet title and desc even empty: landing page and article
 		const preventTitle =
+			(window && window.tapita_meta_page_title) ||
 			(!spgData.title && spgData.title !== '') || // undefined
 			(spgData.apply_to && spgData.type_id !== 2); // catalog and type = 2 -> blog
 		const preventDescription =
+			(window && window.tapita_meta_page_description) ||
 			(!spgData.desc && spgData.desc !== '') || // undefined
 			(spgData.apply_to && spgData.type_id !== 2); // catalog and type = 2 -> blog
 		return (
