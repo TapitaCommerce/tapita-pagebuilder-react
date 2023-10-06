@@ -10,6 +10,8 @@ import { Dropdown } from './Dropdown';
 import { FacebookPagePlugin } from './FacebookPagePlugin';
 import { convertBoxShadowToTextShadow } from '../Helper/convertBoxShadowToTextShadow';
 import { tryParseJSON } from '../Helper/tryParseJSON';
+import { migratedBindingTypes } from './MigratedForm/bindingMatrix';
+import { OverloadedBindingMigrationRenderer } from './MigratedForm/OverloadedBindingMigrationRenderer';
 
 export const customIconDefKey = 'is-custom-icon';
 export const customIcon = 'custom-icon';
@@ -271,7 +273,7 @@ const Innercontent = (props) => {
 		const wrapperStyle =
 			parentStyles && parentStyles.boxShadow
 				? {
-						textShadow: convertBoxShadowToTextShadow(parentStyles.boxShadow),
+					textShadow: convertBoxShadowToTextShadow(parentStyles.boxShadow),
 				  }
 				: null;
 
@@ -300,7 +302,7 @@ const Innercontent = (props) => {
 		const shadowStyle =
 			parentStyles && parentStyles.boxShadow
 				? {
-						boxShadow: parentStyles.boxShadow,
+					boxShadow: parentStyles.boxShadow,
 				  }
 				: null;
 
@@ -347,7 +349,7 @@ const Innercontent = (props) => {
 			const shadowStyle =
 				parentStyles && parentStyles.boxShadow
 					? {
-							boxShadow: parentStyles.boxShadow,
+						boxShadow: parentStyles.boxShadow,
 					  }
 					: null;
 			return (
@@ -363,7 +365,7 @@ const Innercontent = (props) => {
 		const shadowStyle =
 			parentStyles && parentStyles.boxShadow
 				? {
-						boxShadow: parentStyles.boxShadow,
+					boxShadow: parentStyles.boxShadow,
 				  }
 				: null;
 		if (shouldUseCustomIcon) {
@@ -474,6 +476,8 @@ const Innercontent = (props) => {
 				<p className='help-block' />
 			</>
 		);
+	} else if (migratedBindingTypes.includes(item.type)) {
+		return <OverloadedBindingMigrationRenderer item={item} type={item.type} />;
 	}
 	return '';
 };

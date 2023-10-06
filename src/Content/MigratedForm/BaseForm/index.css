@@ -1,0 +1,72 @@
+.unique-class-for-form {
+
+}
+
+.unique-class-for-form .tpt-form {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.unique-class-for-form .tpt-form.notInline {
+	display: block;
+}
+
+.unique-class-for-form .break {
+	flex-basis: 100%;
+	height: 0;
+}
+
+.unique-class-for-form .break-column {
+	flex-basis: 100%;
+	width: 0;
+}
+
+.unique-class-for-form .tpt-input-content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.unique-class-for-form .tpt-input-content label {
+	display: block;
+}
+
+.unique-class-for-form .tpt-input-content input, .unique-class-for-form .tpt-input-content textarea {
+	flex: 1;
+}
+
+.unique-class-for-form .tpt-input-content input:focus-visible {
+	outline: none;
+	box-shadow: none;
+}
+
+.unique-class-for-form .tpt-input-content textarea:focus-visible {
+	outline: none;
+	box-shadow: none;
+}
+
+.unique-class-for-form textarea.resize-vertical-only {
+	resize: vertical;
+}
+
+.unique-class-for-form .form-buttoned {
+	width: 100%;
+}
+
+.unique-class-for-form .form-buttoned button {
+	border: none;
+	padding: 12px 30px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.unique-class-for-form .tpt-error-text {
+	color: #EF6262;
+	font-size: small;
+	min-height: 25px;
+}
+
+.unique-class-for-form .tpt-required-start {
+	color: #EF6262;
+	margin-left: 2px;
+}
