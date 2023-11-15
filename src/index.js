@@ -284,11 +284,15 @@ export const PageBuilderComponent = (props) => {
 		const preventTitle =
 			(window && window.tapita_meta_page_title) ||
 			(!spgData.title && spgData.title !== '') || // undefined
-			(spgData.apply_to && spgData.type_id !== 2); // catalog and type = 2 -> blog
+			(spgData.apply_to && spgData.type_id !== 2) || // catalog and type = 2 -> blog
+			window._tpt_anti_helmet;
+
 		const preventDescription =
 			(window && window.tapita_meta_page_description) ||
 			(!spgData.desc && spgData.desc !== '') || // undefined
-			(spgData.apply_to && spgData.type_id !== 2); // catalog and type = 2 -> blog
+			(spgData.apply_to && spgData.type_id !== 2) || // catalog and type = 2 -> blog
+			window._tpt_anti_helmet;
+
 		return (
 			<React.Fragment>
 				{styleString && (
