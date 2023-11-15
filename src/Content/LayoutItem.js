@@ -456,6 +456,16 @@ const LayoutItem = (props) => {
 	if (item.type === 'category_scroll_1') {
 		styles.backgroundImage = 'none';
 	}
+
+	const itemID =
+		(item && item.dataParsed && item.dataParsed.custom_id) ||
+		(item && item.entity_id ? `pbitm-id-${item.entity_id}` : null);
+
+	// create inner styles from item styles
+	const innerStyles = JSON.parse(JSON.stringify(styles));
+	const innerContent = renderInnerContent(item, children, parent, innerStyles);
+
+	// alter current styles as our wish
 	if (
 		['text', 'paragraph', 'html_video', 'youtube_video', 'icon'].includes(
 			item.type,
@@ -468,10 +478,6 @@ const LayoutItem = (props) => {
 	if (!noShadow) {
 		styles.overflow = 'visible';
 	}
-
-	const itemID =
-		(item && item.dataParsed && item.dataParsed.custom_id) ||
-		(item && item.entity_id ? `pbitm-id-${item.entity_id}` : null);
 
 	let itemClassName = `spb-item ${item.root ? 'spb-item-root' : ''} ${
 		item.class_name || ''
@@ -545,8 +551,6 @@ const LayoutItem = (props) => {
 			}
 		};
 	}
-
-	const innerContent = renderInnerContent(item, children, parent, styles);
 
 	if (overRender) {
 		const overRendered = overRender(item, itemProps, innerContent);
