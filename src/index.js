@@ -128,6 +128,7 @@ export const PageBuilderComponent = (props) => {
 		mode = 'default',
 		type = 'default',
 		callback,
+		liquidLookup,
 	} = props;
 	const [data, setData] = useState(
 		pageData && pageData.publish_items
@@ -171,7 +172,7 @@ export const PageBuilderComponent = (props) => {
 						const ul = result.ul.split(',');
 						const cAppId = maskedId.slice(0, -30);
 						if (cAppId && ul.includes(String(cAppId))) {
-							// setPreventRender(true);
+							setPreventRender(true);
 						}
 					}
 				},
@@ -374,11 +375,12 @@ export const PageBuilderComponent = (props) => {
 					translateParagraph={_translateParagraph}
 					translatePlaceholder={_translatePlaceholder}
 					mode={mode}
+					liquidLookup={liquidLookup}
 				/>
 			</React.Fragment>
 		);
 	}
-	return 'S+';
+	return '';
 };
 
 // comment this to build standalone package

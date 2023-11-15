@@ -31,6 +31,7 @@ const Innercontent = (props) => {
 		parentStyles,
 		canLazyLoad,
 		parent,
+		liquidLookup,
 	} = props;
 
 	useEffect(() => {
@@ -477,7 +478,13 @@ const Innercontent = (props) => {
 			</>
 		);
 	} else if (migratedBindingTypes.includes(item.type)) {
-		return <OverloadedBindingMigrationRenderer item={item} type={item.type} />;
+		return (
+			<OverloadedBindingMigrationRenderer
+				item={item}
+				type={item.type}
+				liquidLookup={liquidLookup}
+			/>
+		);
 	}
 	return '';
 };

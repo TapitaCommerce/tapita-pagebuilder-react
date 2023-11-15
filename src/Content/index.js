@@ -21,6 +21,7 @@ const PbContent = (props) => {
 		translateParagraph,
 		translatePlaceholder,
 		mode,
+		liquidLookup,
 	} = props;
 
 	const selfRef = useRef(null);
@@ -59,6 +60,7 @@ const PbContent = (props) => {
 				}}
 				canLazyLoad={!shouldEagerLoad}
 				index={index}
+				liquidLookup={liquidLookup}
 			/>
 		);
 	};

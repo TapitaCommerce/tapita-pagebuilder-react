@@ -42,6 +42,7 @@ const LayoutItem = (props) => {
 		isRtl,
 		canLazyLoad,
 		index,
+		liquidLookup,
 	} = props;
 
 	const [hovered, setHovered] = useState(false);
@@ -221,6 +222,7 @@ const LayoutItem = (props) => {
 					canLazyLoad={canLazyLoad}
 					parent={parent}
 					index={index}
+					liquidLookup={liquidLookup}
 				/>
 				{children.length ? children : ''}
 			</React.Fragment>

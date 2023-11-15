@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { bindingMatrix } from './bindingMatrix';
 
 export const OverloadedBindingMigrationRenderer = (props) => {
-	const { type, item, mode, liquidLookup } = props;
+	const { type, item, liquidLookup } = props;
 	// return type
 	const matchingTypeData = bindingMatrix[type];
 
