@@ -167,6 +167,7 @@ const LayoutItem = (props) => {
 			}
 			let partialSSettings = {
 				type: 'slide',
+				autoplay: parseInt(dataParsed.sliderAutoSlide) === 1,
 				pagination: showIndicators,
 				arrows: showArrow,
 				perPage,
