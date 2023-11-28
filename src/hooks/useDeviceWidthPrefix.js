@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 var smpbWindowWidth = false;
 
 const getPrefix = (width) =>
-	width >= 1280 ? 'l_' : width >= 1024 ? 't_' : 'm_';
+	width >= 1280 ? 'l_' : width >= 768 ? 't_' : 'm_';
 
 // for future on resize responsiveness
 export const useDeviceWidthPrefix = (props) => {

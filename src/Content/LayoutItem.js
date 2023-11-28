@@ -165,9 +165,21 @@ const LayoutItem = (props) => {
 			if (imageNumber < perPage + perMove) {
 				perMove = imageNumber - perPage;
 			}
+
+			const rewindMode = !!parseInt(dataParsed.rewind);
+
 			let partialSSettings = {
-				type: 'slide',
+				type:
+					parseInt(dataParsed.sliderInfiniteLoop) !== 0 && !rewindMode
+						? 'loop'
+						: 'slide',
 				autoplay: parseInt(dataParsed.sliderAutoSlide) === 1,
+				speed: parseInt(dataParsed.sliderTransitionTime)
+					? dataParsed.sliderTransitionTime
+					: 350,
+				interval: parseInt(dataParsed.sliderInterval)
+					? dataParsed.sliderInterval
+					: 3000,
 				pagination: showIndicators,
 				arrows: showArrow,
 				perPage,
@@ -179,6 +191,16 @@ const LayoutItem = (props) => {
 				partialSSettings.direction = 'rtl';
 				partialSSettings.paginationDirection = 'rtl';
 			}
+			if (partialSSettings.type === 'loop' || rewindMode) {
+				partialSSettings.clones = 0;
+			} else {
+				partialSSettings.clones = cChild.length;
+			}
+			if (rewindMode) {
+				partialSSettings.rewind = true;
+				partialSSettings.rewindByDrag = true;
+			}
+
 			try {
 				if (dataParsed && dataParsed.customSplideConf) {
 					const customSplideConf = JSON.parse(dataParsed.customSplideConf);
