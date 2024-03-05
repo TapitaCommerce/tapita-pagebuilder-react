@@ -29,9 +29,16 @@ export const SurroundLink = (props) => {
 	}
 
 	const openUrlInNewTab = parseInt(item.dataParsed.openUrlInNewTab) === 1;
+	const openUrlSEOTitle = item.dataParsed.openUrlSEOTitle || '';
+
 	if (!itemProps.style.textDecoration) itemProps.style.textDecoration = 'none';
 	if (!itemProps.style.color) itemProps.style.color = 'initial';
 	if (item.dataParsed && item.dataParsed.nofollow) itemProps.rel = 'nofollow';
+
+	const sharedProps = {};
+	if (openUrlSEOTitle) {
+		sharedProps.title = openUrlSEOTitle;
+	}
 
 	if (
 		Link &&
@@ -43,6 +50,7 @@ export const SurroundLink = (props) => {
 				ref={targetRef}
 				to={aHref}
 				target={openUrlInNewTab ? '_blank' : '_self'}
+				{...sharedProps}
 				{...itemProps}
 			>
 				{children}
@@ -50,11 +58,15 @@ export const SurroundLink = (props) => {
 		);
 	}
 
+	const target = openUrlInNewTab ? '_blank' : '_self';
+
 	return (
 		<a
 			ref={targetRef}
 			href={aHref}
-			target={openUrlInNewTab ? '_blank' : '_self'}
+			target={target}
+			rel={target === '_blank' ? 'noopener' : ''}
+			{...sharedProps}
 			{...itemProps}
 		>
 			{children}
