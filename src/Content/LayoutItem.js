@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { SurroundLink } from './SurroundLink';
 import { Container } from './Container';
 import LazyLoad from 'react-lazyload';
@@ -212,11 +212,11 @@ const LayoutItem = (props) => {
 				console.warn(err);
 			}
 			return (
-				<Splide options={partialSSettings}>
+				<HOSplide partialSSettings={partialSSettings}>
 					{cChild.map((cChil, indx) => (
 						<SplideSlide key={indx}>{cChil}</SplideSlide>
 					))}
-				</Splide>
+				</HOSplide>
 			);
 		}
 
@@ -665,3 +665,14 @@ const LayoutItem = (props) => {
 	);
 };
 export default LayoutItem;
+
+const HOSplide = ({ partialSSettings, children }) => {
+	const [clones, setClones] = useState(partialSSettings.clones || 0);
+	const slideOptions = JSON.parse(JSON.stringify(partialSSettings));
+	slideOptions.clones = clones;
+	// this is the trick to fix Splide error when clones is zero : https://snipboard.io/mr4Wwp.jpg
+	useEffect(() => {
+		if (clones === 0 && children.length) setClones(children.length);
+	}, []);
+	return <Splide options={slideOptions}>{children}</Splide>;
+};
